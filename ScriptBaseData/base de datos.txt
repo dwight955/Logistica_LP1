@@ -1,0 +1,9 @@
+create database modelo_CL1_LPI_2021_21;
+use modelo_CL1_LPI_2021_21;
+create table tb_edificio
+(
+cod_edificio int primary key auto_increment,
+des_edificio varchar(30),
+pisos_edificio int,
+pre_edificio double
+);
