@@ -29,6 +29,7 @@ public class frmPrincipal extends JFrame implements ActionListener {
 	
 	
 	private JPanel contentPane;
+	private JMenuItem mntmEmisionDePecosa;
 
 	/**
 	 * Launch the application.
@@ -63,8 +64,15 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		JMenuItem mntmCerrar = new JMenuItem("Cerrar");
 		mnSistema.add(mntmCerrar);
 		
-		JMenu mnMantenimiento = new JMenu("Mantenimiento");
-		menuBar.add(mnMantenimiento);
+		JMenu mnAlmacen = new JMenu("Almacen");
+		menuBar.add(mnAlmacen);
+		
+		JMenuItem mntmInventarioInicial = new JMenuItem("Inventario Inicial");
+		mnAlmacen.add(mntmInventarioInicial);
+		
+		mntmEmisionDePecosa = new JMenuItem("Emision de PECOSA");
+		mntmEmisionDePecosa.addActionListener(this);
+		mnAlmacen.add(mntmEmisionDePecosa);
 		
 		JMenu mnReporte = new JMenu("Reporte");
 		menuBar.add(mnReporte);
@@ -74,8 +82,14 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmEmisionDePecosa) {
+			actionPerformedMntmEmisionDePecosa(e);
+		}
 	}
 	void mensaje(String m) {
 		JOptionPane.showMessageDialog(this, m);
+	}
+	protected void actionPerformedMntmEmisionDePecosa(ActionEvent e) {
+		
 	}
 }
