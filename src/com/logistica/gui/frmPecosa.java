@@ -30,8 +30,10 @@ import java.awt.Button;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class frmPecosa extends JFrame implements ActionListener {
+public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 	MySqlPecosaDAO pecosaDao = new MySqlPecosaDAO();
 	
 	private JPanel contentPane;
@@ -50,8 +52,8 @@ public class frmPecosa extends JFrame implements ActionListener {
 	private JTable table;
 	private JTextField txtPrecioTotal;
 	private JScrollPane tblDetallePecosa;
-	private JComboBox cboCargoSoli;
-	private JComboBox cboCargoEntr;
+	private JComboBox cboSoliCargo;
+	private JComboBox cboEntrCargo;
 	private Button btnGuardar;
 
 
@@ -126,6 +128,7 @@ public class frmPecosa extends JFrame implements ActionListener {
 		panel_1.add(lblNewLabel);
 		
 		txtSoliDni = new JTextField();
+		txtSoliDni.addKeyListener(this);
 		txtSoliDni.setBounds(106, 11, 94, 27);
 		panel_1.add(txtSoliDni);
 		txtSoliDni.setColumns(10);
@@ -152,6 +155,7 @@ public class frmPecosa extends JFrame implements ActionListener {
 		panel_1.add(lblEntregarDni);
 		
 		txtEntrDni = new JTextField();
+		txtEntrDni.addKeyListener(this);
 		txtEntrDni.setColumns(10);
 		txtEntrDni.setBounds(106, 48, 94, 27);
 		panel_1.add(txtEntrDni);
@@ -191,13 +195,13 @@ public class frmPecosa extends JFrame implements ActionListener {
 		txtMeta.setBounds(72, 123, 544, 27);
 		panel_1.add(txtMeta);
 		
-		cboCargoSoli = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
-		cboCargoSoli.setBounds(506, 12, 110, 22);
-		panel_1.add(cboCargoSoli);
+		cboSoliCargo = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
+		cboSoliCargo.setBounds(506, 12, 110, 22);
+		panel_1.add(cboSoliCargo);
 		
-		cboCargoEntr = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
-		cboCargoEntr.setBounds(506, 50, 110, 22);
-		panel_1.add(cboCargoEntr);
+		cboEntrCargo = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
+		cboEntrCargo.setBounds(506, 50, 110, 22);
+		panel_1.add(cboEntrCargo);
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setForeground(Color.BLACK);
@@ -274,6 +278,14 @@ public class frmPecosa extends JFrame implements ActionListener {
 			actionPerformedBtnGuardar(e);
 		}
 	}
+	public void keyReleased(KeyEvent e) {
+		if (e.getSource() == txtEntrDni) {
+			keyReleasedTxtEntrDni(e);
+		}
+		if (e.getSource() == txtSoliDni) {
+			keyReleasedTxtSoliDni(e);
+		}
+	}
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
 		String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
 		fecPec = txtFecha.getText();
@@ -305,5 +317,22 @@ public class frmPecosa extends JFrame implements ActionListener {
 
 	private void mensaje(String string) {
 		JOptionPane.showMessageDialog(this, string);
+	}
+	
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyTyped(KeyEvent e) {
+	}
+	protected void keyReleasedTxtSoliDni(KeyEvent e) {
+		String dni = txtSoliDni.getText();
+		String[] data = pecosaDao.buscarTrabajador(dni); 
+		txtSoliNom.setText(data[0]);
+		cboSoliCargo.setSelectedItem(data[1]);
+	}
+	protected void keyReleasedTxtEntrDni(KeyEvent e) {
+		String dni = txtEntrDni.getText();
+		String[] data = pecosaDao.buscarTrabajador(dni); 
+		txtEntrApeNom.setText(data[0]);
+		cboEntrCargo.setSelectedItem(data[1]);
 	}
 }

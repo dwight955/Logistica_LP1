@@ -59,4 +59,36 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		return null;
 	}
 
+	@Override
+	public String[] buscarTrabajador(String str) {
+		String cadena[] = new String[2];
+		Connection cn = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String filtro = ""+str;
+		String sql = "select * from TB_Trabajadores " + 
+				"where dniTrabajador like "+'"'+filtro+'"';
+		try {
+			cn = MySqlConexion.getConexion();
+			pstm = cn.prepareStatement(sql);
+			rs = pstm.executeQuery();
+			while(rs.next()) {
+				cadena[0] = rs.getString(2);
+				cadena[1] = rs.getString(3);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Hay un problema en MySqlPecosaDAO");
+		} finally {
+			try {
+				if(cn !=null) cn.close();
+				if(pstm != null)pstm.close();
+				if(rs != null)rs.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return cadena;
+	}
+
 }

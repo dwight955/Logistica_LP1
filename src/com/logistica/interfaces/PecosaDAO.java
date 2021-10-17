@@ -9,4 +9,5 @@ public interface PecosaDAO {
 	public int Actualizar(Pecosa bean);
 	public int Eliminar(Pecosa bean);
 	public  ArrayList<Pecosa> ListarTodo();
+	public String[] buscarTrabajador(String str);
 }
