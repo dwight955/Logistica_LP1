@@ -23,8 +23,10 @@ import javax.swing.table.DefaultTableModel;
 
 
 import com.logistica.componentes.JComboBoxBD;
+import com.logistica.componentes.JTextFielBD;
 import com.logistica.controlador.MySqlPecosaDAO;
 import com.logistica.entidad.Pecosa;
+import com.mxrck.autocompleter.TextAutoCompleter;
 
 import java.awt.Button;
 import javax.swing.JComboBox;
@@ -55,6 +57,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 	private JComboBox cboSoliCargo;
 	private JComboBox cboEntrCargo;
 	private Button btnGuardar;
+	private TextAutoCompleter ac;
 
 
 	/**
@@ -128,6 +131,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 		panel_1.add(lblNewLabel);
 		
 		txtSoliDni = new JTextField();
+		//aun falta trabajar aqui
 		txtSoliDni.addKeyListener(this);
 		txtSoliDni.setBounds(106, 11, 94, 27);
 		panel_1.add(txtSoliDni);
