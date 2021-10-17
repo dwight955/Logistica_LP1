@@ -8,26 +8,26 @@ import java.sql.SQLException;
 import javax.swing.JTextField;
 
 import com.logistica.utils.MySqlConexion;
-
+import com.mxrck.autocompleter.TextAutoCompleter;
 
 public class JTextFielBD extends JTextField {
 		
-	public JTextFielBD() {
-		String cadena[] = new String[2];
+	public JTextFielBD(String column, String table) {
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		String sql = "select * from TB_Trabajadores ";
+		TextAutoCompleter ac = new TextAutoCompleter(this);
+		String sql = "select "+column+" from "+ table;
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
 			rs = pstm.executeQuery();
 			while(rs.next()) {
-				cadena[0] = rs.getString(0);
+				ac.addItem(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Hay un problema en MySqlPecosaDAO");
+			System.out.println("Error en JTextFieldBD");
 		} finally {
 			try {
 				if(cn !=null) cn.close();

@@ -130,8 +130,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 		lblNewLabel.setBounds(10, 15, 105, 14);
 		panel_1.add(lblNewLabel);
 		
-		txtSoliDni = new JTextField();
-		//aun falta trabajar aqui
+		txtSoliDni = new JTextFielBD("dniTrabajador","TB_Trabajadores");
 		txtSoliDni.addKeyListener(this);
 		txtSoliDni.setBounds(106, 11, 94, 27);
 		panel_1.add(txtSoliDni);
@@ -158,7 +157,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 		lblEntregarDni.setBounds(8, 53, 105, 14);
 		panel_1.add(lblEntregarDni);
 		
-		txtEntrDni = new JTextField();
+		txtEntrDni = new JTextFielBD("dniTrabajador","TB_Trabajadores");
 		txtEntrDni.addKeyListener(this);
 		txtEntrDni.setColumns(10);
 		txtEntrDni.setBounds(106, 48, 94, 27);
