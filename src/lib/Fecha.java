@@ -14,7 +14,7 @@ public class Fecha {
 		dd = c.get(Calendar.DAY_OF_MONTH);
 		mm = c.get(Calendar.MONTH) + 1;
 		aa = c.get(Calendar.YEAR);
-		return ajustar(dd) + "/" + ajustar(mm) + "/" + aa;
+		return   aa + "/" + ajustar(mm) + "/" + ajustar(dd);
 	}
 	public static String horaActual() {
 		int hh, mm, ss;

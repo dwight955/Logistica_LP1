@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import java.awt.CardLayout;
@@ -22,12 +23,17 @@ import javax.swing.table.DefaultTableModel;
 
 
 import com.logistica.componentes.JComboBoxBD;
+import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.entidad.Pecosa;
 
 import java.awt.Button;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class frmPecosa extends JFrame {
-
+public class frmPecosa extends JFrame implements ActionListener {
+	MySqlPecosaDAO pecosaDao = new MySqlPecosaDAO();
+	
 	private JPanel contentPane;
 	private JTextField txtNumPecosa;
 	private JTextField txtFecha;
@@ -40,12 +46,13 @@ public class frmPecosa extends JFrame {
 	private JTextField txtUniOrg;
 	private JTextField txtMeta;
 	private JTextField txtReferencia;
-	private JTextField txtPecEstado;
+	private JTextField txtEstado;
 	private JTable table;
 	private JTextField txtPrecioTotal;
 	private JScrollPane tblDetallePecosa;
 	private JComboBox cboCargoSoli;
 	private JComboBox cboCargoEntr;
+	private Button btnGuardar;
 
 
 	/**
@@ -95,7 +102,7 @@ public class frmPecosa extends JFrame {
 		panel.add(txtNumPecosa);
 		txtNumPecosa.setColumns(10);
 		
-		txtFecha = new JTextField();
+		txtFecha = new JTextField(lib.Fecha.fechaActual());
 		txtFecha.setColumns(10);
 		txtFecha.setBounds(102, 75, 97, 28);
 		panel.add(txtFecha);
@@ -214,10 +221,10 @@ public class frmPecosa extends JFrame {
 		lblEstado.setBounds(689, 9, 105, 23);
 		contentPane.add(lblEstado);
 		
-		txtPecEstado = new JTextField();
-		txtPecEstado.setColumns(10);
-		txtPecEstado.setBounds(762, 8, 94, 27);
-		contentPane.add(txtPecEstado);
+		txtEstado = new JTextField();
+		txtEstado.setColumns(10);
+		txtEstado.setBounds(762, 8, 94, 27);
+		contentPane.add(txtEstado);
 		
 		tblDetallePecosa = new JScrollPane();
 		tblDetallePecosa.setBounds(11, 268, 845, 226);
@@ -252,7 +259,8 @@ public class frmPecosa extends JFrame {
 		btnCancelar.setBounds(594, 540, 81, 38);
 		contentPane.add(btnCancelar);
 		
-		Button btnGuardar = new Button("Guardar");
+		btnGuardar = new Button("Guardar");
+		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
 		btnGuardar.setBounds(499, 540, 81, 38);
 		contentPane.add(btnGuardar);
@@ -260,5 +268,42 @@ public class frmPecosa extends JFrame {
 		Button btnSalir = new Button("Salir");
 		btnSalir.setBounds(775, 540, 81, 38);
 		contentPane.add(btnSalir);
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnGuardar) {
+			actionPerformedBtnGuardar(e);
+		}
+	}
+	protected void actionPerformedBtnGuardar(ActionEvent e) {
+		String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
+		fecPec = txtFecha.getText();
+		soliDni = txtSoliDni.getText();
+		entrDni = txtEntrDni.getText();
+		estad = txtEstado.getText();
+		refe = txtReferencia.getText();
+		uniOrg = txtUniOrg.getText();
+		meta = txtMeta.getText();
+		//Validacion
+		//
+		//
+		//
+		Pecosa pec = new Pecosa();
+		pec.setFecPec(fecPec);
+		pec.setDniSoliPec(Integer.parseInt(soliDni));
+		pec.setDniEntrPec(Integer.parseInt(entrDni));
+		pec.setEstadoPec(estad);
+		pec.setReferencia(refe);
+		pec.setUniOrgPec(uniOrg);
+		pec.setMeta(meta);
+		int salida = pecosaDao.Ingresar(pec);
+		if(salida > 0) {
+			mensaje("El registro de la PECOSA fue un exito");
+		}else {
+			mensaje("Fallo en el Ingreso");
+		}
+	}
+
+	private void mensaje(String string) {
+		JOptionPane.showMessageDialog(this, string);
 	}
 }
