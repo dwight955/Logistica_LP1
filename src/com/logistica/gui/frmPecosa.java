@@ -19,7 +19,12 @@ import javax.swing.border.LineBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+
+import com.logistica.componentes.JComboBoxBD;
+
 import java.awt.Button;
+import javax.swing.JComboBox;
 
 public class frmPecosa extends JFrame {
 
@@ -28,10 +33,10 @@ public class frmPecosa extends JFrame {
 	private JTextField txtFecha;
 	private JTextField txtSoliDni;
 	private JTextField txtSoliNom;
+
 	private JTextField txtSoliCargo;
 	private JTextField txtEntrDni;
 	private JTextField txtEntrApeNom;
-	private JTextField txtEntrCargo;
 	private JTextField txtUniOrg;
 	private JTextField txtMeta;
 	private JTextField txtReferencia;
@@ -39,6 +44,9 @@ public class frmPecosa extends JFrame {
 	private JTable table;
 	private JTextField txtPrecioTotal;
 	private JScrollPane tblDetallePecosa;
+	private JComboBox cboCargoSoli;
+	private JComboBox cboCargoEntr;
+
 
 	/**
 	 * Launch the application.
@@ -130,11 +138,7 @@ public class frmPecosa extends JFrame {
 		lblCargo.setBounds(463, 15, 63, 14);
 		panel_1.add(lblCargo);
 		
-		txtSoliCargo = new JTextField();
-		txtSoliCargo.setColumns(10);
-		txtSoliCargo.setBounds(511, 11, 105, 27);
-		panel_1.add(txtSoliCargo);
-		
+
 		JLabel lblEntregarDni = new JLabel("Entregar A DNI");
 		lblEntregarDni.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblEntregarDni.setBounds(8, 53, 105, 14);
@@ -160,11 +164,6 @@ public class frmPecosa extends JFrame {
 		label_2.setBounds(463, 52, 63, 14);
 		panel_1.add(label_2);
 		
-		txtEntrCargo = new JTextField();
-		txtEntrCargo.setColumns(10);
-		txtEntrCargo.setBounds(511, 48, 105, 27);
-		panel_1.add(txtEntrCargo);
-		
 		JLabel lblUnid = new JLabel("Unidad Org.  :");
 		lblUnid.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblUnid.setBounds(10, 86, 105, 23);
@@ -185,6 +184,13 @@ public class frmPecosa extends JFrame {
 		txtMeta.setBounds(72, 123, 544, 27);
 		panel_1.add(txtMeta);
 		
+		cboCargoSoli = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
+		cboCargoSoli.setBounds(506, 12, 110, 22);
+		panel_1.add(cboCargoSoli);
+		
+		cboCargoEntr = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
+		cboCargoEntr.setBounds(506, 50, 110, 22);
+		panel_1.add(cboCargoEntr);
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setForeground(Color.BLACK);

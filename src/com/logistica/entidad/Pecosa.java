@@ -1,25 +1,25 @@
 package com.logistica.entidad;
 
 public class Pecosa {
-	private String referencia,soliApeNomPec,entrApeNomPec,uniOrgPec,fecPec;
-	private int numPec,dniSoliPec,dniEntrPec,anoPec;
+	private String referencia,uniOrgPec,fecPec,estadoPec,meta;
+	private int numPec,dniSoliPec,dniEntrPec;
 	public String getReferencia() {
 		return referencia;
 	}
+	public String getEstadoPec() {
+		return estadoPec;
+	}
+	public void setEstadoPec(String estadoPec) {
+		this.estadoPec = estadoPec;
+	}
+	public String getMeta() {
+		return meta;
+	}
+	public void setMeta(String meta) {
+		this.meta = meta;
+	}
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
-	}
-	public String getSoliApeNomPec() {
-		return soliApeNomPec;
-	}
-	public void setSoliApeNomPec(String soliApeNomPec) {
-		this.soliApeNomPec = soliApeNomPec;
-	}
-	public String getEntrApeNomPec() {
-		return entrApeNomPec;
-	}
-	public void setEntrApeNomPec(String entrApeNomPec) {
-		this.entrApeNomPec = entrApeNomPec;
 	}
 	public String getUniOrgPec() {
 		return uniOrgPec;
@@ -50,12 +50,5 @@ public class Pecosa {
 	}
 	public void setDniEntrPec(int dniEntrPec) {
 		this.dniEntrPec = dniEntrPec;
-	}
-	public int getAnoPec() {
-		return anoPec;
-	}
-	public void setAnoPec(int anoPec) {
-		this.anoPec = anoPec;
-	}
-	
+	}	
 }
