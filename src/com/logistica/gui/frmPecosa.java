@@ -25,17 +25,13 @@ import javax.swing.table.DefaultTableModel;
 import com.logistica.componentes.JComboBoxBD;
 import com.logistica.componentes.JTextFielBD;
 import com.logistica.controlador.MySqlPecosaDAO;
-import com.logistica.entidad.Pecosa;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
 import java.awt.Button;
 import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
-public class frmPecosa extends JFrame implements ActionListener, KeyListener {
+public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	MySqlPecosaDAO pecosaDao = new MySqlPecosaDAO();
 	
 	private JPanel contentPane;
@@ -289,6 +285,14 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 			keyReleasedTxtSoliDni(e);
 		}
 	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtSoliDni) {
+			keyTypedTxtSoliDni(e);
+		}
+		if(e.getSource() == txtEntrDni) {
+			keyTypedTxtEntrDni(e);
+		}
+	}
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
 		String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
 		fecPec = txtFecha.getText();
@@ -298,10 +302,12 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 		refe = txtReferencia.getText();
 		uniOrg = txtUniOrg.getText();
 		meta = txtMeta.getText();
-		//Validacion
-		//
-		//
-		//
+		if(soliDni.equals("")) {
+			mensaje("Es obligatorio el campo DNI SOLICITANTE");
+		}else if(soliDni.matches("^[1-9]([1-9]{7})$")){
+			mensaje("DNI invalido");
+		}
+		/*
 		Pecosa pec = new Pecosa();
 		pec.setFecPec(fecPec);
 		pec.setDniSoliPec(Integer.parseInt(soliDni));
@@ -315,7 +321,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 			mensaje("El registro de la PECOSA fue un exito");
 		}else {
 			mensaje("Fallo en el Ingreso");
-		}
+		}*/
 	}
 
 	private void mensaje(String string) {
@@ -324,7 +330,24 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener {
 	
 	public void keyPressed(KeyEvent e) {
 	}
-	public void keyTyped(KeyEvent e) {
+	
+	public void keyTypedTxtSoliDni(KeyEvent e) {
+		char c = e.getKeyChar();
+		String dni = txtSoliDni.getText();
+		if(!Character.isDigit(c)) {
+			e.consume();
+		} else if(dni.length()>7) {
+			e.consume();
+		}	
+	}
+	public void keyTypedTxtEntrDni(KeyEvent e) {
+		char c = e.getKeyChar();
+		String dni = txtEntrDni.getText();
+		if(!Character.isDigit(c)) {
+			e.consume();
+		} else if(dni.length()>7) {
+			e.consume();
+		}	
 	}
 	protected void keyReleasedTxtSoliDni(KeyEvent e) {
 		String dni = txtSoliDni.getText();
