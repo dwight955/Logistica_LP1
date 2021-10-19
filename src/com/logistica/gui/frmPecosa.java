@@ -27,6 +27,8 @@ import com.logistica.componentes.JTextFielBD;
 import com.logistica.controlador.MySqlPecosaDAO;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
+import lib.Mensajes;
+
 import java.awt.Button;
 import javax.swing.JComboBox;
 import java.awt.event.*;
@@ -303,9 +305,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		uniOrg = txtUniOrg.getText();
 		meta = txtMeta.getText();
 		if(soliDni.equals("")) {
-			mensaje("Es obligatorio el campo DNI SOLICITANTE");
-		}else if(soliDni.matches("^[1-9]([1-9]{7})$")){
-			mensaje("DNI invalido");
+			Mensajes.dialogo("Es obligatorio el campo DNI SOLICITANTE");
 		}
 		/*
 		Pecosa pec = new Pecosa();
@@ -324,9 +324,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		}*/
 	}
 
-	private void mensaje(String string) {
-		JOptionPane.showMessageDialog(this, string);
-	}
+	
 	
 	public void keyPressed(KeyEvent e) {
 	}
