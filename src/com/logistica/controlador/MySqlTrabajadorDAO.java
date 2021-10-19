@@ -41,13 +41,51 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 	@Override
 	public int Actualizar(Trabajador bean) {
 		int salida = -1;
-		
+		Connection cn = null;
+		PreparedStatement pstm = null;
+		String sql = "update TB_Trabajadores " + 
+				"set apeNomTrabajador=?, " + 
+				"cargoTrabajador=?, " + 
+				"fecNac=?, " + 
+				"sueldo=? " + 
+				"where dniTrabajador = ?";
+		try {
+			cn = MySqlConexion.getConexion();
+			pstm = cn.prepareStatement(sql);
+			pstm.setString(1, bean.getNomApe());
+			pstm.setString(2, bean.getCargo());
+			pstm.setString(3, bean.getFecNac());
+			pstm.setDouble(4, bean.getSueldo());
+			pstm.setInt(5, bean.getDni());
+			salida = pstm.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Error en MySqlTrabajadorDAO");
+			e.printStackTrace();
+		} finally {
+			try {
+				if(cn != null) cn.close();
+				if(pstm != null)pstm.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
 		return salida;
 	}
 
 	@Override
 	public int Eliminar(Trabajador bean) {
 		int salida = -1;
+		Connection cn = null;
+		PreparedStatement pstm = null;
+		String sql = "delete from TB_Trabajadores where dniTrabajador = ?";
+		try {
+			cn = MySqlConexion.getConexion();
+			pstm = cn.prepareStatement(sql);
+			pstm.setInt(1, bean.getDni());
+			salida = pstm.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return salida;
 	}
 
