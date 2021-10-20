@@ -27,7 +27,7 @@ public class JTextFielBD extends JTextField {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Error en JTextFieldBD");
+			System.out.println(">>Error en JTextFieldBD");
 		} finally {
 			try {
 				if(cn !=null) cn.close();

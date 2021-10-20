@@ -7,6 +7,10 @@ public class Mensajes extends JOptionPane{
 		JOptionPane.showMessageDialog(null, string);
 	}
 	public static void error(String str) {
-		JOptionPane.showMessageDialog(null, str,"ERROR", ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, str,"No se pudo cumplir la operacion", ERROR_MESSAGE);
+	}
+	public static int confirmarELiminar() {
+		int s = JOptionPane.showConfirmDialog(null, "¿Esta seguro de querer eliminar el registro?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		return s;
 	}
 }
