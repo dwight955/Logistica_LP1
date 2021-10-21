@@ -14,7 +14,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 		int salida = -1;
 		Connection cn = null;
 		PreparedStatement pstm = null;
-		String sql = "insert into TB_Trabajadores values (?,?,?,?,?)";
+		String sql = "insert into TB_Trabajadores values (?,?,?,?,?,?,?)";
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
@@ -23,6 +23,8 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 			pstm.setString(3, bean.getCargo());
 			pstm.setString(4, bean.getFecNac());
 			pstm.setDouble(5, bean.getSueldo());
+			pstm.setString(6, bean.getSexo());
+			pstm.setString(7, bean.getCodDis());
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error en MySqlTrabajadorDAO");
@@ -47,7 +49,9 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				"set apeNomTrabajador=?, " + 
 				"cargoTrabajador=?, " + 
 				"fecNac=?, " + 
-				"sueldo=? " + 
+				"sueldo=?, " + 
+				"sexo=?, "+
+				"CodDistrito=? "+
 				"where dniTrabajador = ?";
 		try {
 			cn = MySqlConexion.getConexion();
@@ -56,7 +60,9 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 			pstm.setString(2, bean.getCargo());
 			pstm.setString(3, bean.getFecNac());
 			pstm.setDouble(4, bean.getSueldo());
-			pstm.setInt(5, bean.getDni());
+			pstm.setString(5, bean.getSexo());
+			pstm.setString(6, bean.getCodDis());
+			pstm.setInt(7, bean.getDni());
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Error en MySqlTrabajadorDAO");
@@ -95,7 +101,8 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		String sql = "select * from TB_Trabajadores";
+		String sql = "call sp_ListarTrabajadores()";
+			
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
@@ -107,6 +114,8 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				tra.setCargo(rs.getString(3));
 				tra.setFecNac(rs.getString(4));
 				tra.setSueldo(rs.getDouble(5));
+				tra.setSexo(rs.getString(6));
+				tra.setCodDis(rs.getString(7));
 				lista.add(tra);
 			}
 		} catch (SQLException e) {

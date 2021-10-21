@@ -10,9 +10,9 @@ public class MySqlConexion {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			String url,user,pass;
-			url="jdbc:mysql://localhost/Logistica?serverTimezone=UTC";
-			user="root";
-			pass="mysql";
+			url="jdbc:mysql://logistica-lp1.mysql.database.azure.com/Logistica?serverTimezone=UTC";
+			user="grupoLogistica@logistica-lp1";
+			pass="QWEasdZXC123";
 			cn=DriverManager.getConnection(url,user,pass);	
 		} catch (SQLException e) {
 			e.printStackTrace();

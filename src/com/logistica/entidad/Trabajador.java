@@ -1,10 +1,22 @@
 package com.logistica.entidad;
 
 public class Trabajador {
-	private String nomApe, cargo, fecNac;
+	private String nomApe, cargo, fecNac,sexo,codDis;
 	private int dni;
 	private double sueldo;
 	
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	public String getCodDis() {
+		return codDis;
+	}
+	public void setCodDis(String codDis) {
+		this.codDis = codDis;
+	}
 	public String getNomApe() {
 		return nomApe;
 	}

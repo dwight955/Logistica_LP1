@@ -34,6 +34,9 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import javax.swing.JMenuItem;
 import java.awt.Color;
+import java.awt.Canvas;
+import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
 
 public class frmTrabajadores extends JFrame implements ActionListener, MouseListener {
 	MySqlTrabajadorDAO trabajadorDAO = new MySqlTrabajadorDAO();
@@ -50,6 +53,8 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	private JButton btnActualizar;
 	private JMenuItem mntmEliminar;
 	private JButton btnLimpiar;
+	private JComboBox cboSexo;
+	private JComboBox cboDistrito;
 
 	/**
 	 * Launch the application.
@@ -73,14 +78,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	public frmTrabajadores() {
 		setTitle("Trabajadores");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 573, 454);
+		setBounds(100, 100, 791, 514);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 48, 537, 191);
+		scrollPane.setBounds(10, 48, 755, 191);
 		contentPane.add(scrollPane);
 		
 		tblTrabajadores = new JTable();
@@ -90,14 +95,17 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			new Object[][] {
 			},
 			new String[] {
-				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo"
+				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo", "Sexo", "Distrito"
 			}
 		));
 		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(39);
 		tblTrabajadores.getColumnModel().getColumn(0).setMinWidth(11);
 		tblTrabajadores.getColumnModel().getColumn(1).setPreferredWidth(138);
 		tblTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(102);
-		tblTrabajadores.getColumnModel().getColumn(4).setPreferredWidth(59);
+		tblTrabajadores.getColumnModel().getColumn(3).setPreferredWidth(60);
+		tblTrabajadores.getColumnModel().getColumn(4).setPreferredWidth(17);
+		tblTrabajadores.getColumnModel().getColumn(5).setPreferredWidth(21);
+		tblTrabajadores.getColumnModel().getColumn(6).setPreferredWidth(93);
 		scrollPane.setViewportView(tblTrabajadores);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -110,75 +118,77 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		popupMenu.add(mntmEliminar);
 		
 		JLabel lblDni = new JLabel("DNI:");
-		lblDni.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDni.setBounds(10, 249, 86, 14);
+		lblDni.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblDni);
 		
 		JLabel lblApellidosYNombres = new JLabel("Apellidos y Nombres");
-		lblApellidosYNombres.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblApellidosYNombres.setBounds(10, 299, 141, 14);
+		lblApellidosYNombres.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblApellidosYNombres);
 		
 		JLabel lblCargo = new JLabel("Cargo");
+		lblCargo.setBounds(230, 250, 86, 14);
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCargo.setBounds(266, 255, 86, 14);
 		contentPane.add(lblCargo);
 		
 		txtDni = new JTextField();
+		txtDni.setBounds(10, 268, 86, 25);
 		txtDni.setEditable(false);
 		txtDni.setDisabledTextColor(Color.DARK_GRAY);
-		txtDni.setBounds(10, 268, 86, 25);
 		contentPane.add(txtDni);
 		txtDni.setColumns(10);
 		
 		txtApeNom = new JTextField();
+		txtApeNom.setBounds(10, 323, 183, 25);
 		txtApeNom.setEditable(false);
 		txtApeNom.setDisabledTextColor(Color.DARK_GRAY);
-		txtApeNom.setBounds(10, 323, 183, 25);
 		contentPane.add(txtApeNom);
 		txtApeNom.setColumns(10);
 		
-		cboCargo = new JComboBoxBD("cargoTrabajador","TB_Trabajadores");
-		cboCargo.setBounds(266, 280, 141, 25);
+		cboCargo = new JComboBox();
+		cboCargo.setBounds(230, 270, 146, 25);
+		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUBALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR"}));
 		contentPane.add(cboCargo);
 		
 		JLabel lblFecha = new JLabel("Sueldo");
-		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFecha.setBounds(10, 354, 86, 14);
+		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblFecha);
 		
 		txtSueldo = new JTextField();
+		txtSueldo.setBounds(10, 379, 86, 25);
 		txtSueldo.setEditable(false);
 		txtSueldo.setDisabledTextColor(Color.DARK_GRAY);
-		txtSueldo.setBounds(10, 379, 86, 25);
 		contentPane.add(txtSueldo);
 		txtSueldo.setColumns(10);
 		
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de Nacimiento");
+		lblFechaDeNacimiento.setBounds(230, 300, 159, 14);
 		lblFechaDeNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFechaDeNacimiento.setBounds(266, 318, 159, 14);
 		contentPane.add(lblFechaDeNacimiento);
 		
 		txtFecNac = new JTextField();
+		txtFecNac.setBounds(230, 323, 146, 25);
 		txtFecNac.setEditable(false);
 		txtFecNac.setDisabledTextColor(Color.DARK_GRAY);
-		txtFecNac.setBounds(266, 343, 141, 25);
 		contentPane.add(txtFecNac);
 		txtFecNac.setColumns(10);
 		
 		btnGuardar = new JButton("Nuevo");
+		btnGuardar.setBounds(633, 250, 106, 35);
 		btnGuardar.addActionListener(this);
-		btnGuardar.setBounds(441, 249, 106, 35);
 		contentPane.add(btnGuardar);
 		
 		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setBounds(633, 292, 106, 35);
+		btnActualizar.setEnabled(false);
 		btnActualizar.addActionListener(this);
-		btnActualizar.setBounds(441, 291, 106, 35);
 		contentPane.add(btnActualizar);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(frmTrabajadores.class.getResource("/iconos/search.png")));
 		lblNewLabel.setBounds(23, 11, 41, 26);
+		lblNewLabel.setIcon(new ImageIcon(frmTrabajadores.class.getResource("/iconos/search.png")));
 		contentPane.add(lblNewLabel);
 		
 		txtBuscarTrabajador = new JTextField();
@@ -187,9 +197,35 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtBuscarTrabajador.setColumns(10);
 		
 		btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.setBounds(633, 333, 106, 35);
+		btnLimpiar.setEnabled(false);
 		btnLimpiar.addActionListener(this);
-		btnLimpiar.setBounds(441, 333, 106, 35);
 		contentPane.add(btnLimpiar);
+		
+		JLabel lblSexo = new JLabel("Sexo");
+		lblSexo.setBounds(230, 356, 46, 14);
+		lblSexo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		contentPane.add(lblSexo);
+		
+		cboSexo = new JComboBox();
+		cboSexo.setBounds(230, 380, 146, 25);
+		cboSexo.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
+		contentPane.add(cboSexo);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
+		panel.setBounds(419, 283, 183, 85);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		cboDistrito = new JComboBoxBD("concat_ws('/',codDis,nomDis)","TB_Distrito");
+		cboDistrito.setBounds(10, 36, 163, 27);
+		panel.add(cboDistrito);
+		
+		JLabel lblDistrito = new JLabel("Distrito");
+		lblDistrito.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDistrito.setBounds(10, 11, 86, 14);
+		panel.add(lblDistrito);
 		
 		listar();
 	}
@@ -222,13 +258,16 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			txtFecNac.setEditable(true);
 			txtSueldo.setEditable(true);
 			btnGuardar.setText("Guardar");
+			btnActualizar.setEnabled(true);
+			btnLimpiar.setEnabled(true);
 		}else {
-			String dni,nomape,cargo,fecnac,sueldo;
+			String dni,nomape,cargo,fecnac,sueldo,sexo,codDis;
 			dni = txtDni.getText();
-			nomape = txtApeNom.getText();
+			nomape = txtApeNom.getText().toUpperCase();
 			cargo = cboCargo.getSelectedItem().toString();
 			fecnac = txtFecNac.getText();
 			sueldo = txtSueldo.getText();
+			sexo = cboSexo.getSelectedItem().toString();
 			//Validacion
 			if(txtDni.equals(""))
 				Mensajes.dialogo("Campo DNI es obligatorio");
@@ -239,6 +278,10 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			tra.setCargo(cargo);
 			tra.setFecNac(fecnac);
 			tra.setSueldo(Double.parseDouble(sueldo));
+			tra.setSexo(sexo);
+			codDis = cboDistrito.getSelectedItem().toString();
+			String[] data = codDis.split("/");
+			tra.setCodDis(data[0]);
 			int salida = trabajadorDAO.Ingresar(tra);
 			if(salida > 0) {
 				Mensajes.dialogo("El registro fue un exito");
@@ -250,12 +293,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		
 	}
 	protected void actionPerformedBtnActualizar(ActionEvent e) {
-		String dni,nomape,cargo,fecnac,sueldo;
+		String dni,nomape,cargo,fecnac,sueldo,sexo,codDistrito;
 		dni = txtDni.getText();
-		nomape = txtApeNom.getText();
+		nomape = txtApeNom.getText().toUpperCase();
 		cargo = cboCargo.getSelectedItem().toString();
 		fecnac = txtFecNac.getText();
 		sueldo = txtSueldo.getText();
+		sexo = cboSexo.getSelectedItem().toString();
+		codDistrito = cboDistrito.getSelectedItem().toString();
 		//Validacion
 		if(txtDni.equals(""))
 			Mensajes.dialogo("Campo DNI es obligatorio");
@@ -266,6 +311,9 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		tra.setCargo(cargo);
 		tra.setFecNac(fecnac);
 		tra.setSueldo(Double.parseDouble(sueldo));
+		tra.setSexo(sexo);
+		String[] sep = codDistrito.split("/");
+		tra.setCodDis(sep[0]);
 		int salida = trabajadorDAO.Actualizar(tra);
 		if(salida > 0) {
 			Mensajes.dialogo("La actualizacion fue un exito");
@@ -279,7 +327,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> data = trabajadorDAO.ListarTodo();
 		for(Trabajador tra:data) {
-			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo()};
+			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis()};
 			modelo.addRow(filas);
 		}
 	}
@@ -297,6 +345,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		if((posFila = tblTrabajadores.getSelectedRow()) < 0) {
 			posFila = 0;
 		}else {
+				btnActualizar.setEnabled(true);
 				String dni,nomape,cargo,fecnac,sueldo;
 				//obtener posicion de la fila seleccionada en la tabla "tblLibros"
 				posFila = tblTrabajadores.getSelectedRow();
@@ -338,7 +387,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		Trabajador tra = new Trabajador();
 		tra.setDni(Integer.parseInt(dni));
 		int m = Mensajes.confirmarELiminar();
-		System.out.println(m);
 		if( m == 0) {
 			Mensajes.dialogo("Se elimino el registro");
 			trabajadorDAO.Eliminar(tra);
