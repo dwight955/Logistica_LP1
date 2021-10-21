@@ -260,6 +260,8 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		if(txtDni.equals(""))
 			Mensajes.dialogo("Campo DNI es obligatorio");
 			
+			
+			
 		Trabajador tra = new Trabajador();
 		tra.setDni(Integer.parseInt(dni));
 		tra.setNomApe(nomape);
