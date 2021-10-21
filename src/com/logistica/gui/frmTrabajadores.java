@@ -21,13 +21,16 @@ import com.logistica.componentes.JComboBoxBD;
 import com.logistica.controlador.MySqlTrabajadorDAO;
 import com.logistica.entidad.Trabajador;
 
+import lib.Fecha;
 import lib.Mensajes;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
@@ -37,15 +40,16 @@ import java.awt.Color;
 import java.awt.Canvas;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
+import com.toedter.calendar.JDateChooser;
 
 public class frmTrabajadores extends JFrame implements ActionListener, MouseListener {
 	MySqlTrabajadorDAO trabajadorDAO = new MySqlTrabajadorDAO();
-		
+	Fecha fec = new Fecha();
+	
 	private JPanel contentPane;
 	private JTextField txtDni;
 	private JTextField txtApeNom;
 	private JTextField txtSueldo;
-	private JTextField txtFecNac;
 	private JTextField txtBuscarTrabajador;
 	private JTable tblTrabajadores;
 	private JButton btnGuardar;
@@ -55,6 +59,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	private JButton btnLimpiar;
 	private JComboBox cboSexo;
 	private JComboBox cboDistrito;
+	private JDateChooser dtFecNac;
 
 	/**
 	 * Launch the application.
@@ -168,13 +173,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		lblFechaDeNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblFechaDeNacimiento);
 		
-		txtFecNac = new JTextField();
-		txtFecNac.setBounds(230, 323, 146, 25);
-		txtFecNac.setEditable(false);
-		txtFecNac.setDisabledTextColor(Color.DARK_GRAY);
-		contentPane.add(txtFecNac);
-		txtFecNac.setColumns(10);
-		
 		btnGuardar = new JButton("Nuevo");
 		btnGuardar.setBounds(633, 250, 106, 35);
 		btnGuardar.addActionListener(this);
@@ -227,6 +225,12 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		lblDistrito.setBounds(10, 11, 86, 14);
 		panel.add(lblDistrito);
 		
+		dtFecNac = new JDateChooser();
+		dtFecNac.setDateFormatString("dd/MM/yyyy");
+		dtFecNac.setEnabled(false);
+		dtFecNac.setBounds(230, 323, 146, 25);
+		contentPane.add(dtFecNac);
+		
 		listar();
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -255,7 +259,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			txtDni.requestFocus();
 			txtApeNom.setEditable(true);
 			cboCargo.setEditable(true);
-			txtFecNac.setEditable(true);
+			dtFecNac.setEnabled(true);
 			txtSueldo.setEditable(true);
 			btnGuardar.setText("Guardar");
 			btnActualizar.setEnabled(true);
@@ -265,9 +269,10 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			dni = txtDni.getText();
 			nomape = txtApeNom.getText().toUpperCase();
 			cargo = cboCargo.getSelectedItem().toString();
-			fecnac = txtFecNac.getText();
+			fecnac = fec.leerFecha(dtFecNac);
 			sueldo = txtSueldo.getText();
 			sexo = cboSexo.getSelectedItem().toString();
+			System.out.println(fecnac);
 			//Validacion
 			if(txtDni.equals(""))
 				Mensajes.dialogo("Campo DNI es obligatorio");
@@ -280,8 +285,8 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			tra.setSueldo(Double.parseDouble(sueldo));
 			tra.setSexo(sexo);
 			codDis = cboDistrito.getSelectedItem().toString();
-			String[] data = codDis.split("/");
-			tra.setCodDis(data[0]);
+			String[] part = codDis.split("/");
+			tra.setCodDis(part[0]);
 			int salida = trabajadorDAO.Ingresar(tra);
 			if(salida > 0) {
 				Mensajes.dialogo("El registro fue un exito");
@@ -297,7 +302,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		dni = txtDni.getText();
 		nomape = txtApeNom.getText().toUpperCase();
 		cargo = cboCargo.getSelectedItem().toString();
-		fecnac = txtFecNac.getText();
+		fecnac = fec.leerFecha(dtFecNac);
 		sueldo = txtSueldo.getText();
 		sexo = cboSexo.getSelectedItem().toString();
 		codDistrito = cboDistrito.getSelectedItem().toString();
@@ -342,11 +347,13 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	protected void mouseClickedTblTrabajadores(MouseEvent e) {
 		//variables
 		int posFila;
+		SimpleDateFormat df =new SimpleDateFormat("dd/MM/yyyy");
 		if((posFila = tblTrabajadores.getSelectedRow()) < 0) {
 			posFila = 0;
 		}else {
 				btnActualizar.setEnabled(true);
-				String dni,nomape,cargo,fecnac,sueldo;
+				String dni,nomape,cargo,sueldo;
+				Date fecnac;
 				//obtener posicion de la fila seleccionada en la tabla "tblLibros"
 				posFila = tblTrabajadores.getSelectedRow();
 				//obetener valores de la fila según la variable "posFila"
@@ -354,13 +361,12 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				dni =  tblTrabajadores.getValueAt(posFila, 0).toString(); // 0 --- columna codigo
 				nomape =  tblTrabajadores.getValueAt(posFila, 1).toString();
 				cargo =  tblTrabajadores.getValueAt(posFila, 2).toString();
-				fecnac =  tblTrabajadores.getValueAt(posFila, 3).toString();
 				sueldo =  tblTrabajadores.getValueAt(posFila, 4).toString();
 				//mostrar variables en las cajas
 				txtDni.setText(dni);
 				txtApeNom.setText(nomape);
 				cboCargo.setSelectedItem(cargo);
-				txtFecNac.setText(fecnac);
+				//dtFecNac.setDate(fecnac);;
 				txtSueldo.setText(sueldo);
 		}
 	}
@@ -396,7 +402,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	protected void actionPerformedBtnLimpiar(ActionEvent e) {
 		txtDni.setText("");
 		txtApeNom.setText("");
-		txtFecNac.setText("");
 		txtSueldo.setText("");
 		txtDni.requestFocus();
 	}

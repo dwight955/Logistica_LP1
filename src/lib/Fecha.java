@@ -3,6 +3,11 @@ package lib;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
+
 import java.text.SimpleDateFormat;
 
 public class Fecha {
@@ -62,5 +67,8 @@ public class Fecha {
 	private static String ajustar(int numero) {
 		return String.format("%02d", numero);
 	}
-	
+	public String leerFecha(JDateChooser date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(date.getDate());
+	}
 }

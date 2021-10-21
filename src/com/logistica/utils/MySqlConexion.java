@@ -15,6 +15,7 @@ public class MySqlConexion {
 			pass="QWEasdZXC123";
 			cn=DriverManager.getConnection(url,user,pass);	
 		} catch (SQLException e) {
+			System.out.println("Fallo en la conexion");
 			e.printStackTrace();
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
