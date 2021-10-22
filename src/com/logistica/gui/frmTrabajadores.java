@@ -292,6 +292,8 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				Mensajes.dialogo("El campo DNI es obligatorio");
 			}else if(nomape.matches("^[a-zA-Zs]([a-zA-Z\b/ñ/Ñ/á/é/í/ó/ú]{2,38})$")==false) {
 				Mensajes.dialogo("Nombre y Apellido: Solo letras Maximo: 40");
+			}else {
+				
 			}
 				Trabajador tra = new Trabajador();
 				tra.setDni(Integer.parseInt(dni));
@@ -429,7 +431,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		String dni = txtDni.getText();
 		if(!Character.isDigit(c)) {
 			e.consume();
-		} else if(dni.length()>7) {
+		} else if(dni.length()==8) {
 			e.consume();
 		}
 	}

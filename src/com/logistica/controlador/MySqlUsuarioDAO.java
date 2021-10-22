@@ -31,8 +31,7 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 				bean.setApellido(rs.getString(3));
 				
 			}
-			
-			
+	
 		} catch (SQLException e) {
 				e.printStackTrace();
 		}
