@@ -328,7 +328,6 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		if(txtSoliDni.isEditable()==false) {
 			txtSoliDni.setEditable(true);
 			txtEntrDni.setEditable(true);
-			txtSoliApeNom.setEditable(true);
 			txtCargoSoli.setEditable(true);
 			txtEntrApeNom.setEditable(true);
 			txtCargoEntr.setEditable(true);
