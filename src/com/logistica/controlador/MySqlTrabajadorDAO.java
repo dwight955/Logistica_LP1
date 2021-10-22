@@ -7,39 +7,50 @@ import com.logistica.entidad.Trabajador;
 import com.logistica.interfaces.TrabajadorDAO;
 import com.logistica.utils.MySqlConexion;
 
+import lib.Mensajes;
+
 public class MySqlTrabajadorDAO implements TrabajadorDAO{
 
 	@Override
 	public int Ingresar(Trabajador bean) {
 		int salida = -1;
+		boolean repetido = false;
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		String sql = "insert into TB_Trabajadores values (?,?,?,?,?,?,?)";
-		try {
-			cn = MySqlConexion.getConexion();
-			pstm = cn.prepareStatement(sql);
-			pstm.setInt(1, bean.getDni());
-			pstm.setString(2, bean.getNomApe());
-			pstm.setString(3, bean.getCargo());
-			pstm.setString(4, bean.getFecNac());
-			pstm.setDouble(5, bean.getSueldo());
-			pstm.setString(6, bean.getSexo());
-			pstm.setString(7, bean.getCodDis());
-			salida = pstm.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("Error en MySqlTrabajadorDAO");
-			e.printStackTrace();
-		} finally {
-			try {
-				if(cn != null) cn.close();
-				if(pstm != null)pstm.close();
-			} catch (SQLException e2) {
-				e2.printStackTrace();
+			ArrayList<Trabajador> listaTra = this.ListarTodo();
+			for(int i=0;i< listaTra.size();i++) {
+				if(bean.getDni() == listaTra.get(i).getDni()) {
+					repetido = true;
+				}
 			}
-		}
-		return salida;
-	}
-
+			if(repetido == false) {
+				try {
+					cn = MySqlConexion.getConexion();
+					pstm = cn.prepareStatement(sql);
+					pstm.setInt(1, bean.getDni());
+					pstm.setString(2, bean.getNomApe());
+					pstm.setString(3, bean.getCargo());
+					pstm.setString(4, bean.getFecNac());
+					pstm.setDouble(5, bean.getSueldo());
+					pstm.setString(6, bean.getSexo());
+					pstm.setString(7, bean.getCodDis());
+					salida = pstm.executeUpdate();
+				} catch (SQLException e) {
+				  e.printStackTrace();
+			    } finally {
+					  try {
+						  if(cn != null) cn.close();
+						  if(pstm != null)pstm.close();
+				}      catch (SQLException e2) {
+					   e2.printStackTrace();
+				}
+			}
+			}else {
+				Mensajes.dialogo("DNI repetido");
+			}
+			return salida;
+}
 	@Override
 	public int Actualizar(Trabajador bean) {
 		int salida = -1;
