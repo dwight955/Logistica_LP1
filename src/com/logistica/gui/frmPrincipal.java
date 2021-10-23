@@ -30,6 +30,9 @@ public class frmPrincipal extends JFrame implements ActionListener {
 	
 	private JPanel contentPane;
 	private JMenuItem mntmEmisionDePecosa;
+	public JLabel lblDatos;
+	private JMenuItem mntmCerrar;
+	
 
 	/**
 	 * Launch the application.
@@ -53,7 +56,7 @@ public class frmPrincipal extends JFrame implements ActionListener {
 	public frmPrincipal() {
 		setTitle("LOGISTICA");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 570, 425);
+		setBounds(100, 100, 823, 451);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -61,7 +64,8 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		JMenu mnSistema = new JMenu("Sistema");
 		menuBar.add(mnSistema);
 		
-		JMenuItem mntmCerrar = new JMenuItem("Cerrar");
+		mntmCerrar = new JMenuItem("Cerrar");
+		mntmCerrar.addActionListener(this);
 		mnSistema.add(mntmCerrar);
 		
 		JMenu mnAlmacen = new JMenu("Almacen");
@@ -80,8 +84,18 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		lblDatos = new JLabel("Bienvenido:");
+		lblDatos.setForeground(Color.BLACK);
+		lblDatos.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDatos.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblDatos.setBounds(10, 11, 792, 23);
+		contentPane.add(lblDatos);
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmCerrar) {
+			actionPerformedMntmCerrar(e);
+		}
 		if (e.getSource() == mntmEmisionDePecosa) {
 			actionPerformedMntmEmisionDePecosa(e);
 		}
@@ -90,6 +104,13 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		JOptionPane.showMessageDialog(this, m);
 	}
 	protected void actionPerformedMntmEmisionDePecosa(ActionEvent e) {
+		frmPecosa abrir= new frmPecosa();
+		abrir.setVisible(true);
+		
 		
 	}
+	protected void actionPerformedMntmCerrar(ActionEvent e) {
+		dispose();
+	}
+	
 }

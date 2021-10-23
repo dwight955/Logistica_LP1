@@ -286,7 +286,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(txtPrecioTotal);
 		
 		btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(685, 540, 81, 38);
+		btnModificar.setBounds(685, 540, 97, 38);
 		contentPane.add(btnModificar);
 		
 		btnCancelar = new JButton("Cancelar");
@@ -300,7 +300,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(775, 540, 81, 38);
+		btnSalir.setBounds(792, 539, 81, 38);
 		contentPane.add(btnSalir);
 	}
 	public void actionPerformed(ActionEvent e) {
