@@ -60,10 +60,10 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	private JComboBox cboCargo;
 	private JButton btnActualizar;
 	private JMenuItem mntmEliminar;
-	private JButton btnLimpiar;
 	private JComboBox cboSexo;
 	private JComboBox cboDistrito;
 	private JDateChooser dtFecNac;
+	private JButton btnCancelar;
 
 	/**
 	 * Launch the application.
@@ -150,6 +150,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtDni.setColumns(10);
 		
 		txtApeNom = new JTextField();
+		txtApeNom.addKeyListener(this);
 		txtApeNom.setBounds(10, 323, 183, 25);
 		txtApeNom.setEditable(false);
 		txtApeNom.setDisabledTextColor(Color.DARK_GRAY);
@@ -157,7 +158,8 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtApeNom.setColumns(10);
 		
 		cboCargo = new JComboBox();
-		cboCargo.setBounds(230, 270, 146, 25);
+		cboCargo.setEnabled(false);
+		cboCargo.setBounds(230, 268, 167, 25);
 		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUBALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR"}));
 		contentPane.add(cboCargo);
 		
@@ -185,7 +187,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		contentPane.add(btnGuardar);
 		
 		btnActualizar = new JButton("Actualizar");
-		btnActualizar.setBounds(633, 292, 106, 35);
+		btnActualizar.setBounds(633, 299, 106, 35);
 		btnActualizar.setEnabled(false);
 		btnActualizar.addActionListener(this);
 		contentPane.add(btnActualizar);
@@ -200,18 +202,13 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		contentPane.add(txtBuscarTrabajador);
 		txtBuscarTrabajador.setColumns(10);
 		
-		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(633, 333, 106, 35);
-		btnLimpiar.setEnabled(false);
-		btnLimpiar.addActionListener(this);
-		contentPane.add(btnLimpiar);
-		
 		JLabel lblSexo = new JLabel("Sexo");
 		lblSexo.setBounds(230, 356, 46, 14);
 		lblSexo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblSexo);
 		
 		cboSexo = new JComboBox();
+		cboSexo.setEnabled(false);
 		cboSexo.setBounds(230, 380, 146, 25);
 		cboSexo.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
 		contentPane.add(cboSexo);
@@ -223,6 +220,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		panel.setLayout(null);
 		
 		cboDistrito = new JComboBoxBD("concat_ws('/',codDis,nomDis)","TB_Distrito");
+		cboDistrito.setEnabled(false);
 		cboDistrito.setBounds(10, 36, 163, 27);
 		panel.add(cboDistrito);
 		
@@ -231,17 +229,24 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		lblDistrito.setBounds(10, 11, 86, 14);
 		panel.add(lblDistrito);
 		
+		Date dt = new Date();
 		dtFecNac = new JDateChooser();
 		dtFecNac.setDateFormatString("dd/MM/yyyy");
+		dtFecNac.setDate(dt);
 		dtFecNac.setEnabled(false);
 		dtFecNac.setBounds(230, 323, 146, 25);
 		contentPane.add(dtFecNac);
 		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(this);
+		btnCancelar.setBounds(633, 352, 106, 35);
+		contentPane.add(btnCancelar);
+		
 		listar();
 	}
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnLimpiar) {
-			actionPerformedBtnLimpiar(e);
+		if (e.getSource() == btnCancelar) {
+			actionPerformedBtnCancelar(e);
 		}
 		if (e.getSource() == mntmEliminar) {
 			actionPerformedMntmEliminar(e);
@@ -259,6 +264,9 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		}
 	}
 	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtApeNom) {
+			keyTypedTxtApeNom(e);
+		}
 		if (e.getSource() == txtSueldo) {
 			keyTypedTxtSueldo(e);
 		}
@@ -269,32 +277,31 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	protected void actionPerformedBtnAñdir(ActionEvent e) {
 		
 		if(txtDni.isEditable()==false) {
-			txtDni.setEditable(true);
-			txtDni.requestFocus();
-			txtApeNom.setEditable(true);
-			cboCargo.setEditable(true);
-			dtFecNac.setEnabled(true);
-			txtSueldo.setEditable(true);
+			Elementos(true);
 			btnGuardar.setText("Guardar");
-			btnActualizar.setEnabled(true);
-			btnLimpiar.setEnabled(true);
 		}else {
 			String dni,nomape,cargo,fecnac,sueldo,sexo,codDis;
 			dni = txtDni.getText();
 			nomape = txtApeNom.getText().toUpperCase();
 			cargo = cboCargo.getSelectedItem().toString();
-			fecnac = fec.leerFecha(dtFecNac);
 			sueldo = txtSueldo.getText();
 			sexo = cboSexo.getSelectedItem().toString();
 			ArrayList<Trabajador> listaTra = trabajadorDAO.ListarTodo();
 			//Validacion
 			if(dni.equals("")) {
 				Mensajes.dialogo("El campo DNI es obligatorio");
-			}else if(nomape.matches("^[a-zA-Zs]([a-zA-Z\b/ñ/Ñ/á/é/í/ó/ú]{2,38})$")==false) {
-				Mensajes.dialogo("Nombre y Apellido: Solo letras Maximo: 40");
+			}else if(nomape.equals("")) {
+				Mensajes.dialogo("El campo APELLIDO Y NOMBRES es obligatorio");
+			}else if(nomape.matches("^[A-Za-z\\s]{10,30}$")==false){
+				Mensajes.dialogo("Nombre y Apellido: Minimo:3 Maximo: 30 LETRAS");
+			}else if(sueldo.equals("")) {
+				Mensajes.dialogo("El campo sueldo es obligatorio");	
+			}else if(sueldo.matches("([2-9]\\d||[1-9]\\d\\d||[1][0][0])||([2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")==false) {
+				Mensajes.dialogo("Sueldo Invalido");	
+			}else if(dtFecNac.getDate()==null) {
+				Mensajes.dialogo("Ingrese fecha de Nacimiento");	
 			}else {
-				
-			}
+				fecnac = fec.leerFecha(dtFecNac);
 				Trabajador tra = new Trabajador();
 				tra.setDni(Integer.parseInt(dni));
 				tra.setNomApe(nomape);
@@ -309,9 +316,13 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 					if(salida > 0) {
 						Mensajes.dialogo("El registro fue un exito");
 						listar();
+						Elementos(false);
+						limpiar();
 					}else {
 						Mensajes.error("No se hizo el registro correctamente");
 					}
+				}
+				
 		    }
 	}
 	protected void actionPerformedBtnActualizar(ActionEvent e) {
@@ -319,31 +330,47 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		dni = txtDni.getText();
 		nomape = txtApeNom.getText().toUpperCase();
 		cargo = cboCargo.getSelectedItem().toString();
-		fecnac = fec.leerFecha(dtFecNac);
 		sueldo = txtSueldo.getText();
 		sexo = cboSexo.getSelectedItem().toString();
 		codDistrito = cboDistrito.getSelectedItem().toString();
 		//Validacion
-		if(txtDni.equals(""))
-			Mensajes.dialogo("Campo DNI es obligatorio");
-			
-		Trabajador tra = new Trabajador();
-		tra.setDni(Integer.parseInt(dni));
-		tra.setNomApe(nomape);
-		tra.setCargo(cargo);
-		tra.setFecNac(fecnac);
-		tra.setSueldo(Double.parseDouble(sueldo));
-		tra.setSexo(sexo);
-		String[] sep = codDistrito.split("/");
-		tra.setCodDis(sep[0]);
-		int salida = trabajadorDAO.Actualizar(tra);
-		if(salida > 0) {
-			Mensajes.dialogo("La actualizacion fue un exito");
-			listar();
+		if(dni.equals("")) {
+			Mensajes.dialogo("El campo DNI es obligatorio");
+		}else if(nomape.equals("")) {
+			Mensajes.dialogo("El campo APELLIDO Y NOMBRES es obligatorio");
+		}else if(nomape.matches("^[A-Za-z\\s]{10,30}$")==false){
+			Mensajes.dialogo("Nombre y Apellido: Minimo:3 Maximo: 30 LETRAS");
+		}else if(sueldo.equals("")) {
+			Mensajes.dialogo("El campo sueldo es obligatorio");	
+		}else if(sueldo.matches("([2-9]\\d||[1-9]\\d\\d||[1][0][0])||([2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")==false) {
+			Mensajes.dialogo("Sueldo Invalido");	
+		}else if(dtFecNac.getDate()==null) {
+			Mensajes.dialogo("Ingrese fecha de Nacimiento");	
 		}else {
-			Mensajes.error("No se pudo actualizar");
+			fecnac = fec.leerFecha(dtFecNac);
+			Trabajador tra = new Trabajador();
+			tra.setDni(Integer.parseInt(dni));
+			tra.setNomApe(nomape);
+			tra.setCargo(cargo);
+			tra.setFecNac(fecnac);
+			tra.setSueldo(Double.parseDouble(sueldo));
+			tra.setSexo(sexo);
+			String[] sep = codDistrito.split("/");
+			tra.setCodDis(sep[0]);
+			int salida = trabajadorDAO.Actualizar(tra);
+			if(salida > 0) {
+				Mensajes.dialogo("La actualizacion fue un exito");
+				listar();
+				Elementos(false);
+				btnActualizar.setEnabled(false);
+				btnGuardar.setEnabled(true);
+				btnGuardar.setText("Nuevo");
+				limpiar();
+			}else {
+				Mensajes.error("No se pudo actualizar");
 		}
 	}
+}
 	protected void actionPerformedMntmEliminar(ActionEvent e) {
 		String dni = txtDni.getText();
 		//validacion
@@ -354,7 +381,17 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			Mensajes.dialogo("Se elimino el registro");
 			trabajadorDAO.Eliminar(tra);
 			listar();
+			limpiar();
+			Elementos(false);
+			btnGuardar.setEnabled(true);
 		}
+	}
+	protected void actionPerformedBtnCancelar(ActionEvent e) {
+		Elementos(false);
+		limpiar();
+		btnGuardar.setEnabled(true);
+		btnGuardar.setText("Nuevo");
+		btnActualizar.setEnabled(false);
 	}
 	void listar() {
 		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
@@ -364,6 +401,16 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis()};
 			modelo.addRow(filas);
 		}
+	}
+	void Elementos(boolean op) {
+		txtDni.setEditable(op);
+		txtDni.requestFocus();
+		txtApeNom.setEditable(op);
+		txtSueldo.setEditable(op);
+		cboCargo.setEnabled(op);
+		cboSexo.setEnabled(op);
+		cboDistrito.setEnabled(op);
+		dtFecNac.setEnabled(op);
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -380,7 +427,10 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		if((posFila = tblTrabajadores.getSelectedRow()) < 0) {
 			posFila = 0;
 		}else {
+				Elementos(true);
+				txtDni.setEditable(false);
 				btnActualizar.setEnabled(true);
+				btnGuardar.setEnabled(false);
 				String dni,nomape,cargo,sueldo;
 				Date fecnac;
 				//obtener posicion de la fila seleccionada en la tabla "tblLibros"
@@ -399,6 +449,12 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				txtSueldo.setText(sueldo);
 		}
 	}
+	void limpiar() {
+		txtDni.setText("");
+		txtDni.requestFocus();
+		txtApeNom.setText("");
+		txtSueldo.setText("");
+	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -416,12 +472,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			}
 		});
 	}
-	protected void actionPerformedBtnLimpiar(ActionEvent e) {
-		txtDni.setText("");
-		txtApeNom.setText("");
-		txtSueldo.setText("");
-		txtDni.requestFocus();
-	}
 	public void keyPressed(KeyEvent e) {
 	}
 	public void keyReleased(KeyEvent e) {
@@ -437,8 +487,21 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	}
 	protected void keyTypedTxtSueldo(KeyEvent e) {
 		char c = e.getKeyChar();
+		String suel = txtSueldo.getText();
 		if(!Character.isDigit(c) && c!='.') {
+			e.consume();
+		}else if(suel.length()==6) {
 			e.consume();
 		}
 	}
+	protected void keyTypedTxtApeNom(KeyEvent e) {
+		char c = e.getKeyChar();
+		String apeNom = txtApeNom.getText();
+		if(!Character.isAlphabetic(c) && c != ' ') {
+			e.consume();
+		} else if(apeNom.length()==30) {
+			e.consume();
+		}
+	}
+	
 }
