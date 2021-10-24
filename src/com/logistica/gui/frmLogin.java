@@ -60,6 +60,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 341, 538);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -69,7 +70,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		lblNewLabel.setBounds(128, 57, 94, 141);
 		contentPane.add(lblNewLabel);
 		
-		lblNewLabel_1 = new JLabel("INTRANET");
+		lblNewLabel_1 = new JLabel("USUARIO LOGIN");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setOpaque(true);
 		lblNewLabel_1.setBackground(Color.BLACK);
@@ -134,7 +135,8 @@ public class frmLogin extends JFrame implements ActionListener {
 				clave=new String(txtClave.getPassword());				
 				Administradores adm=usuarioDAO.iniciarSesion(login, clave);				
 				if(adm!=null) {
-					frmPrincipal frm=new frmPrincipal();				
+					frmPrincipal frm = new frmPrincipal();
+					frm.lblDatos.setText("Bienvedido(a): "+adm.getNombre()+" "+adm.getApellido());									
 					frm.setVisible(true);					
 					dispose();
 				}
