@@ -25,6 +25,7 @@ import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
+@SuppressWarnings("serial")
 public class frmPrincipal extends JFrame implements ActionListener {
 	
 	
@@ -57,6 +58,7 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		setTitle("LOGISTICA");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 823, 451);
+		this.setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -100,17 +102,12 @@ public class frmPrincipal extends JFrame implements ActionListener {
 			actionPerformedMntmEmisionDePecosa(e);
 		}
 	}
-	void mensaje(String m) {
-		JOptionPane.showMessageDialog(this, m);
-	}
 	protected void actionPerformedMntmEmisionDePecosa(ActionEvent e) {
-		frmPecosa abrir= new frmPecosa();
-		abrir.setVisible(true);
-		
-		
+		frmPecosa frm= new frmPecosa();
+		frm.setVisible(true);
 	}
 	protected void actionPerformedMntmCerrar(ActionEvent e) {
-		dispose();
+		System.exit(0);
 	}
 	
 }
