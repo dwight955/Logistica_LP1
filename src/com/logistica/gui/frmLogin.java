@@ -16,13 +16,15 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Color;
-import java.awt.Dimension;
+
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.Format;
+
 import java.awt.event.ActionEvent;
 
 public class frmLogin extends JFrame implements ActionListener {
@@ -56,67 +58,69 @@ public class frmLogin extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public frmLogin() {
+		setBackground(Color.WHITE);
+		setForeground(Color.WHITE);
 		setTitle("CONTROL DE ACCESO");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 341, 538);
+		setBounds(100, 100, 645, 329);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(frmLogin.class.getResource("/iconos/Logo3.png")));
-		lblNewLabel.setBounds(128, 57, 94, 141);
+		lblNewLabel.setBounds(438, 98, 94, 139);
 		contentPane.add(lblNewLabel);
 		
-		lblNewLabel_1 = new JLabel("USUARIO LOGIN");
+		lblNewLabel_1 = new JLabel("Usuario");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setOpaque(true);
 		lblNewLabel_1.setBackground(Color.BLACK);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 38));
-		lblNewLabel_1.setBounds(0, 0, 325, 46);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 37));
+		lblNewLabel_1.setBounds(0, 0, 629, 46);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("USUARIO");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1.setBounds(92, 219, 94, 14);
+		lblNewLabel_1_1.setBounds(148, 82, 94, 14);
 		contentPane.add(lblNewLabel_1_1);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setFont(new Font("Tahoma", Font.BOLD, 12));
 		txtUsuario.setColumns(10);
 		txtUsuario.setBackground(new Color(255, 255, 224));
-		txtUsuario.setBounds(92, 245, 169, 26);
+		txtUsuario.setBounds(148, 100, 223, 26);
 		contentPane.add(txtUsuario);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("CLAVE");
+		JLabel lblNewLabel_1_1_1 = new JLabel("CONTRASE\u00D1A:");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1_1.setBounds(92, 282, 94, 14);
+		lblNewLabel_1_1_1.setBounds(148, 137, 94, 14);
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		txtClave = new JPasswordField();
 		txtClave.setBackground(new Color(255, 255, 204));
-		txtClave.setBounds(92, 307, 169, 26);
+		txtClave.setBounds(148, 162, 223, 26);
 		contentPane.add(txtClave);
 		
-		btnIniciar = new JButton("INICIAR");
+		btnIniciar = new JButton("Ingresar");
 		btnIniciar.addActionListener(this);
-		btnIniciar.setForeground(Color.WHITE);
+		btnIniciar.setForeground(Color.BLACK);
 		btnIniciar.setAutoscrolls(true);
-		btnIniciar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnIniciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnIniciar.setBackground(new Color(0, 153, 102));
-		btnIniciar.setBounds(92, 360, 169, 38);
+		btnIniciar.setBounds(148, 199, 101, 38);
 		contentPane.add(btnIniciar);
 		
-		btnCerrar = new JButton("CANCELAR");
+		btnCerrar = new JButton("Cancelar");
 		btnCerrar.addActionListener(this);
-		btnCerrar.setForeground(Color.WHITE);
-		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnCerrar.setForeground(Color.BLACK);
+		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnCerrar.setBackground(new Color(153, 0, 51));
 		btnCerrar.setAutoscrolls(true);
-		btnCerrar.setBounds(92, 409, 169, 38);
+		btnCerrar.setBounds(270, 199, 101, 38);
 		contentPane.add(btnCerrar);
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -136,7 +140,8 @@ public class frmLogin extends JFrame implements ActionListener {
 				Administradores adm=usuarioDAO.iniciarSesion(login, clave);				
 				if(adm!=null) {
 					frmPrincipal frm = new frmPrincipal();
-					frm.lblDatos.setText("Bienvedido(a): "+adm.getNombre()+" "+adm.getApellido());									
+					frm.lblDatos.setText("Bienvedido(a): "+adm.getNombre()+" "+adm.getApellido());	
+					
 					frm.setVisible(true);					
 					dispose();
 				}
@@ -152,6 +157,8 @@ public class frmLogin extends JFrame implements ActionListener {
 		dispose();
 		
 	}
-
+	
+	
+	
 	
 }
