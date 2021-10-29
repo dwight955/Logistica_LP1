@@ -1,14 +1,22 @@
 package com.logistica.entidad;
 
+import java.io.Reader;
+
 public class Bienes {
-	private int codBien, stockDisponible;
+	private int stockDisponible;
 	private double precUni;
-	private String descBien, uniMed, fecIngreso;
+	private String descBien, uniMed, fecIngreso,codBien,categoria;
 	
-	public int getCodBien() {
+	public String getCategoria() {
+		return categoria;
+	}
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+	public String getCodBien() {
 		return codBien;
 	}
-	public void setCodBien(int codBien) {
+	public void setCodBien(String codBien) {
 		this.codBien = codBien;
 	}
 	public int getStockDisponible() {

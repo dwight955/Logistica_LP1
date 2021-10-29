@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.logistica.componentes.JTextFielBD;
 import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.entidad.Pecosa;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
 import lib.Mensajes;
@@ -61,6 +62,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	private JButton btnSalir;
 	private JButton btnBuscarSoliTrabajador;
 	private JButton btnBuscarEntrTrabajador;
+	private TextAutoCompleter cn;
 
 
 	/**
@@ -192,7 +194,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		lblUnid.setBounds(10, 86, 105, 23);
 		panel_1.add(lblUnid);
 		
-		txtUniOrg = new JTextFielBD("concat_ws('-',codUniOrg, nomUnidadOrg)","TB_UnidadOrganica");
+		txtUniOrg = new JTextFielBD("concat_ws(' - ',codUniOrg, nomUnidadOrg)","TB_UnidadOrganica");
 		txtUniOrg.setEditable(false);
 		txtUniOrg.setColumns(10);
 		txtUniOrg.setBounds(106, 86, 615, 27);
@@ -204,9 +206,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.add(lblMeta);
 		
 		txtMeta = new JTextField();
+		txtMeta.addKeyListener(this);
 		txtMeta.setEditable(false);
 		txtMeta.setColumns(10);
 		txtMeta.setBounds(72, 123, 649, 27);
+	    cn = new TextAutoCompleter(txtMeta);
 		panel_1.add(txtMeta);
 		
 		txtCargoSoli = new JTextField();
@@ -309,6 +313,9 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		}
 	}
 	public void keyReleased(KeyEvent e) {
+		if (e.getSource() == txtMeta) {
+			keyReleasedTxtMeta(e);
+		}
 		if (e.getSource() == txtEntrDni) {
 			keyReleasedTxtEntrDni(e);
 		}
@@ -395,5 +402,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		String[] data = pecosaDao.buscarTrabajador(dni);
 		txtEntrApeNom.setText(data[0]);
 		txtCargoEntr.setText(data[1]);
+	}
+	protected void keyReleasedTxtMeta(KeyEvent e) {
+		String part[] = txtUniOrg.getText().split(" - ");
+		String m = pecosaDao.buscarMeta(part[0]);
+		cn.removeAllItems();
+		cn.addItem(m);
 	}
 }

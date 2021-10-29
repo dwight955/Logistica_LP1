@@ -7,7 +7,8 @@ import com.logistica.entidad.Bienes;
 public interface BienesDAO {
 	public int Ingresar(Bienes bean);
 	public int Actualizar(Bienes bean);
-	public int Eliminar(int cod);
-	public ArrayList<Bienes> ListarTodo(); 
+	int Eliminar(Bienes bean); 
+	public ArrayList<Bienes> ListarTodo();
+	
 }
 

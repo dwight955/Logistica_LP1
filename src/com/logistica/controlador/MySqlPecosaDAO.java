@@ -91,4 +91,35 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		return cadena;
 	}
 
+	@Override
+	public String buscarMeta(String unidad) {
+		
+		Connection cn = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String meta = null;
+		String sql = "call sp_buscarMeta(?)";
+		try {
+			cn = MySqlConexion.getConexion();
+			pstm = cn.prepareStatement(sql);
+			pstm.setInt(1, Integer.parseInt(unidad));
+			rs = pstm.executeQuery();
+			if(rs.next()) {
+				meta = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			System.out.print("Error en BuscarMeta");
+			e.printStackTrace();
+		} finally {
+			try {
+				if(cn !=null) cn.close();
+				if(pstm != null)pstm.close();
+				if(rs != null)rs.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return meta;
+	}
+
 }

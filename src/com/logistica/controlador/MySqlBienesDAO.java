@@ -17,16 +17,17 @@ public class MySqlBienesDAO implements BienesDAO {
 		int salida = -1;
 		Connection cn = null;
 		PreparedStatement pstm = null;
-		String sql = "insert into tb_bienes values (null,?,?,?,?,?,?)";
+		String sql = "insert into tb_bienes values (?,?,?,?,?,?,CURDATE())";
 		
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
-			pstm.setString(1, bean.getDescBien());
-			pstm.setString(2, bean.getUniMed());
-			pstm.setDouble(3, bean.getPrecUni());
-			pstm.setInt(4, bean.getStockDisponible());
-			pstm.setString(5, bean.getFecIngreso());
+			pstm.setString(1, bean.getCodBien());
+			pstm.setString(2, bean.getDescBien());
+			pstm.setString(3, bean.getUniMed());
+			pstm.setDouble(4, bean.getPrecUni());
+			pstm.setString(5, bean.getCategoria());
+			pstm.setInt(6, bean.getStockDisponible());
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -47,7 +48,7 @@ public class MySqlBienesDAO implements BienesDAO {
 		int salida = -1;
 		Connection cn = null;
 		PreparedStatement pstm = null;
-		String sql = "update tb_bienes set descripcion= ?, unidMed=?, precUni=?, stockDisponible=?, fecIngreso=? where codBien=?";
+		String sql = "update tb_bienes set descripcion= ?, unidMed=?, precUni=?, stockDisponible=? where codBien=?";
 		
 		try {
 			cn = MySqlConexion.getConexion();
@@ -56,8 +57,7 @@ public class MySqlBienesDAO implements BienesDAO {
 			pstm.setString(2, bean.getUniMed());
 			pstm.setDouble(3, bean.getPrecUni());
 			pstm.setInt(4, bean.getStockDisponible());
-			pstm.setString(5, bean.getFecIngreso());
-			pstm.setInt(6, bean.getCodBien());
+			pstm.setString(5, bean.getCodBien());
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class MySqlBienesDAO implements BienesDAO {
 	}
 
 	@Override
-	public int Eliminar(int cod) {
+	public int Eliminar(Bienes bean) {
 		int salida = -1;
 		Connection cn = null;
 		PreparedStatement pstm = null;
@@ -83,7 +83,7 @@ public class MySqlBienesDAO implements BienesDAO {
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
-			pstm.setInt(1, cod);
+			pstm.setString(1, bean.getCodBien());
 			pstm.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -106,7 +106,7 @@ public class MySqlBienesDAO implements BienesDAO {
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		String sql = "select * from tb_bienes";
+		String sql = "call sp_listarBienes()";
 		
 		try {
 			cn = MySqlConexion.getConexion();
@@ -116,10 +116,11 @@ public class MySqlBienesDAO implements BienesDAO {
 			while(rs.next()) {
 				Bienes bie = new Bienes();
 				
-				bie.setCodBien(rs.getInt(1));
+				bie.setCodBien(rs.getString(1));
 				bie.setDescBien(rs.getString(2));
 				bie.setUniMed(rs.getString(3));
 				bie.setPrecUni(rs.getDouble(4));
+				bie.setCategoria(rs.getString(5));
 				bie.setStockDisponible(rs.getInt(6));
 				bie.setFecIngreso(rs.getString(7));
 				
@@ -128,6 +129,7 @@ public class MySqlBienesDAO implements BienesDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println(">>Problemas en bienesDAO");
 		}
 		finally {
 			try {
@@ -138,7 +140,6 @@ public class MySqlBienesDAO implements BienesDAO {
 				e2.printStackTrace();
 			}
 		}
-		
 		return lista;
 	}
 	

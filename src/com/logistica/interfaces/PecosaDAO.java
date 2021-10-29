@@ -10,4 +10,5 @@ public interface PecosaDAO {
 	public int Eliminar(Pecosa bean);
 	public  ArrayList<Pecosa> ListarTodo();
 	public String[] buscarTrabajador(String str);
+	public String buscarMeta(String unidad);
 }
