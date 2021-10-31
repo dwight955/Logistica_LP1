@@ -286,7 +286,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			cargo = cboCargo.getSelectedItem().toString();
 			sueldo = txtSueldo.getText();
 			sexo = cboSexo.getSelectedItem().toString();
-			ArrayList<Trabajador> listaTra = trabajadorDAO.ListarTodo();
+			ArrayList<Trabajador> listaTra = trabajadorDAO.ListarTodo();//luego lo eliminas
 			//Validacion
 			if(dni.equals("")) {
 				Mensajes.dialogo("El campo DNI es obligatorio");

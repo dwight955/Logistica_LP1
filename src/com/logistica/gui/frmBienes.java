@@ -85,7 +85,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 	public frmBienes() {
 		setTitle("Bienes");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 791, 515);
+		setBounds(100, 100, 792, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
