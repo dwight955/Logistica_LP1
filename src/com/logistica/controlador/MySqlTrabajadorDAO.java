@@ -47,7 +47,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				}
 			}
 			}else {
-				Mensajes.dialogo("DNI repetido");
+				Mensajes.dialogo("No puede insertar un DNI ya existente");
 			}
 			return salida;
 }

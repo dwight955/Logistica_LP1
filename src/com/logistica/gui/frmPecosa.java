@@ -88,7 +88,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	public frmPecosa() {
 		setTitle("Pedido Comprobante de Pecosa");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 987, 649);
+		setBounds(100, 100, 1030, 649);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -130,7 +130,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.setForeground(Color.BLACK);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBackground(new Color(135, 206, 235));
-		panel_1.setBounds(230, 41, 731, 163);
+		panel_1.setBounds(230, 41, 774, 163);
 		contentPane.add(panel_1);
 		
 		JLabel lblNewLabel = new JLabel("Solicitante DNI");
@@ -153,12 +153,12 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtSoliApeNom = new JTextField();
 		txtSoliApeNom.setEditable(false);
 		txtSoliApeNom.setColumns(10);
-		txtSoliApeNom.setBounds(327, 11, 166, 27);
+		txtSoliApeNom.setBounds(327, 11, 192, 27);
 		panel_1.add(txtSoliApeNom);
 		
 		JLabel lblCargo = new JLabel("Cargo");
 		lblCargo.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblCargo.setBounds(498, 18, 63, 14);
+		lblCargo.setBounds(529, 18, 63, 14);
 		panel_1.add(lblCargo);
 		
 
@@ -182,12 +182,12 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtEntrApeNom = new JTextField();
 		txtEntrApeNom.setEditable(false);
 		txtEntrApeNom.setColumns(10);
-		txtEntrApeNom.setBounds(327, 48, 166, 27);
+		txtEntrApeNom.setBounds(327, 48, 192, 27);
 		panel_1.add(txtEntrApeNom);
 		
 		JLabel label_2 = new JLabel("Cargo");
 		label_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_2.setBounds(498, 55, 63, 14);
+		label_2.setBounds(529, 55, 63, 14);
 		panel_1.add(label_2);
 		
 		JLabel lblUnid = new JLabel("Unidad Org.  :");
@@ -198,7 +198,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtUniOrg = new JTextFielBD("concat_ws(' - ',codUniOrg, nomUnidadOrg)","TB_UnidadOrganica");
 		txtUniOrg.setEditable(false);
 		txtUniOrg.setColumns(10);
-		txtUniOrg.setBounds(106, 86, 615, 27);
+		txtUniOrg.setBounds(106, 86, 658, 27);
 		panel_1.add(txtUniOrg);
 		
 		JLabel lblMeta = new JLabel("Meta  :");
@@ -210,20 +210,20 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtMeta.addKeyListener(this);
 		txtMeta.setEditable(false);
 		txtMeta.setColumns(10);
-		txtMeta.setBounds(72, 123, 649, 27);
+		txtMeta.setBounds(72, 123, 692, 27);
 	    cn = new TextAutoCompleter(txtMeta);
 		panel_1.add(txtMeta);
 		
 		txtCargoSoli = new JTextField();
 		txtCargoSoli.setEditable(false);
 		txtCargoSoli.setColumns(10);
-		txtCargoSoli.setBounds(546, 11, 175, 27);
+		txtCargoSoli.setBounds(577, 11, 187, 27);
 		panel_1.add(txtCargoSoli);
 		
 		txtCargoEntr = new JTextField();
 		txtCargoEntr.setEditable(false);
 		txtCargoEntr.setColumns(10);
-		txtCargoEntr.setBounds(546, 48, 175, 27);
+		txtCargoEntr.setBounds(577, 48, 187, 27);
 		panel_1.add(txtCargoEntr);
 		
 		btnBuscarSoliTrabajador = new JButton("");
@@ -240,7 +240,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_2.setForeground(Color.BLACK);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(211, 211, 211));
-		panel_2.setBounds(230, 215, 731, 41);
+		panel_2.setBounds(230, 215, 774, 41);
 		contentPane.add(panel_2);
 		
 		JLabel lblReferencia = new JLabel("Referencia  :");
@@ -251,7 +251,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtReferencia = new JTextField();
 		txtReferencia.setEditable(false);
 		txtReferencia.setColumns(10);
-		txtReferencia.setBounds(100, 7, 621, 27);
+		txtReferencia.setBounds(100, 7, 652, 27);
 		panel_2.add(txtReferencia);
 		
 		JLabel lblEstado = new JLabel("Estado  :");
@@ -266,7 +266,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(txtEstado);
 		
 		tblDetallePecosa = new JScrollPane();
-		tblDetallePecosa.setBounds(11, 268, 950, 226);
+		tblDetallePecosa.setBounds(11, 268, 993, 226);
 		contentPane.add(tblDetallePecosa);
 		
 		table = new JTable();
@@ -282,30 +282,30 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		
 		JLabel lblPrecioTotal = new JLabel("Precio Total  :");
 		lblPrecioTotal.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPrecioTotal.setBounds(749, 503, 105, 23);
+		lblPrecioTotal.setBounds(785, 507, 105, 23);
 		contentPane.add(lblPrecioTotal);
 		
 		txtPrecioTotal = new JTextField();
 		txtPrecioTotal.setColumns(10);
-		txtPrecioTotal.setBounds(850, 501, 94, 27);
+		txtPrecioTotal.setBounds(886, 505, 94, 27);
 		contentPane.add(txtPrecioTotal);
 		
 		btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(773, 540, 97, 38);
+		btnModificar.setBounds(804, 547, 97, 38);
 		contentPane.add(btnModificar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(682, 540, 81, 38);
+		btnCancelar.setBounds(713, 547, 81, 38);
 		contentPane.add(btnCancelar);
 		
 		btnGuardar = new JButton("Nuevo");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
-		btnGuardar.setBounds(587, 540, 81, 38);
+		btnGuardar.setBounds(618, 547, 81, 38);
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(880, 539, 81, 38);
+		btnSalir.setBounds(911, 546, 81, 38);
 		contentPane.add(btnSalir);
 	}
 	public void actionPerformed(ActionEvent e) {

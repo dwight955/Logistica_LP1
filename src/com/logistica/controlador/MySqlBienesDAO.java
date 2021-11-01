@@ -10,35 +10,47 @@ import com.logistica.entidad.Bienes;
 import com.logistica.interfaces.BienesDAO;
 import com.logistica.utils.MySqlConexion;
 
+import lib.Mensajes;
+
 public class MySqlBienesDAO implements BienesDAO {
 
 	@Override
 	public int Ingresar(Bienes bean) {
+		boolean repetido = false;
 		int salida = -1;
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		String sql = "insert into tb_bienes values (?,?,?,?,?,?,CURDATE())";
-		
-		try {
-			cn = MySqlConexion.getConexion();
-			pstm = cn.prepareStatement(sql);
-			pstm.setString(1, bean.getCodBien());
-			pstm.setString(2, bean.getDescBien());
-			pstm.setString(3, bean.getUniMed());
-			pstm.setDouble(4, bean.getPrecUni());
-			pstm.setString(5, bean.getCategoria());
-			pstm.setInt(6, bean.getStockDisponible());
-			salida = pstm.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				if (cn != null) cn.close();
-				if (pstm != null) pstm.close();
-			} catch (SQLException e2) {
-				e2.printStackTrace();
+		ArrayList<Bienes> listaBien = this.ListarTodo();
+		for(int i=0; i < listaBien.size();i++) {
+			if(bean.getCodBien().equals(listaBien.get(i).getCodBien())) {
+				repetido = true;
 			}
+		}
+		if(repetido == false) {
+			try {
+				cn = MySqlConexion.getConexion();
+				pstm = cn.prepareStatement(sql);
+				pstm.setString(1, bean.getCodBien());
+				pstm.setString(2, bean.getDescBien());
+				pstm.setString(3, bean.getUniMed());
+				pstm.setDouble(4, bean.getPrecUni());
+				pstm.setString(5, bean.getCategoria());
+				pstm.setInt(6, bean.getStockDisponible());
+				salida = pstm.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					if (cn != null) cn.close();
+					if (pstm != null) pstm.close();
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
+			}
+		}else {
+			Mensajes.dialogo("No puede insertar un Codigo de Bien ya existente");
 		}
 		return salida;
 	}

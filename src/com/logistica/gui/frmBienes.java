@@ -134,22 +134,25 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		contentPane.add(lblApellidosYNombres);
 		
 		JLabel lblUnidadMed = new JLabel("Unidad de Medida");
-		lblUnidadMed.setBounds(230, 250, 167, 14);
+		lblUnidadMed.setBounds(229, 250, 167, 14);
 		lblUnidadMed.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblUnidadMed);
 		
 		txtCodigo = new JTextField();
 		txtCodigo.setBounds(10, 268, 86, 25);
+		txtCodigo.setEnabled(false);
 		txtCodigo.setDisabledTextColor(Color.DARK_GRAY);
 		contentPane.add(txtCodigo);
 		
 		txtDescripcion = new JTextField();
-		txtDescripcion.setBounds(10, 323, 183, 25);
+		txtDescripcion.setBounds(10, 323, 210, 25);
+		txtDescripcion.setEnabled(false);
 		txtDescripcion.setDisabledTextColor(Color.DARK_GRAY);
 		contentPane.add(txtDescripcion);
 		
 		cboUnidadMedida = new JComboBox();
-		cboUnidadMedida.setBounds(230, 268, 167, 25);
+		cboUnidadMedida.setBounds(229, 268, 167, 25);
+		cboUnidadMedida.setEnabled(false);
 		cboUnidadMedida.setModel(new DefaultComboBoxModel(new String[] {"UNIDAD", "KILO", "LITRO", "METRO", "METRO CUADRADO"}));
 		contentPane.add(cboUnidadMedida);
 		
@@ -160,6 +163,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		
 		txtPrecioUnitario = new JTextField();
 		txtPrecioUnitario.addKeyListener(this);
+		txtPrecioUnitario.setEnabled(false);
 		txtPrecioUnitario.setBounds(10, 379, 54, 25);
 		txtPrecioUnitario.setDisabledTextColor(Color.DARK_GRAY);
 		contentPane.add(txtPrecioUnitario);
@@ -171,6 +175,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
+		btnActualizar.setEnabled(false);
 		btnActualizar.setBounds(633, 299, 106, 35);
 		contentPane.add(btnActualizar);
 		
@@ -181,11 +186,12 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		
 		txtBuscarBien = new JTextField();
 		txtBuscarBien.setBounds(61, 11, 159, 26);
+		txtBuscarBien.setEnabled(false);
 		contentPane.add(txtBuscarBien);
 		txtBuscarBien.setColumns(10);
 		
 		JLabel lblStock = new JLabel("Stock");
-		lblStock.setBounds(230, 299, 46, 14);
+		lblStock.setBounds(239, 299, 46, 14);
 		lblStock.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblStock);
 		
@@ -196,6 +202,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		panel.setLayout(null);
 		
 		cboCategoria = new JComboBoxBD("concat_ws(' - ',idCategoria,nomCategoria)","TB_Categorias");
+		cboCategoria.setEnabled(false);
 		cboCategoria.setBounds(10, 36, 163, 27);
 		panel.add(cboCategoria);
 		
@@ -208,7 +215,8 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		
 		txtStock = new JTextField();
 		txtStock.addKeyListener(this);
-		txtStock.setBounds(230, 324, 63, 25);
+		txtStock.setEnabled(false);
+		txtStock.setBounds(239, 324, 63, 25);
 		contentPane.add(txtStock);
 		txtStock.setColumns(10);
 		
@@ -242,84 +250,99 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		}
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
-		String cod,desc,stock,prec,unidad,cate,fecIng;
-		cod = txtCodigo.getText();
-		desc = txtDescripcion.getText().toUpperCase();
-		stock = txtStock.getText();
-		prec = txtPrecioUnitario.getText();
-		unidad = cboUnidadMedida.getSelectedItem().toString();
-		
-		if(cod.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo CODIGO");
-		}else if(cod.matches("^[B][I][-][0-9][0-9]$") == false) {
-			Mensajes.dialogo("Debe empezar con BI-[00 al 99]");
-		}else if(desc.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo DESCRIPCION");
-		}else if(desc.matches("^[a-zA-Z0-9\\s//Ñ//ñ//á//é//í//ó//ú//Á//É//Í//Ó//Ú]{4,50}$") == false) {
-			Mensajes.dialogo("Solo LETRAS - Minimo: 4 - Maximo: 50");
-		}else if(stock.equals("")) {
-			Mensajes.dialogo("El campo STOCK es obligatorio");
-		}else if(prec.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo PRECIO UNITARIO");
-		}else if(prec.matches("([1-9]\\d||[1-9]\\d\\d||[1][0][0])||([1-9][.]\\d{1,2}||[2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")== false) {
-			Mensajes.dialogo("El precio unitario es invalido");
+		if(txtCodigo.isEnabled() == false) {
+			Elementos(true);
+			btnGuardar.setText("Guardar");
 		}else {
-			Bienes bien = new Bienes();
-			bien.setCodBien(cod);
-			bien.setDescBien(desc);
-			bien.setStockDisponible(Integer.parseInt(stock));
-			bien.setPrecUni(Double.parseDouble(prec));
-			bien.setUniMed(unidad);
-			cate =  cboCategoria.getSelectedItem().toString();
-			String[] part = cate.split(" - ");
-			bien.setCategoria(part[0]);
-			int salida = bienesDAO.Ingresar(bien);
-				if(salida > 0) {
-					Mensajes.dialogo("El registro fue un exito");
-					listar();
-					limpiar();
-				}
+			String cod,desc,stock,prec,unidad,cate,fecIng;
+			cod = txtCodigo.getText();
+			desc = txtDescripcion.getText().toUpperCase();
+			stock = txtStock.getText();
+			prec = txtPrecioUnitario.getText();
+			unidad = cboUnidadMedida.getSelectedItem().toString();
+			
+			if(cod.equals("")) {
+				Mensajes.dialogo("Es obligatorio el campo CODIGO");
+			}else if(cod.matches("^[B][I][-][0-9][0-9]$") == false) {
+				Mensajes.dialogo("Debe empezar con BI-[00 al 99]");
+			}else if(desc.equals("")) {
+				Mensajes.dialogo("Es obligatorio el campo DESCRIPCION");
+			}else if(desc.matches("^[a-zA-Z0-9\\s//Ñ//ñ//á//é//í//ó//ú//Á//É//Í//Ó//Ú]{4,50}$") == false) {
+				Mensajes.dialogo("Solo LETRAS - Minimo: 4 - Maximo: 50");
+			}else if(stock.equals("")) {
+				Mensajes.dialogo("El campo STOCK es obligatorio");
+			}else if(prec.equals("")) {
+				Mensajes.dialogo("Es obligatorio el campo PRECIO UNITARIO");
+			}else if(prec.matches("([1-9]\\d||[1-9]\\d\\d||[1][0][0])||([1-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")== false) {
+				Mensajes.dialogo("El precio unitario es invalido || Min:10.00 Max: 999.99 ");
+			}else {
+				Bienes bien = new Bienes();
+				bien.setCodBien(cod);
+				bien.setDescBien(desc);
+				bien.setStockDisponible(Integer.parseInt(stock));
+				bien.setPrecUni(Double.parseDouble(prec));
+				bien.setUniMed(unidad);
+				cate =  cboCategoria.getSelectedItem().toString();
+				String[] part = cate.split(" - ");
+				bien.setCategoria(part[0]);
+				int salida = bienesDAO.Ingresar(bien);
+					if(salida > 0) {
+						Mensajes.dialogo("El registro fue un exito");
+						listar();
+						Elementos(false);
+						limpiar();
+						btnGuardar.setText("Nuevo");
+					}else {
+						Mensajes.error("No se hizo el registro correctamente");
+					}
+			}
 		}
 	}
 	protected void actionPerformedBtnActualizar(ActionEvent e) {
-		String cod,desc,stock,prec,unidad,cate,fecIng;
-		cod = txtCodigo.getText();
-		desc = txtDescripcion.getText().toUpperCase();
-		stock = txtStock.getText();
-		prec = txtPrecioUnitario.getText();
-		unidad = cboUnidadMedida.getSelectedItem().toString();
-		
-		if(cod.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo CODIGO");
-		}else if(cod.matches("^[B][I][-][0-9][0-9]$") == false) {
-			Mensajes.dialogo("Debe empezar con BI-[00 al 99]");
-		}else if(desc.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo DESCRIPCION");
-		}else if(desc.matches("^[a-zA-Z0-9\\s//Ñ//ñ//á//é//í//ó//ú//Á//É//Í//Ó//Ú]{4,50}$") == false) {
-			Mensajes.dialogo("Solo LETRAS - Minimo: 4 - Maximo: 50");
-		}else if(stock.equals("")) {
-			Mensajes.dialogo("El campo STOCK es obligatorio");
-		}else if(prec.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo PRECIO UNITARIO");
-		}else if(prec.matches("([1-9]\\d||[1-9]\\d\\d||[1][0][0])||([1-9][.]\\d{1,2}||[2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")== false) {
-			Mensajes.dialogo("El precio unitario es invalido");
-		}else {
-			Bienes bien = new Bienes();
-			bien.setCodBien(cod);
-			bien.setDescBien(desc);
-			bien.setStockDisponible(Integer.parseInt(stock));
-			bien.setPrecUni(Double.parseDouble(prec));
-			bien.setUniMed(unidad);
-			cate =  cboCategoria.getSelectedItem().toString();
-			String[] part = cate.split(" - ");
-			bien.setCategoria(part[0]);
-			int salida = bienesDAO.Actualizar(bien);
-				if(salida > 0) {
-					Mensajes.dialogo("La actualizacion fue un exito");
-					listar();
-					limpiar();
-				}
-		}
+			String cod,desc,stock,prec,unidad,cate,fecIng;
+			cod = txtCodigo.getText();
+			desc = txtDescripcion.getText().toUpperCase();
+			stock = txtStock.getText();
+			prec = txtPrecioUnitario.getText();
+			unidad = cboUnidadMedida.getSelectedItem().toString();
+			
+			if(cod.equals("")) {
+				Mensajes.dialogo("Es obligatorio el campo CODIGO");
+			}else if(cod.matches("^[B][I][-][0-9][0-9]$") == false) {
+				Mensajes.dialogo("Debe empezar con BI-[00 al 99]");
+			}else if(desc.equals("")) {
+				Mensajes.dialogo("Es obligatorio el campo DESCRIPCION");
+			}else if(desc.matches("^[a-zA-Z0-9\\s//Ñ//ñ//á//é//í//ó//ú//Á//É//Í//Ó//Ú]{4,50}$") == false) {
+				Mensajes.dialogo("Solo LETRAS - Minimo: 4 - Maximo: 50");
+			}else if(stock.equals("")) {
+				Mensajes.dialogo("El campo STOCK es obligatorio");
+			}else if(prec.equals("")) {
+				Mensajes.dialogo("Es obligatorio el campo PRECIO UNITARIO");
+			}else if(prec.matches("([1-9]\\d||[1-9]\\d\\d||[1][0][0])||([1-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")== false) {
+				Mensajes.dialogo("El precio unitario es invalido || Min:10.00 Max: 999.99 ");
+			}else {
+				Bienes bien = new Bienes();
+				bien.setCodBien(cod);
+				bien.setDescBien(desc);
+				bien.setStockDisponible(Integer.parseInt(stock));
+				bien.setPrecUni(Double.parseDouble(prec));
+				bien.setUniMed(unidad);
+				cate =  cboCategoria.getSelectedItem().toString();
+				String[] part = cate.split(" - ");
+				bien.setCategoria(part[0]);
+				int salida = bienesDAO.Actualizar(bien);
+					if(salida > 0) {
+						Mensajes.dialogo("La actualizacion fue un exito");
+						listar();
+						Elementos(false);
+						btnActualizar.setEnabled(false);
+						btnGuardar.setEnabled(true);
+						btnGuardar.setText("Nuevo");
+						limpiar();
+					}else {
+						Mensajes.error("No se Actualizo correctamente");
+					}
+			}
 	}
 	void listar() {
 		DefaultTableModel modelo = (DefaultTableModel) tblBienes.getModel();
@@ -335,6 +358,15 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		txtDescripcion.setText("");
 		txtPrecioUnitario.setText("");
 		txtStock.setText("");
+	}
+	void Elementos(boolean op) {
+		txtCodigo.setEnabled(op);
+		txtCodigo.requestFocus();
+		txtDescripcion.setEnabled(op);
+		txtPrecioUnitario.setEnabled(op);
+		txtStock.setEnabled(op);
+		cboCategoria.setEnabled(op);
+		cboUnidadMedida.setEnabled(op);
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -378,6 +410,10 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		if((posFila = tblBienes.getSelectedRow()) < 0) {
 			posFila = 0;	
 		}else {
+			Elementos(true);
+			txtCodigo.setEnabled(false);
+			btnActualizar.setEnabled(true);
+			btnGuardar.setEnabled(false);
 			String cod,desc,pre,stck,unidad,cate;
 			posFila = tblBienes.getSelectedRow();
 			cod = tblBienes.getValueAt(posFila, 0).toString();
@@ -413,7 +449,11 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		});
 	}
 	protected void actionPerformedBtnCancelar(ActionEvent e) {
-		
+		Elementos(false);
+		limpiar();
+		btnActualizar.setEnabled(false);
+		btnGuardar.setEnabled(true);
+		btnGuardar.setText("Nuevo");
 	}
 	protected void actionPerformedMntmNewMenuItem(ActionEvent e) {
 		String cod = txtCodigo.getText();

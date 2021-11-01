@@ -35,8 +35,10 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class frmProveedores extends JFrame implements ActionListener, MouseListener {
+public class frmProveedores extends JFrame implements ActionListener, MouseListener, KeyListener {
 	MySqlProveedorDAO proveedorDAO = new MySqlProveedorDAO();
 		
 	private JPanel contentPane;
@@ -50,7 +52,7 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 	private JComboBox cboEstado;
 	private JComboBox cboCondicion;
 	private JComboBoxBD cboDistrito;
-	private JButton btnNuevo;
+	private JButton btnGuardar;
 	private JButton btnActualizar;
 	private JButton btnCancelar;
 	private JPopupMenu popupMenu;
@@ -78,14 +80,14 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 	public frmProveedores() {
 		setTitle("Mantenimiento - PROVEEDORES");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 792, 515);
+		setBounds(100, 100, 870, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 48, 755, 191);
+		scrollPane.setBounds(10, 48, 834, 191);
 		contentPane.add(scrollPane);
 		
 		tblProveedores = new JTable();
@@ -98,6 +100,13 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 				"Nro RUC", "Razon Social", "Estado", "Condicion", "Direccion", "telefono", "Distrito"
 			}
 		));
+		tblProveedores.getColumnModel().getColumn(1).setPreferredWidth(171);
+		tblProveedores.getColumnModel().getColumn(2).setPreferredWidth(43);
+		tblProveedores.getColumnModel().getColumn(2).setMinWidth(11);
+		tblProveedores.getColumnModel().getColumn(3).setPreferredWidth(30);
+		tblProveedores.getColumnModel().getColumn(4).setPreferredWidth(116);
+		tblProveedores.getColumnModel().getColumn(5).setPreferredWidth(49);
+		tblProveedores.getColumnModel().getColumn(6).setPreferredWidth(98);
 		scrollPane.setViewportView(tblProveedores);
 		
 		popupMenu = new JPopupMenu();
@@ -119,13 +128,17 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		contentPane.add(lblNroRuc);
 		
 		txtRuc = new JTextField();
+		txtRuc.addKeyListener(this);
+		txtRuc.setEnabled(false);
 		txtRuc.setBounds(10, 282, 132, 26);
 		contentPane.add(txtRuc);
 		txtRuc.setColumns(10);
 		
 		txtRazonSoci = new JTextField();
+		txtRazonSoci.addKeyListener(this);
+		txtRazonSoci.setEnabled(false);
 		txtRazonSoci.setColumns(10);
-		txtRazonSoci.setBounds(10, 350, 132, 26);
+		txtRazonSoci.setBounds(10, 350, 209, 26);
 		contentPane.add(txtRazonSoci);
 		
 		JLabel lblRazonSocial = new JLabel("Razon Social");
@@ -135,12 +148,13 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		
 		JLabel lblEstado = new JLabel("Estado");
 		lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblEstado.setBounds(188, 289, 120, 26);
+		lblEstado.setBounds(254, 321, 120, 26);
 		contentPane.add(lblEstado);
 		
 		cboEstado = new JComboBox();
+		cboEstado.setEnabled(false);
 		cboEstado.setModel(new DefaultComboBoxModel(new String[] {"ACTIVO", "NO ACTIVO"}));
-		cboEstado.setBounds(188, 319, 159, 26);
+		cboEstado.setBounds(254, 351, 159, 26);
 		contentPane.add(cboEstado);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
@@ -149,37 +163,42 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		contentPane.add(lblTelefono);
 		
 		txtTelefono = new JTextField();
+		txtTelefono.addKeyListener(this);
+		txtTelefono.setEnabled(false);
 		txtTelefono.setColumns(10);
 		txtTelefono.setBounds(10, 419, 132, 26);
 		contentPane.add(txtTelefono);
 		
 		JLabel lblCondicion = new JLabel("Condicion");
 		lblCondicion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCondicion.setBounds(188, 357, 120, 26);
+		lblCondicion.setBounds(254, 389, 120, 26);
 		contentPane.add(lblCondicion);
 		
 		cboCondicion = new JComboBox();
+		cboCondicion.setEnabled(false);
 		cboCondicion.setModel(new DefaultComboBoxModel(new String[] {"HABIDO", "NO HABIDO"}));
-		cboCondicion.setBounds(188, 387, 159, 26);
+		cboCondicion.setBounds(254, 419, 159, 26);
 		contentPane.add(cboCondicion);
 		
 		JLabel lblDireccion = new JLabel("Direccion");
 		lblDireccion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblDireccion.setBounds(375, 250, 120, 26);
+		lblDireccion.setBounds(254, 252, 120, 26);
 		contentPane.add(lblDireccion);
 		
 		txtDireccion = new JTextField();
 		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(375, 282, 239, 26);
+		txtDireccion.setEnabled(false);
+		txtDireccion.setBounds(254, 284, 242, 26);
 		contentPane.add(txtDireccion);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
-		panel.setBounds(407, 328, 183, 85);
+		panel.setBounds(480, 350, 183, 85);
 		contentPane.add(panel);
 		
 		cboDistrito = new JComboBoxBD("concat_ws('/',codDis,nomDis)","TB_Distrito");
+		cboDistrito.setEnabled(false);
 		cboDistrito.setBounds(10, 36, 163, 27);
 		panel.add(cboDistrito);
 		
@@ -188,18 +207,19 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		lblDistritos.setBounds(10, 11, 86, 14);
 		panel.add(lblDistritos);
 		
-		btnNuevo = new JButton("Nuevo");
-		btnNuevo.addActionListener(this);
-		btnNuevo.setBounds(659, 264, 106, 35);
-		contentPane.add(btnNuevo);
+		btnGuardar = new JButton("Nuevo");
+		btnGuardar.addActionListener(this);
+		btnGuardar.setBounds(738, 276, 106, 35);
+		contentPane.add(btnGuardar);
 		
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
-		btnActualizar.setBounds(659, 313, 106, 35);
+		btnActualizar.setEnabled(false);
+		btnActualizar.setBounds(738, 325, 106, 35);
 		contentPane.add(btnActualizar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(659, 366, 106, 35);
+		btnCancelar.setBounds(738, 378, 106, 35);
 		contentPane.add(btnCancelar);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -216,37 +236,77 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		if (e.getSource() == btnActualizar) {
 			actionPerformedBtnActualizar(e);
 		}
-		if (e.getSource() == btnNuevo) {
+		if (e.getSource() == btnGuardar) {
 			actionPerformedBtnNuevo(e);
 		}
 	}
+	public void keyTyped(KeyEvent e) {
+		if (e.getSource() == txtRazonSoci) {
+			keyTypedTxtRazonSoci(e);
+		}
+		if (e.getSource() == txtTelefono) {
+			keyTypedTxtTelefono(e);
+		}
+		if (e.getSource() == txtRuc) {
+			keyTypedTxtRuc(e);
+		}
+	}
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == tblProveedores) {
+			mouseClickedTblProveedores(e);
+		}
+	}
 	protected void actionPerformedBtnNuevo(ActionEvent e) {
-		String nroRuc,rzonSoc,estado,condi,dire,tele,codDis;
-		nroRuc = txtRuc.getText();
-		rzonSoc = txtRazonSoci.getText();
-		estado = cboEstado.getSelectedItem().toString();
-		condi = cboCondicion.getSelectedItem().toString();
-		tele = txtTelefono.getText();
-		dire = txtDireccion.getText();
-		codDis = cboDistrito.getSelectedItem().toString();
-		//validacion
-		
-		Proveedor pro = new Proveedor();
-		pro.setNroRuc(nroRuc);
-		pro.setRzSoc(rzonSoc);
-		pro.setEstado(estado);
-		pro.setCondic(condi);
-		pro.setDirec(dire);
-		pro.setTelf(Integer.parseInt(tele));
-		String[] part = codDis.split("/");
-		pro.setCodDis(part[0]);
-		int salida = proveedorDAO.Ingresar(pro);
-		if(salida > 0) {
-			Mensajes.dialogo("El registro fue un exito");
-			listar();
-			limpiar();
+		if(txtRuc.isEnabled() == false) {
+			Elementos(true);
+			btnGuardar.setText("Guardar");
 		}else {
-			Mensajes.error("No se hizo el registro correctamente");
+			String nroRuc,rzonSoc,estado,condi,dire,tele,codDis;
+			nroRuc = txtRuc.getText();
+			rzonSoc = txtRazonSoci.getText().toUpperCase();
+			estado = cboEstado.getSelectedItem().toString();
+			condi = cboCondicion.getSelectedItem().toString();
+			tele = txtTelefono.getText();
+			dire = txtDireccion.getText();
+			codDis = cboDistrito.getSelectedItem().toString();
+			//validacion
+			if(nroRuc.equals("")) {
+				Mensajes.dialogo("El campo NRO RUC es obligatorio");
+			}else if(nroRuc.matches("[0-9]{11}") == false) {
+				Mensajes.dialogo("Numero de Ruc: Min: 11 Max: 11");
+			}else if(rzonSoc.equals("")) {
+				Mensajes.dialogo("El campo RAZON SOCIAL es obligatorio");
+			}else if(rzonSoc.length() < 10) {
+				Mensajes.dialogo("Razon Social: Min: 10 Max: 40");
+			}else if(tele.equals("")) {
+				Mensajes.dialogo("El campo TELEFONO es obligatorio");
+			}else if(tele.matches("^[9][0-9]{8}$") == false) {
+				Mensajes.dialogo("Su número de telefono debe comenzar en 9 || Min: 9 Max: 9");
+			}else if(dire.equals("")) {
+				Mensajes.dialogo("El campo DIRECCION es obligatorio");
+			}else if(dire.matches("^[A-Za-z0-9\\s//á//é//í//ó//ú//Á//É//Í//Ó//Ú//.//-]{10,40}$") == false) {
+				Mensajes.dialogo("Direccion: Min:10 Max:40");
+			}else {
+				Proveedor pro = new Proveedor();
+				pro.setNroRuc(nroRuc);
+				pro.setRzSoc(rzonSoc);
+				pro.setEstado(estado);
+				pro.setCondic(condi);
+				pro.setDirec(dire);
+				pro.setTelf(Integer.parseInt(tele));
+				String[] part = codDis.split("/");
+				pro.setCodDis(part[0]);
+				int salida = proveedorDAO.Ingresar(pro);
+				if(salida > 0) {
+					Mensajes.dialogo("El registro fue un exito");
+					listar();
+					limpiar();
+					Elementos(false);
+					btnGuardar.setText("Nuevo");
+				}else {
+					Mensajes.error("No se hizo el registro correctamente");
+				}
+			}
 		}
 	}
 
@@ -275,6 +335,10 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 			Mensajes.dialogo("La actualizacion fue un exito");
 			listar();
 			limpiar();
+			Elementos(false);
+			btnActualizar.setEnabled(false);
+			btnGuardar.setEnabled(true);
+			btnGuardar.setText("Nuevo");
 		}else {
 			Mensajes.error("No se hizo la actualizacion correctamente");
 		}
@@ -292,15 +356,22 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 			limpiar();
 		}
 	}
+	void Elementos(boolean op) {
+		txtRuc.setEnabled(op);
+		txtDireccion.setEnabled(op);
+		txtRazonSoci.setEnabled(op);
+		txtTelefono.setEnabled(op);
+		cboCondicion.setEnabled(op);
+		cboDistrito.setEnabled(op);
+		cboEstado.setEnabled(op);
+	}
 	void limpiar() {
 		txtBusqueda.setText("");
 		txtDireccion.setText("");
 		txtRazonSoci.setText("");
 		txtRuc.setText("");
 		txtTelefono.setText("");
-		cboCondicion.setSelectedIndex(-1);
-		cboEstado.setSelectedIndex(-1);
-		cboDistrito.setSelectedIndex(-1);
+		
 	}
 	void listar() {
 		DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
@@ -313,11 +384,7 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		}
 	}
 
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource() == tblProveedores) {
-			mouseClickedTblProveedores(e);
-		}
-	}
+	
 	public void mouseEntered(MouseEvent e) {
 	}
 	public void mouseExited(MouseEvent e) {
@@ -332,6 +399,10 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		if((posFila = tblProveedores.getSelectedRow())<0) {
 			posFila = 0;
 		}else {
+			Elementos(true);
+			txtRuc.setEnabled(false);
+			btnActualizar.setEnabled(true);
+			btnGuardar.setEnabled(false);
 			posFila = tblProveedores.getSelectedRow();
 			
 			nroRuc = tblProveedores.getValueAt(posFila, 0).toString();
@@ -371,4 +442,36 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		});
 	}
 	
+	public void keyPressed(KeyEvent e) {
+	}
+	public void keyReleased(KeyEvent e) {
+	}
+	
+	protected void keyTypedTxtRuc(KeyEvent e) {
+		char c = e.getKeyChar();
+		String ruc = txtRuc.getText();
+		if(!Character.isDigit(c)) {
+			e.consume();
+		} else if(ruc.length() == 11) {
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtTelefono(KeyEvent e) {
+		char c = e.getKeyChar();
+		String telf = txtTelefono.getText();
+		if(!Character.isDigit(c)) {
+			e.consume();
+		} else if(telf.length() == 9) {
+			e.consume();
+		}
+	}
+	protected void keyTypedTxtRazonSoci(KeyEvent e) {
+		char c = e.getKeyChar();
+		String rzSoc = txtRazonSoci.getText();
+		if(!Character.isAlphabetic(c) && c != ' ') {
+			e.consume();
+		} else if(rzSoc.length() == 30) {
+			e.consume();
+		}
+	}
 }

@@ -11,6 +11,9 @@ import com.logistica.entidad.Trabajador;
 import com.logistica.interfaces.ProveedorDAO;
 import com.logistica.interfaces.UsuarioDAO;
 import com.logistica.utils.MySqlConexion;
+
+import lib.Mensajes;
+
 import java.sql.CallableStatement;
 
 public class MySqlProveedorDAO implements ProveedorDAO {
@@ -18,32 +21,44 @@ public class MySqlProveedorDAO implements ProveedorDAO {
 	@Override
 	public int Ingresar(Proveedor bean) {
 		int salida = -1;
+		boolean repetido = false;
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		String sql = "insert into tb_proveedores values (?,?,?,?,?,?,?)";
-		try {
-			cn = MySqlConexion.getConexion();
-			pstm = cn.prepareStatement(sql);
-			
-			pstm.setString(1, bean.getNroRuc());
-			pstm.setString(2, bean.getRzSoc());
-			pstm.setString(3, bean.getEstado());
-			pstm.setString(4, bean.getCondic());
-			pstm.setString(5, bean.getDirec());
-			pstm.setInt(6, bean.getTelf());
-			pstm.setString(7, bean.getCodDis());
-			salida = pstm.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println(">>Error en el Ingresar MySqlProveedor");
-		} finally {
-			try {
-				if(cn !=null) cn.close();
-				if(pstm != null ) pstm.close();
-			} catch (SQLException e2) {
-				e2.printStackTrace();
+		ArrayList<Proveedor> listaPro = this.ListarTodo();
+		for(int i=0; i < listaPro.size();i++) {
+			if(bean.getNroRuc().equals(listaPro.get(i).getNroRuc())) {
+				repetido = true;
 			}
 		}
+		if(repetido == false) {
+			try {
+				cn = MySqlConexion.getConexion();
+				pstm = cn.prepareStatement(sql);
+				
+				pstm.setString(1, bean.getNroRuc());
+				pstm.setString(2, bean.getRzSoc());
+				pstm.setString(3, bean.getEstado());
+				pstm.setString(4, bean.getCondic());
+				pstm.setString(5, bean.getDirec());
+				pstm.setInt(6, bean.getTelf());
+				pstm.setString(7, bean.getCodDis());
+				salida = pstm.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println(">>Error al Ingresar MySqlProveedor");
+			} finally {
+				try {
+					if(cn !=null) cn.close();
+					if(pstm != null ) pstm.close();
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
+			}
+		}else {
+			Mensajes.dialogo("No puede insertar un Nro de RUC ya existente");
+		}
+		
 		return salida;
 	}
 
@@ -73,7 +88,7 @@ public class MySqlProveedorDAO implements ProveedorDAO {
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(">>Error al actualizar, MySqlProveedorDAO");
+			System.out.println(">>Error al actualizar MySqlProveedorDAO");
 		} finally {
 			try {
 				if(cn != null)cn.close();

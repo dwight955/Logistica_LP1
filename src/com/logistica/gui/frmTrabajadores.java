@@ -297,7 +297,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			}else if(sueldo.equals("")) {
 				Mensajes.dialogo("El campo sueldo es obligatorio");	
 			}else if(sueldo.matches("([2-9]\\d||[1-9]\\d\\d||[1][0][0])||([2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")==false) {
-				Mensajes.dialogo("Sueldo Invalido");	
+				Mensajes.dialogo("Sueldo: Min: 29.99 Max: 1999.99 ");	
 			}else if(dtFecNac.getDate()==null) {
 				Mensajes.dialogo("Ingrese fecha de Nacimiento");	
 			}else {
