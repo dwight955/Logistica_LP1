@@ -227,6 +227,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.add(txtCargoEntr);
 		
 		btnBuscarSoliTrabajador = new JButton("");
+		btnBuscarSoliTrabajador.addActionListener(this);
 		btnBuscarSoliTrabajador.setIcon(new ImageIcon(frmPecosa.class.getResource("/iconos/search.png")));
 		btnBuscarSoliTrabajador.setBounds(201, 11, 35, 27);
 		panel_1.add(btnBuscarSoliTrabajador);
@@ -295,13 +296,13 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(btnModificar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(713, 547, 81, 38);
+		btnCancelar.setBounds(700, 547, 94, 38);
 		contentPane.add(btnCancelar);
 		
 		btnGuardar = new JButton("Nuevo");
 		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
-		btnGuardar.setBounds(618, 547, 81, 38);
+		btnGuardar.setBounds(609, 547, 81, 38);
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");
@@ -309,6 +310,9 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(btnSalir);
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnBuscarSoliTrabajador) {
+			actionPerformedBtnBuscarSoliTrabajador(e);
+		}
 		if (e.getSource() == btnGuardar) {
 			actionPerformedBtnGuardar(e);
 		}
@@ -409,5 +413,10 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		String m = pecosaDao.buscarMeta(part[0]);
 		cn.removeAllItems();
 		cn.addItem(m);
+	}
+	protected void actionPerformedBtnBuscarSoliTrabajador(ActionEvent e) {
+		dlgBuscarSolicTrabajador buscartra = new dlgBuscarSolicTrabajador();
+		buscartra.setVisible(true);
+		buscartra.setLocationRelativeTo(null);
 	}
 }

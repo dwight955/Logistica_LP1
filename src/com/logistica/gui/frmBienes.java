@@ -89,6 +89,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		this.setLocationRelativeTo(null);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();

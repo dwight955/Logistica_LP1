@@ -143,5 +143,40 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 		}
 		return lista;
 	}
+	@Override
+	public ArrayList<Trabajador> buscarTrabajador(String apenom, String como, String cargo) {
+		ArrayList<Trabajador> lista = new ArrayList<Trabajador>();
+		Connection cn=null;
+		CallableStatement cstm=null;
+		ResultSet rs=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="call sp_buscar_trabajador_por_apenom(?,?,?)";
+			cstm=cn.prepareCall(sql);
+			cstm.setString(1, apenom);
+			cstm.setString(2, como);
+			cstm.setString(3, cargo);
+			rs=cstm.executeQuery();
+			while(rs.next()){
+				Trabajador tra = new Trabajador();
+				tra.setDni(rs.getInt(1));
+				tra.setNomApe(rs.getString(2));
+				tra.setCargo(rs.getString(3));
+				lista.add(tra);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs!=null) rs.close();
+				if(cstm!=null) cstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return lista;
+	}
 
 }

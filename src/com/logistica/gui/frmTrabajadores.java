@@ -87,6 +87,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	public frmTrabajadores() {
 		setTitle("Trabajadores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		setBounds(100, 100, 791, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -160,7 +161,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		cboCargo = new JComboBox();
 		cboCargo.setEnabled(false);
 		cboCargo.setBounds(230, 268, 167, 25);
-		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUBALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR"}));
+		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUB-ALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR"}));
 		contentPane.add(cboCargo);
 		
 		JLabel lblFecha = new JLabel("Sueldo");
@@ -393,7 +394,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		btnGuardar.setText("Nuevo");
 		btnActualizar.setEnabled(false);
 	}
-	void listar() {
+	public void listar() {
 		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> data = trabajadorDAO.ListarTodo();
