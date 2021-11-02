@@ -34,6 +34,7 @@ import java.awt.Button;
 import javax.swing.JButton;
 import java.awt.event.*;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	MySqlPecosaDAO pecosaDao = new MySqlPecosaDAO();
@@ -41,11 +42,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	private JPanel contentPane;
 	private JTextField txtNumPecosa;
 	private JTextField txtFecha;
-	private JTextField txtSoliDni;
-	private JTextField txtSoliApeNom;
+	public static JTextField txtSoliDni;
+	public static JTextField txtSoliApeNom;
 
-	private JTextField txtEntrDni;
-	private JTextField txtEntrApeNom;
+	public static JTextField txtEntrDni;
+	public static JTextField txtEntrApeNom;
 	private JTextField txtUniOrg;
 	private JTextField txtMeta;
 	private JTextField txtReferencia;
@@ -55,14 +56,15 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	private JScrollPane tblDetallePecosa;
 	private JButton btnGuardar;
 	private TextAutoCompleter ac;
-	private JTextField txtCargoEntr;
-	private JTextField txtCargoSoli;
+	public static JTextField txtCargoEntr;
+	public static JTextField txtCargoSoli;
 	private JButton btnCancelar;
 	private JButton btnModificar;
 	private JButton btnSalir;
-	private JButton btnBuscarSoliTrabajador;
-	private JButton btnBuscarEntrTrabajador;
+	public static JButton btnBuscarSoliTrabajador;
+	public static JButton btnBuscarEntrTrabajador;
 	private TextAutoCompleter cn;
+	private JLabel lblPecosa;
 
 
 	/**
@@ -86,9 +88,9 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	 * Create the frame.
 	 */
 	public frmPecosa() {
-		setTitle("Pedido Comprobante de Pecosa");
+		setTitle("Pedido Comprobante de Salida");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1030, 649);
+		setBounds(100, 100, 1030, 678);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -99,7 +101,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(new Color(211, 211, 211));
 		panel.setForeground(new Color(0, 0, 0));
-		panel.setBounds(11, 11, 209, 118);
+		panel.setBounds(10, 54, 209, 118);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -109,12 +111,14 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel.add(lblNPecosa);
 		
 		txtNumPecosa = new JTextField();
+		txtNumPecosa.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtNumPecosa.setEditable(false);
 		txtNumPecosa.setBounds(102, 26, 97, 28);
 		panel.add(txtNumPecosa);
 		txtNumPecosa.setColumns(10);
 		
 		txtFecha = new JTextField(lib.Fecha.fechaActual());
+		txtFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtFecha.setEditable(false);
 		txtFecha.setColumns(10);
 		txtFecha.setBounds(102, 75, 97, 28);
@@ -130,7 +134,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.setForeground(Color.BLACK);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBackground(new Color(135, 206, 235));
-		panel_1.setBounds(230, 41, 774, 163);
+		panel_1.setBounds(229, 84, 774, 163);
 		contentPane.add(panel_1);
 		
 		JLabel lblNewLabel = new JLabel("Solicitante DNI");
@@ -227,12 +231,15 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.add(txtCargoEntr);
 		
 		btnBuscarSoliTrabajador = new JButton("");
+		btnBuscarSoliTrabajador.setEnabled(false);
 		btnBuscarSoliTrabajador.addActionListener(this);
 		btnBuscarSoliTrabajador.setIcon(new ImageIcon(frmPecosa.class.getResource("/iconos/search.png")));
 		btnBuscarSoliTrabajador.setBounds(201, 11, 35, 27);
 		panel_1.add(btnBuscarSoliTrabajador);
 		
 		btnBuscarEntrTrabajador = new JButton("");
+		btnBuscarEntrTrabajador.addActionListener(this);
+		btnBuscarEntrTrabajador.setEnabled(false);
 		btnBuscarEntrTrabajador.setIcon(new ImageIcon(frmPecosa.class.getResource("/iconos/search.png")));
 		btnBuscarEntrTrabajador.setBounds(201, 49, 35, 26);
 		panel_1.add(btnBuscarEntrTrabajador);
@@ -241,7 +248,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_2.setForeground(Color.BLACK);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(211, 211, 211));
-		panel_2.setBounds(230, 215, 774, 41);
+		panel_2.setBounds(229, 258, 774, 41);
 		contentPane.add(panel_2);
 		
 		JLabel lblReferencia = new JLabel("Referencia  :");
@@ -257,17 +264,17 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		
 		JLabel lblEstado = new JLabel("Estado  :");
 		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblEstado.setBounds(724, 12, 105, 23);
+		lblEstado.setBounds(837, 43, 105, 23);
 		contentPane.add(lblEstado);
 		
 		txtEstado = new JTextField();
 		txtEstado.setEditable(false);
 		txtEstado.setColumns(10);
-		txtEstado.setBounds(797, 11, 94, 27);
+		txtEstado.setBounds(910, 42, 94, 27);
 		contentPane.add(txtEstado);
 		
 		tblDetallePecosa = new JScrollPane();
-		tblDetallePecosa.setBounds(11, 268, 993, 226);
+		tblDetallePecosa.setBounds(10, 311, 993, 226);
 		contentPane.add(tblDetallePecosa);
 		
 		table = new JTable();
@@ -281,35 +288,48 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		table.getColumnModel().getColumn(3).setPreferredWidth(104);
 		tblDetallePecosa.setViewportView(table);
 		
-		JLabel lblPrecioTotal = new JLabel("Precio Total  :");
+		JLabel lblPrecioTotal = new JLabel("Precio Total  S/. :");
 		lblPrecioTotal.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPrecioTotal.setBounds(785, 507, 105, 23);
+		lblPrecioTotal.setBounds(763, 550, 126, 23);
 		contentPane.add(lblPrecioTotal);
 		
 		txtPrecioTotal = new JTextField();
 		txtPrecioTotal.setColumns(10);
-		txtPrecioTotal.setBounds(886, 505, 94, 27);
+		txtPrecioTotal.setBounds(888, 548, 94, 27);
 		contentPane.add(txtPrecioTotal);
 		
 		btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(804, 547, 97, 38);
+		btnModificar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnModificar.setBounds(803, 590, 97, 38);
 		contentPane.add(btnModificar);
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(700, 547, 94, 38);
+		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnCancelar.setBounds(699, 590, 94, 38);
 		contentPane.add(btnCancelar);
 		
 		btnGuardar = new JButton("Nuevo");
+		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
-		btnGuardar.setBounds(609, 547, 81, 38);
+		btnGuardar.setBounds(608, 590, 81, 38);
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(911, 546, 81, 38);
+		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnSalir.setBounds(910, 589, 81, 38);
 		contentPane.add(btnSalir);
+		
+		lblPecosa = new JLabel("PECOSA");
+		lblPecosa.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPecosa.setFont(new Font("Square721 BT", Font.BOLD, 30));
+		lblPecosa.setBounds(377, 22, 382, 53);
+		contentPane.add(lblPecosa);
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnBuscarEntrTrabajador) {
+			actionPerformedBtnBuscarEntrTrabajador(e);
+		}
 		if (e.getSource() == btnBuscarSoliTrabajador) {
 			actionPerformedBtnBuscarSoliTrabajador(e);
 		}
@@ -345,6 +365,8 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 			txtMeta.setEditable(true);
 			txtReferencia.setEditable(true);
 			btnGuardar.setText("Guardar");
+			btnBuscarSoliTrabajador.setEnabled(true);
+			btnBuscarEntrTrabajador.setEnabled(true);
 		}
 		/*String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
 		fecPec = txtFecha.getText();
@@ -416,6 +438,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	}
 	protected void actionPerformedBtnBuscarSoliTrabajador(ActionEvent e) {
 		dlgBuscarSolicTrabajador buscartra = new dlgBuscarSolicTrabajador();
+		buscartra.setVisible(true);
+		buscartra.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedBtnBuscarEntrTrabajador(ActionEvent e) {
+		dlgBuscarEntrTrabajador buscartra = new dlgBuscarEntrTrabajador();
 		buscartra.setVisible(true);
 		buscartra.setLocationRelativeTo(null);
 	}

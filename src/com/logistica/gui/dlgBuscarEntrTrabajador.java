@@ -32,7 +32,7 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class dlgBuscarSolicTrabajador extends JDialog implements KeyListener, ActionListener, MouseListener{
+public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, ActionListener, MouseListener{
 	MySqlTrabajadorDAO trabajadorDAO = new MySqlTrabajadorDAO();
 
 	private final JPanel contentPanel = new JPanel();
@@ -46,7 +46,7 @@ public class dlgBuscarSolicTrabajador extends JDialog implements KeyListener, Ac
 	 */
 	public static void main(String[] args) {
 		try {
-			dlgBuscarSolicTrabajador dialog = new dlgBuscarSolicTrabajador();
+			dlgBuscarEntrTrabajador dialog = new dlgBuscarEntrTrabajador();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -57,7 +57,7 @@ public class dlgBuscarSolicTrabajador extends JDialog implements KeyListener, Ac
 	/**
 	 * Create the dialog.
 	 */
-	public dlgBuscarSolicTrabajador() {
+	public dlgBuscarEntrTrabajador() {
 		setTitle("Trabajadores");
 		setBounds(100, 100, 667, 475);
 		getContentPane().setLayout(new BorderLayout());
@@ -112,7 +112,7 @@ public class dlgBuscarSolicTrabajador extends JDialog implements KeyListener, Ac
 		{
 			btnAñadir = new JButton("");
 			btnAñadir.addMouseListener(this);
-			btnAñadir.setIcon(new ImageIcon(dlgBuscarSolicTrabajador.class.getResource("/iconos/add.png")));
+			btnAñadir.setIcon(new ImageIcon(dlgBuscarEntrTrabajador.class.getResource("/iconos/add.png")));
 			btnAñadir.setBounds(444, 212, 197, 36);
 			contentPanel.add(btnAñadir);
 			btnAñadir.setActionCommand("OK");
@@ -180,9 +180,9 @@ public class dlgBuscarSolicTrabajador extends JDialog implements KeyListener, Ac
 				cargo = tblTrabajadores.getValueAt(posFila, 2).toString();
 				
 					//Enviar valores a las cajas de formulario frmBoleta
-					frmPecosa.txtSoliDni.setText(dni);
-					frmPecosa.txtSoliApeNom.setText(apenom);
-					frmPecosa.txtCargoSoli.setText(cargo);
+					frmPecosa.txtEntrDni.setText(dni);
+					frmPecosa.txtEntrApeNom.setText(apenom);
+					frmPecosa.txtCargoEntr.setText(cargo);
 					//cerrar ventana actual
 					dispose();
 				

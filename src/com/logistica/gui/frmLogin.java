@@ -132,8 +132,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		}
 	}
 	protected void actionPerformedBtnIniciar(ActionEvent e) {
-		
-		//variables
+				//variables
 				String login,clave;				
 				login=txtUsuario.getText();
 				clave=new String(txtClave.getPassword());				
@@ -151,7 +150,6 @@ public class frmLogin extends JFrame implements ActionListener {
 					txtClave.setText("");
 					txtUsuario.requestFocus();
 				}	
-		
 	}
 	protected void actionPerformedBtnCerrar(ActionEvent e) {
 		dispose();
