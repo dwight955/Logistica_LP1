@@ -29,7 +29,7 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 				bean.setCodigo(rs.getInt(1));
 				bean.setNombre(rs.getString(2));
 				bean.setApellido(rs.getString(3));
-				
+				bean.setIdCargo(rs.getInt(4));
 			}
 	
 		} catch (SQLException e) {

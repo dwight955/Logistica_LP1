@@ -1,8 +1,16 @@
 package com.logistica.entidad;
 
 public class Administradores {
-		private int codigo;
+	
+		private int codigo, idCargo;
 		private String nombre,apellido;
+		
+		public int getIdCargo() {
+			return idCargo;
+		}
+		public void setIdCargo(int idCargo) {
+			this.idCargo = idCargo;
+		}
 		public int getCodigo() {
 			return codigo;
 		}
