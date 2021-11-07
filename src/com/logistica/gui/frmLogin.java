@@ -139,10 +139,21 @@ public class frmLogin extends JFrame implements ActionListener {
 				clave=new String(txtClave.getPassword());				
 				Administradores adm=usuarioDAO.iniciarSesion(login, clave);				
 				if(adm!=null) {
-					frmPrincipal frm = new frmPrincipal();
-					frm.lblDatos.setText("Bienvedido(a): "+adm.getNombre()+" "+adm.getApellido());	
-					
-					frm.setVisible(true);					
+					if(adm.getIdCargo() == 1) {
+						frmMenuUnidadOrganica frm = new frmMenuUnidadOrganica();
+						frm.setVisible(true);
+					} else if(adm.getIdCargo() == 2) {
+						frmMenuDirecEjecLogistica frm = new frmMenuDirecEjecLogistica();
+						frm.setVisible(true);
+					} else if(adm.getIdCargo() == 3) {
+						frmMenuSubAlmacenero frm = new frmMenuSubAlmacenero();
+						frm.setVisible(true);
+					} else if(adm.getIdCargo() == 4) {
+						frmJefeDeUnidFuncAlmacen frm = new frmJefeDeUnidFuncAlmacen();
+						frm.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Error en la conexion... Intentelo otra vez");
+					}
 					dispose();
 				}
 				else {
