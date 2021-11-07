@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.text.Format;
 
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class frmLogin extends JFrame implements ActionListener {
 	MySqlUsuarioDAO usuarioDAO= new MySqlUsuarioDAO();
@@ -62,7 +63,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		setForeground(Color.WHITE);
 		setTitle("CONTROL DE ACCESO");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 645, 329);
+		setBounds(100, 100, 645, 333);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -155,8 +156,4 @@ public class frmLogin extends JFrame implements ActionListener {
 		dispose();
 		
 	}
-	
-	
-	
-	
 }

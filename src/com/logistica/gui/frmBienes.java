@@ -111,7 +111,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		tblBienes.getColumnModel().getColumn(1).setPreferredWidth(170);
 		tblBienes.getColumnModel().getColumn(2).setPreferredWidth(88);
 		tblBienes.getColumnModel().getColumn(3).setPreferredWidth(57);
-		tblBienes.getColumnModel().getColumn(4).setPreferredWidth(89);
+		tblBienes.getColumnModel().getColumn(4).setPreferredWidth(111);
 		tblBienes.getColumnModel().getColumn(5).setPreferredWidth(22);
 		tblBienes.getColumnModel().getColumn(6).setPreferredWidth(93);
 		scrollPane.setViewportView(tblBienes);
@@ -256,7 +256,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 			btnGuardar.setText("Guardar");
 		}else {
 			String cod,desc,stock,prec,unidad,cate,fecIng;
-			cod = txtCodigo.getText();
+			cod = txtCodigo.getText().toUpperCase();
 			desc = txtDescripcion.getText().toUpperCase();
 			stock = txtStock.getText();
 			prec = txtPrecioUnitario.getText();
@@ -301,7 +301,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 	}
 	protected void actionPerformedBtnActualizar(ActionEvent e) {
 			String cod,desc,stock,prec,unidad,cate,fecIng;
-			cod = txtCodigo.getText();
+			cod = txtCodigo.getText().toUpperCase();
 			desc = txtDescripcion.getText().toUpperCase();
 			stock = txtStock.getText();
 			prec = txtPrecioUnitario.getText();

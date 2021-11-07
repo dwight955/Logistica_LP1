@@ -101,7 +101,7 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		
 		cboCargo = new JComboBox();
 		cboCargo.addActionListener(this);
-		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR", "SUB-ALMACENERO", "SECRETARIA"}));
+		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR", "SUB-ALMACENERO", "SECRETARIA","JUFA"}));
 		cboCargo.setBounds(444, 157, 197, 22);
 		contentPanel.add(cboCargo);
 		

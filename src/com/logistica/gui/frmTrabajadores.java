@@ -161,7 +161,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		cboCargo = new JComboBox();
 		cboCargo.setEnabled(false);
 		cboCargo.setBounds(230, 268, 167, 25);
-		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUB-ALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR"}));
+		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUB-ALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR","JUFA"}));
 		contentPane.add(cboCargo);
 		
 		JLabel lblFecha = new JLabel("Sueldo");

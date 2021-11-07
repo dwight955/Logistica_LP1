@@ -41,10 +41,14 @@ public class frmPrincipal extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JMenuItem mntmEmisionDePecosa;
 	private JMenuItem mntmCerrar;
-	private JMenuItem mntmInventarioInicial;
 	public JLabel lblDatos;
 	public static JLabel lblHora;
 	public static JLabel lblFecha2;
+	private JMenu mnMantenimiento;
+	private JMenuItem mntmBienes;
+	private JMenuItem mntmTrabajadores;
+	private JMenuItem mntmProveedores;
+	private JMenuItem mntmFormulacionDeOc;
 	
 
 	/**
@@ -88,13 +92,28 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		JMenu mnAlmacen = new JMenu("Almacen");
 		menuBar.add(mnAlmacen);
 		
-		mntmInventarioInicial = new JMenuItem("Inventario Inicial");
-		mntmInventarioInicial.addActionListener(this);
-		mnAlmacen.add(mntmInventarioInicial);
-		
 		mntmEmisionDePecosa = new JMenuItem("Emision de PECOSA");
 		mntmEmisionDePecosa.addActionListener(this);
 		mnAlmacen.add(mntmEmisionDePecosa);
+		
+		mntmFormulacionDeOc = new JMenuItem("Formulacion de O/C");
+		mntmFormulacionDeOc.addActionListener(this);
+		mnAlmacen.add(mntmFormulacionDeOc);
+		
+		mnMantenimiento = new JMenu("Mantenimiento");
+		menuBar.add(mnMantenimiento);
+		
+		mntmBienes = new JMenuItem("Bienes");
+		mntmBienes.addActionListener(this);
+		mnMantenimiento.add(mntmBienes);
+		
+		mntmTrabajadores = new JMenuItem("Trabajadores");
+		mntmTrabajadores.addActionListener(this);
+		mnMantenimiento.add(mntmTrabajadores);
+		
+		mntmProveedores = new JMenuItem("Proveedores");
+		mntmProveedores.addActionListener(this);
+		mnMantenimiento.add(mntmProveedores);
 		
 		JMenu mnReporte = new JMenu("Reporte");
 		menuBar.add(mnReporte);
@@ -129,8 +148,17 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		
 	}
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == mntmInventarioInicial) {
-			actionPerformedMntmInventarioInicial(e);
+		if (e.getSource() == mntmFormulacionDeOc) {
+			actionPerformedMntmFormulacionDeOc(e);
+		}
+		if (e.getSource() == mntmProveedores) {
+			actionPerformedMntmProveedores(e);
+		}
+		if (e.getSource() == mntmTrabajadores) {
+			actionPerformedMntmTrabajadores(e);
+		}
+		if (e.getSource() == mntmBienes) {
+			actionPerformedMntmBienes(e);
 		}
 		if (e.getSource() == mntmCerrar) {
 			actionPerformedMntmCerrar(e);
@@ -146,10 +174,24 @@ public class frmPrincipal extends JFrame implements ActionListener {
 	protected void actionPerformedMntmCerrar(ActionEvent e) {
 		System.exit(0);
 	}
-	
-	protected void actionPerformedMntmInventarioInicial(ActionEvent e) {
-		
+	protected void actionPerformedMntmBienes(ActionEvent e) {
+		frmBienes frm = new frmBienes();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
 	}
-	
-	
+	protected void actionPerformedMntmTrabajadores(ActionEvent e) {
+		frmTrabajadores frm = new frmTrabajadores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmProveedores(ActionEvent e) {
+		frmProveedores frm = new frmProveedores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmFormulacionDeOc(ActionEvent e) {
+		frmOrdenCompra frm = new frmOrdenCompra();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
 }
