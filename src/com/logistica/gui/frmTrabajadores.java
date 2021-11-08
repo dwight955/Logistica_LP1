@@ -88,14 +88,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		setTitle("Trabajadores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		setBounds(100, 100, 791, 515);
+		setBounds(100, 100, 858, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 48, 755, 191);
+		scrollPane.setBounds(10, 48, 822, 191);
 		contentPane.add(scrollPane);
 		
 		tblTrabajadores = new JTable();
@@ -105,7 +105,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			new Object[][] {
 			},
 			new String[] {
-				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo", "Sexo", "Distrito"
+				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo", "Sexo", "Distrito", "Unidad Organica"
 			}
 		));
 		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(39);
@@ -138,7 +138,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		contentPane.add(lblApellidosYNombres);
 		
 		JLabel lblCargo = new JLabel("Cargo");
-		lblCargo.setBounds(230, 250, 86, 14);
+		lblCargo.setBounds(247, 250, 86, 14);
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblCargo);
 		
@@ -160,7 +160,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		
 		cboCargo = new JComboBox();
 		cboCargo.setEnabled(false);
-		cboCargo.setBounds(230, 268, 167, 25);
+		cboCargo.setBounds(247, 268, 183, 25);
 		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUB-ALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR","JUFA"}));
 		contentPane.add(cboCargo);
 		
@@ -178,17 +178,17 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtSueldo.setColumns(10);
 		
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de Nacimiento");
-		lblFechaDeNacimiento.setBounds(230, 300, 159, 14);
+		lblFechaDeNacimiento.setBounds(247, 300, 159, 14);
 		lblFechaDeNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblFechaDeNacimiento);
 		
 		btnGuardar = new JButton("Nuevo");
-		btnGuardar.setBounds(633, 250, 106, 35);
+		btnGuardar.setBounds(726, 249, 106, 35);
 		btnGuardar.addActionListener(this);
 		contentPane.add(btnGuardar);
 		
 		btnActualizar = new JButton("Actualizar");
-		btnActualizar.setBounds(633, 299, 106, 35);
+		btnActualizar.setBounds(726, 298, 106, 35);
 		btnActualizar.setEnabled(false);
 		btnActualizar.addActionListener(this);
 		contentPane.add(btnActualizar);
@@ -204,19 +204,19 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtBuscarTrabajador.setColumns(10);
 		
 		JLabel lblSexo = new JLabel("Sexo");
-		lblSexo.setBounds(230, 356, 46, 14);
+		lblSexo.setBounds(247, 356, 46, 14);
 		lblSexo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblSexo);
 		
 		cboSexo = new JComboBox();
 		cboSexo.setEnabled(false);
-		cboSexo.setBounds(230, 380, 146, 25);
+		cboSexo.setBounds(247, 380, 183, 25);
 		cboSexo.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
 		contentPane.add(cboSexo);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
-		panel.setBounds(419, 283, 183, 85);
+		panel.setBounds(493, 250, 183, 85);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -235,13 +235,28 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		dtFecNac.setDateFormatString("dd/MM/yyyy");
 		dtFecNac.setDate(dt);
 		dtFecNac.setEnabled(false);
-		dtFecNac.setBounds(230, 323, 146, 25);
+		dtFecNac.setBounds(247, 323, 183, 25);
 		contentPane.add(dtFecNac);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
-		btnCancelar.setBounds(633, 352, 106, 35);
+		btnCancelar.setBounds(726, 351, 106, 35);
 		contentPane.add(btnCancelar);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
+		panel_1.setBounds(460, 346, 256, 85);
+		contentPane.add(panel_1);
+		
+		JComboBoxBD comboBoxBD = new JComboBoxBD("concat_ws('/',codUniOrg,nomUnidadOrg)", "TB_UnidadOrganica");
+		comboBoxBD.setBounds(10, 36, 225, 27);
+		panel_1.add(comboBoxBD);
+		
+		JLabel lblUnidadOrga = new JLabel("Unidad Orga.");
+		lblUnidadOrga.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblUnidadOrga.setBounds(10, 11, 86, 14);
+		panel_1.add(lblUnidadOrga);
 		
 		listar();
 	}
@@ -399,7 +414,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> data = trabajadorDAO.ListarTodo();
 		for(Trabajador tra:data) {
-			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis()};
+			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis(),tra.getCodUnidadOrg()};
 			modelo.addRow(filas);
 		}
 	}
@@ -504,5 +519,4 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			e.consume();
 		}
 	}
-	
 }

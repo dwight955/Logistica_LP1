@@ -19,13 +19,12 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
-			pstm.setString(1, bean.getUniOrgPec());
-			pstm.setInt(2,bean.getDniSoliPec());
-			pstm.setInt(3, bean.getDniEntrPec());
-			pstm.setString(4, bean.getEstadoPec());
-			pstm.setString(5, bean.getFecPec());
-			pstm.setString(6, bean.getReferencia());
-			pstm.setString(7, bean.getMeta());
+			pstm.setInt(1,bean.getDniSoliPec());
+			pstm.setInt(2, bean.getDniEntrPec());
+			pstm.setString(3, bean.getEstadoPec());
+			pstm.setString(4, bean.getFecPec());
+			pstm.setString(5, bean.getReferencia());
+			pstm.setInt(6, bean.getNumReq());
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -98,7 +97,7 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		String meta = null;
-		String sql = "call sp_buscarMeta(?)";
+		String sql = "select u.meta from tb_unidadorganica as u where codUniOrg=?";
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);

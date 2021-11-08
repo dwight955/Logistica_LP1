@@ -63,8 +63,9 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	private JButton btnSalir;
 	public static JButton btnBuscarSoliTrabajador;
 	public static JButton btnBuscarEntrTrabajador;
-	private TextAutoCompleter cn;
+	private TextAutoCompleter auto;
 	private JLabel lblPecosa;
+	private JTextField textField;
 
 
 	/**
@@ -101,19 +102,19 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(new Color(211, 211, 211));
 		panel.setForeground(new Color(0, 0, 0));
-		panel.setBounds(10, 54, 209, 118);
+		panel.setBounds(10, 54, 246, 131);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNPecosa = new JLabel("N\u00BA Pecosa:");
 		lblNPecosa.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNPecosa.setBounds(10, 29, 97, 23);
+		lblNPecosa.setBounds(10, 14, 97, 23);
 		panel.add(lblNPecosa);
 		
 		txtNumPecosa = new JTextField();
 		txtNumPecosa.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtNumPecosa.setEditable(false);
-		txtNumPecosa.setBounds(102, 26, 97, 28);
+		txtNumPecosa.setBounds(110, 12, 126, 28);
 		panel.add(txtNumPecosa);
 		txtNumPecosa.setColumns(10);
 		
@@ -121,20 +122,32 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtFecha.setEditable(false);
 		txtFecha.setColumns(10);
-		txtFecha.setBounds(102, 75, 97, 28);
+		txtFecha.setBounds(82, 86, 154, 28);
 		panel.add(txtFecha);
 		
 		JLabel lblFecha = new JLabel("Fecha:");
 		lblFecha.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFecha.setBounds(10, 76, 97, 23);
+		lblFecha.setBounds(10, 88, 97, 23);
 		panel.add(lblFecha);
+		
+		JLabel lblNRequerimiento = new JLabel("N\u00BA Requerimiento:");
+		lblNRequerimiento.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNRequerimiento.setBounds(10, 53, 126, 23);
+		panel.add(lblNRequerimiento);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField.setEditable(false);
+		textField.setColumns(10);
+		textField.setBounds(139, 50, 97, 28);
+		panel.add(textField);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setForeground(Color.BLACK);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBackground(new Color(135, 206, 235));
-		panel_1.setBounds(229, 84, 774, 163);
+		panel_1.setBounds(266, 84, 737, 163);
 		contentPane.add(panel_1);
 		
 		JLabel lblNewLabel = new JLabel("Solicitante DNI");
@@ -200,9 +213,10 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.add(lblUnid);
 		
 		txtUniOrg = new JTextFielBD("concat_ws(' - ',codUniOrg, nomUnidadOrg)","TB_UnidadOrganica");
+		txtUniOrg.addKeyListener(this);
 		txtUniOrg.setEditable(false);
 		txtUniOrg.setColumns(10);
-		txtUniOrg.setBounds(106, 86, 658, 27);
+		txtUniOrg.setBounds(106, 86, 621, 27);
 		panel_1.add(txtUniOrg);
 		
 		JLabel lblMeta = new JLabel("Meta  :");
@@ -211,23 +225,21 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.add(lblMeta);
 		
 		txtMeta = new JTextField();
-		txtMeta.addKeyListener(this);
 		txtMeta.setEditable(false);
 		txtMeta.setColumns(10);
-		txtMeta.setBounds(72, 123, 692, 27);
-	    cn = new TextAutoCompleter(txtMeta);
+		txtMeta.setBounds(72, 123, 655, 27);
 		panel_1.add(txtMeta);
 		
 		txtCargoSoli = new JTextField();
 		txtCargoSoli.setEditable(false);
 		txtCargoSoli.setColumns(10);
-		txtCargoSoli.setBounds(577, 11, 187, 27);
+		txtCargoSoli.setBounds(577, 11, 150, 27);
 		panel_1.add(txtCargoSoli);
 		
 		txtCargoEntr = new JTextField();
 		txtCargoEntr.setEditable(false);
 		txtCargoEntr.setColumns(10);
-		txtCargoEntr.setBounds(577, 48, 187, 27);
+		txtCargoEntr.setBounds(577, 48, 150, 27);
 		panel_1.add(txtCargoEntr);
 		
 		btnBuscarSoliTrabajador = new JButton("");
@@ -259,7 +271,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtReferencia = new JTextField();
 		txtReferencia.setEditable(false);
 		txtReferencia.setColumns(10);
-		txtReferencia.setBounds(100, 7, 652, 27);
+		txtReferencia.setBounds(100, 7, 664, 27);
 		panel_2.add(txtReferencia);
 		
 		JLabel lblEstado = new JLabel("Estado  :");
@@ -338,8 +350,8 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		}
 	}
 	public void keyReleased(KeyEvent e) {
-		if (e.getSource() == txtMeta) {
-			keyReleasedTxtMeta(e);
+		if (e.getSource() == txtUniOrg) {
+			keyReleasedTxtUniOrg(e);
 		}
 		if (e.getSource() == txtEntrDni) {
 			keyReleasedTxtEntrDni(e);
@@ -430,12 +442,6 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtEntrApeNom.setText(data[0]);
 		txtCargoEntr.setText(data[1]);
 	}
-	protected void keyReleasedTxtMeta(KeyEvent e) {
-		String part[] = txtUniOrg.getText().split(" - ");
-		String m = pecosaDao.buscarMeta(part[0]);
-		cn.removeAllItems();
-		cn.addItem(m);
-	}
 	protected void actionPerformedBtnBuscarSoliTrabajador(ActionEvent e) {
 		dlgBuscarSolicTrabajador buscartra = new dlgBuscarSolicTrabajador();
 		buscartra.setVisible(true);
@@ -445,5 +451,10 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		dlgBuscarEntrTrabajador buscartra = new dlgBuscarEntrTrabajador();
 		buscartra.setVisible(true);
 		buscartra.setLocationRelativeTo(null);
+	}
+	protected void keyReleasedTxtUniOrg(KeyEvent e) {
+		String part[] = txtUniOrg.getText().split(" - ");
+		String m = pecosaDao.buscarMeta(part[0]);
+		txtMeta.setText(m);
 	}
 }

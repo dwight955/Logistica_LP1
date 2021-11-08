@@ -127,6 +127,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				tra.setSueldo(rs.getDouble(5));
 				tra.setSexo(rs.getString(6));
 				tra.setCodDis(rs.getString(7));
+				tra.setCodUnidadOrg(rs.getString(8));
 				lista.add(tra);
 			}
 		} catch (SQLException e) {
