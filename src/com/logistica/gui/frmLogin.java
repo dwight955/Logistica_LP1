@@ -8,7 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.logistica.controlador.MySqlUsuarioDAO;
-import com.logistica.entidad.Administradores;
+import com.logistica.entidad.Logistica;
+import com.logistica.entidad.UnidadOrganica;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,6 +38,8 @@ public class frmLogin extends JFrame implements ActionListener {
 	private JLabel lblNewLabel;
 	private JButton btnIniciar;
 	private JButton btnCerrar;
+	
+	public UnidadOrganica uorg;
 
 	/**
 	 * Launch the application.
@@ -135,33 +138,68 @@ public class frmLogin extends JFrame implements ActionListener {
 	protected void actionPerformedBtnIniciar(ActionEvent e) {
 				//variables
 				String login,clave;				
+
 				login=txtUsuario.getText();
-				clave=new String(txtClave.getPassword());				
-				Administradores adm=usuarioDAO.iniciarSesion(login, clave);				
-				if(adm!=null) {
-					if(adm.getIdCargo() == 1) {
+				clave=new String(txtClave.getPassword());
+				
+				String[] log = login.split("/");
+				
+				if(log[0].equals("UO")) {
+					UnidadOrganica uorg = new UnidadOrganica();
+					uorg = usuarioDAO.iniciarSesionUnOrg(login, clave);
+					if(uorg != null) {
 						frmMenuUnidadOrganica frm = new frmMenuUnidadOrganica();
+						frm.setTitle("Unidad Organica : " + uorg.getNomUnidOrg());
+						frm.lblNomCargo.setText("Cargo : " + uorg.getCargo());
+	
 						frm.setVisible(true);
-					} else if(adm.getIdCargo() == 2) {
-						frmMenuDirecEjecLogistica frm = new frmMenuDirecEjecLogistica();
-						frm.setVisible(true);
-					} else if(adm.getIdCargo() == 3) {
-						frmMenuSubAlmacenero frm = new frmMenuSubAlmacenero();
-						frm.setVisible(true);
-					} else if(adm.getIdCargo() == 4) {
-						frmJefeDeUnidFuncAlmacen frm = new frmJefeDeUnidFuncAlmacen();
-						frm.setVisible(true);
-					}else {
-						JOptionPane.showMessageDialog(null, "Error en la conexion... Intentelo otra vez");
+						dispose();
 					}
-					dispose();
+					else {
+						JOptionPane.showMessageDialog(null, "Usuario y/o clave incorrectos..");
+						txtUsuario.setText("");
+						txtClave.setText("");
+						txtUsuario.requestFocus();
+					}
+				}
+				else if(log[0].equals("LO")) {
+					
+					Logistica lgt = usuarioDAO.iniciarSesionLog(login, clave);
+					if(lgt != null) {
+						
+						if(lgt.getIdCargo() == 2) {
+							frmMenuDirecEjecLogistica frm = new frmMenuDirecEjecLogistica();
+							frm.lblNomDirec.setText(lgt.getNombre());
+							frm.setVisible(true);
+						} else if(lgt.getIdCargo() == 3) {
+							frmMenuSubAlmacenero frm = new frmMenuSubAlmacenero();
+							frm.lblBienvenido.setText("Bienvenido : " + lgt.getNombre());
+							frm.lblCargo.setText("Cargo : " + lgt.getCargo());
+							frm.setVisible(true);
+						} else if(lgt.getIdCargo() == 4) {
+							frmJefeDeUnidFuncAlmacen frm = new frmJefeDeUnidFuncAlmacen();
+							frm.lblNomJufa.setText(lgt.getNombre());
+							frm.setVisible(true);
+						}else {
+							JOptionPane.showMessageDialog(null, "Error en la conexion... Intentelo otra vez");
+						}
+						
+						dispose();
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Usuario y/o clave incorrectos..");
+						txtUsuario.setText("");
+						txtClave.setText("");
+						txtUsuario.requestFocus();
+					}
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Usuario y/o clave incorrectos..");
 					txtUsuario.setText("");
 					txtClave.setText("");
 					txtUsuario.requestFocus();
-				}	
+				}
+					
 	}
 	protected void actionPerformedBtnCerrar(ActionEvent e) {
 		dispose();

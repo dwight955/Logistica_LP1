@@ -20,7 +20,9 @@ import java.awt.Color;
 public class frmMenuSubAlmacenero extends JFrame {
 
 	private JPanel contentPane;
-
+	public JLabel lblBienvenido;
+	public JLabel lblCargo;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -41,6 +43,7 @@ public class frmMenuSubAlmacenero extends JFrame {
 	 * Create the frame.
 	 */
 	FondoPanel imagen = new FondoPanel();
+	
 	public frmMenuSubAlmacenero() {
 		setTitle("Sub Almacen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,18 +75,19 @@ public class frmMenuSubAlmacenero extends JFrame {
 		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(230, 230, 250));
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		panel.setBounds(10, 11, 202, 79);
+		panel.setBounds(10, 11, 374, 79);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Bienvenido:");
-		lblNewLabel.setBounds(10, 11, 100, 21);
-		panel.add(lblNewLabel);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblBienvenido = new JLabel("Bienvenido:");
+		lblBienvenido.setBounds(10, 11, 354, 21);
+		panel.add(lblBienvenido);
+		lblBienvenido.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		
-		JLabel lblCargo = new JLabel("Cargo:");
-		lblCargo.setBounds(10, 47, 100, 21);
+		lblCargo = new JLabel("Cargo:");
+		lblCargo.setBounds(10, 47, 354, 21);
 		panel.add(lblCargo);
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		

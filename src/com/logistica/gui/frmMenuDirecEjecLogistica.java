@@ -16,10 +16,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Color;
 
 public class frmMenuDirecEjecLogistica extends JFrame {
 
 	private JPanel contentPane;
+
 
 	/**
 	 * Launch the application.
@@ -41,6 +43,7 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 	 * Create the frame.
 	 */
 	FondoPanel imagen = new FondoPanel();
+	public JLabel lblNomDirec;
 	public frmMenuDirecEjecLogistica() {
 		setTitle("Director Ejecutivo de Logistica");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,7 +79,7 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("BIENVENIDO");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Swis721 Hv BT", Font.PLAIN, 17));
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 17));
 		lblNewLabel.setBounds(251, 11, 134, 41);
 		getContentPane().add(lblNewLabel);
 		
@@ -85,6 +88,13 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		lblDirectorEjecutivoDe.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDirectorEjecutivoDe.setBounds(195, 101, 249, 19);
 		getContentPane().add(lblDirectorEjecutivoDe);
+		
+		lblNomDirec = new JLabel("New label");
+		lblNomDirec.setForeground(new Color(65, 105, 225));
+		lblNomDirec.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNomDirec.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+		lblNomDirec.setBounds(139, 63, 385, 19);
+		getContentPane().add(lblNomDirec);
 	}
 	class FondoPanel extends JPanel
 	{

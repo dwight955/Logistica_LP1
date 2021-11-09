@@ -23,6 +23,9 @@ import java.awt.SystemColor;
 import java.awt.Color;
 import java.awt.Cursor;
 
+import com.logistica.entidad.UnidadOrganica;
+import com.logistica.gui.frmLogin;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.border.LineBorder;
@@ -34,7 +37,9 @@ import javax.swing.JMenuItem;
 public class frmMenuUnidadOrganica extends JFrame{
 
 	private JPanel contentPane;
-
+	public JFrame windows;
+	public JLabel lblNomCargo;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -51,6 +56,7 @@ public class frmMenuUnidadOrganica extends JFrame{
 		});
 	}
 	FondoPanel imagen = new FondoPanel();
+	
 	public frmMenuUnidadOrganica() {
 		setTitle("Unidad Organica: (Nombre de la unidad org.)");
 		setBackground(new Color(0, 120, 215));
@@ -82,21 +88,23 @@ public class frmMenuUnidadOrganica extends JFrame{
 		mnConsultar.add(mntmVerListadoDe);
 		getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Bienvenido:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblNewLabel.setBounds(20, 27, 102, 26);
-		getContentPane().add(lblNewLabel);
+		lblNomCargo = new JLabel("Cargo: " );
+		lblNomCargo.setBackground(new Color(250, 240, 230));
+		lblNomCargo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNomCargo.setBounds(20, 62, 420, 20);
+		getContentPane().add(lblNomCargo);
 		
-		JLabel lblCargo = new JLabel("Cargo:");
-		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblCargo.setBounds(20, 75, 102, 26);
-		getContentPane().add(lblCargo);
+		JLabel lblBienvenido = new JLabel("Bienvenido:");
+		lblBienvenido.setBackground(new Color(250, 240, 230));
+		lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblBienvenido.setBounds(20, 25, 538, 14);
+		getContentPane().add(lblBienvenido);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(100, 149, 237));
-		panel.setBounds(10, 11, 259, 106);
+		panel.setBackground(new Color(230, 230, 250));
+		panel.setBounds(10, 11, 397, 83);
 		getContentPane().add(panel);
-		
+
 	}
 	
 	class FondoPanel extends JPanel
@@ -115,4 +123,5 @@ public class frmMenuUnidadOrganica extends JFrame{
 			
 		}
 	}
+	
 }
