@@ -1,8 +1,9 @@
 package com.logistica.interfaces;
 
-import com.logistica.entidad.Administradores;
+import com.logistica.entidad.Logistica;
+import com.logistica.entidad.UnidadOrganica;
 
 public interface UsuarioDAO {
-	public Administradores iniciarSesion(String login,String clave);
-	
+	public Logistica iniciarSesionLog(String login,String clave);
+	public UnidadOrganica iniciarSesionUnOrg(String login,String clave);
 }

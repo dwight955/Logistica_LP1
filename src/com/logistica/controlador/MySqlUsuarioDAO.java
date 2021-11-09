@@ -5,31 +5,71 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.logistica.entidad.Administradores;
+import com.logistica.entidad.Logistica;
+import com.logistica.entidad.UnidadOrganica;
 import com.logistica.interfaces.UsuarioDAO;
 import com.logistica.utils.MySqlConexion;
 
 public class MySqlUsuarioDAO implements UsuarioDAO {
 
 	@Override
-	public Administradores iniciarSesion(String login, String clave) {
-		Administradores  bean=null;
+	public Logistica iniciarSesionLog(String login, String clave) {
+		Logistica  bean=null;
 		Connection cn=null;
 		CallableStatement cstm=null;
 		ResultSet rs=null;
 		try {
 			cn=MySqlConexion.getConexion();
-			String sql="call Iniciar_sesion (?,?)";
+			String sql="call Iniciar_sesion_Logistica(?,?)";
 			cstm=cn.prepareCall(sql);
 			cstm.setString(1, login);
 			cstm.setString(2, clave);
 			rs=cstm.executeQuery();
 			if(rs.next()) {
-				bean= new Administradores();
-				bean.setCodigo(rs.getInt(1));
+				bean= new Logistica();
+				bean.setDni(rs.getString(1));
 				bean.setNombre(rs.getString(2));
-				bean.setApellido(rs.getString(3));
-				bean.setIdCargo(rs.getInt(4));
+				bean.setFecNac(rs.getString(3));
+				bean.setSueldo(rs.getDouble(4));
+				bean.setSexo(rs.getString(5));
+				bean.setCargo(rs.getString(6));
+				bean.setIdCargo(rs.getInt(7));
+			}
+	
+		} catch (SQLException e) {
+				e.printStackTrace();
+		}
+		finally {
+			try {
+					if(rs != null) rs.close();
+					if(cstm != null) cstm.close();
+					if(cn !=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		// TODO Auto-generated method stub
+		return bean;
+	}
+
+	@Override
+	public UnidadOrganica iniciarSesionUnOrg(String login, String clave) {
+		UnidadOrganica bean=null;
+		Connection cn=null;
+		CallableStatement cstm=null;
+		ResultSet rs=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="call Iniciar_sesion_UnOrgSoli(?,?)";
+			cstm=cn.prepareCall(sql);
+			cstm.setString(1, login);
+			cstm.setString(2, clave);
+			rs=cstm.executeQuery();
+			if(rs.next()) {
+				bean= new UnidadOrganica();
+				bean.setNomUnidOrg(rs.getString(1));
+				bean.setCargo(rs.getString(2));
+				bean.setIdCargo(rs.getInt(3));
 			}
 	
 		} catch (SQLException e) {
