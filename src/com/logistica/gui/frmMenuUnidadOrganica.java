@@ -33,9 +33,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class frmMenuUnidadOrganica extends JFrame{
-
+public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 	private JPanel contentPane;
 	public JFrame windows;
 	public JLabel lblNomCargo;
@@ -56,6 +57,8 @@ public class frmMenuUnidadOrganica extends JFrame{
 		});
 	}
 	FondoPanel imagen = new FondoPanel();
+	public JLabel lblBienvenido;
+	private JMenuItem mntmGenerarCuadroDe;
 	
 	public frmMenuUnidadOrganica() {
 		setTitle("Unidad Organica: (Nombre de la unidad org.)");
@@ -78,7 +81,8 @@ public class frmMenuUnidadOrganica extends JFrame{
 		JMenu mnAlmacen = new JMenu("Almacen");
 		menuBar.add(mnAlmacen);
 		
-		JMenuItem mntmGenerarCuadroDe = new JMenuItem("Generar Cuadro de Requerimientos");
+		mntmGenerarCuadroDe = new JMenuItem("Generar Cuadro de Requerimientos");
+		mntmGenerarCuadroDe.addActionListener(this);
 		mnAlmacen.add(mntmGenerarCuadroDe);
 		
 		JMenu mnConsultar = new JMenu("Consultar");
@@ -94,10 +98,10 @@ public class frmMenuUnidadOrganica extends JFrame{
 		lblNomCargo.setBounds(20, 62, 420, 20);
 		getContentPane().add(lblNomCargo);
 		
-		JLabel lblBienvenido = new JLabel("Bienvenido:");
+		lblBienvenido = new JLabel("Bienvenido:");
 		lblBienvenido.setBackground(new Color(250, 240, 230));
 		lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblBienvenido.setBounds(20, 25, 538, 14);
+		lblBienvenido.setBounds(20, 25, 404, 14);
 		getContentPane().add(lblBienvenido);
 		
 		JPanel panel = new JPanel();
@@ -105,6 +109,12 @@ public class frmMenuUnidadOrganica extends JFrame{
 		panel.setBounds(10, 11, 397, 83);
 		getContentPane().add(panel);
 
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmGenerarCuadroDe) {
+			actionPerformedMntmGenerarCuadroDe(e);
+		}
 	}
 	
 	class FondoPanel extends JPanel
@@ -123,5 +133,10 @@ public class frmMenuUnidadOrganica extends JFrame{
 			
 		}
 	}
-	
+
+	protected void actionPerformedMntmGenerarCuadroDe(ActionEvent e) {
+		frmCuadroRequerimientos frm =new frmCuadroRequerimientos();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
 }

@@ -101,7 +101,7 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
-			pstm.setInt(1, Integer.parseInt(unidad));
+			pstm.setString(1, unidad);
 			rs = pstm.executeQuery();
 			if(rs.next()) {
 				meta = rs.getString(1);

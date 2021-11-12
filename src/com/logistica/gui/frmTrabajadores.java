@@ -105,7 +105,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			new Object[][] {
 			},
 			new String[] {
-				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo", "Sexo", "Distrito", "Unidad Organica"
+				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo", "Sexo", "Distrito"
 			}
 		));
 		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(39);
@@ -242,21 +242,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		btnCancelar.addActionListener(this);
 		btnCancelar.setBounds(726, 351, 106, 35);
 		contentPane.add(btnCancelar);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
-		panel_1.setBounds(460, 346, 256, 85);
-		contentPane.add(panel_1);
-		
-		JComboBoxBD comboBoxBD = new JComboBoxBD("concat_ws('/',codUniOrg,nomUnidadOrg)", "TB_UnidadOrganica");
-		comboBoxBD.setBounds(10, 36, 225, 27);
-		panel_1.add(comboBoxBD);
-		
-		JLabel lblUnidadOrga = new JLabel("Unidad Orga.");
-		lblUnidadOrga.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUnidadOrga.setBounds(10, 11, 86, 14);
-		panel_1.add(lblUnidadOrga);
 		
 		listar();
 	}
@@ -414,7 +399,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> data = trabajadorDAO.ListarTodo();
 		for(Trabajador tra:data) {
-			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis(),tra.getCodUnidadOrg()};
+			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis()};
 			modelo.addRow(filas);
 		}
 	}

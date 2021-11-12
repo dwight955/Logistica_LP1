@@ -1,7 +1,7 @@
 package com.logistica.entidad;
 
 public class Trabajador {
-	private String nomApe, cargo, fecNac,sexo,codDis,codUnidadOrg;
+	private String nomApe, cargo, fecNac,sexo,codDis;
 	private int dni;
 	private double sueldo;
 	
@@ -46,11 +46,5 @@ public class Trabajador {
 	}
 	public void setSueldo(double sueldo) {
 		this.sueldo = sueldo;
-	}
-	public String getCodUnidadOrg() {
-		return codUnidadOrg;
-	}
-	public void setCodUnidadOrg(String codUnidadOrg) {
-		this.codUnidadOrg = codUnidadOrg;
 	}
 }

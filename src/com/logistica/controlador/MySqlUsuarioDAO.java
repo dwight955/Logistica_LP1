@@ -67,12 +67,14 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 			rs=cstm.executeQuery();
 			if(rs.next()) {
 				bean= new UnidadOrganica();
-				bean.setNomUnidOrg(rs.getString(1));
+				bean.setApenom(rs.getString(1));
 				bean.setCargo(rs.getString(2));
-				bean.setIdCargo(rs.getInt(3));
+				bean.setNomUnidOrg(rs.getString(3));
+				bean.setDnilogin(rs.getInt(5));
 			}
 	
 		} catch (SQLException e) {
+				System.out.println(">>Problemas en Unidad Organica Iniciar Sesion");
 				e.printStackTrace();
 		}
 		finally {

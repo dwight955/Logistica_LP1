@@ -38,9 +38,8 @@ public class frmLogin extends JFrame implements ActionListener {
 	private JLabel lblNewLabel;
 	private JButton btnIniciar;
 	private JButton btnCerrar;
-	
 	public UnidadOrganica uorg;
-
+	public static String apenom,dni,unidad;
 	/**
 	 * Launch the application.
 	 */
@@ -66,7 +65,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		setForeground(Color.WHITE);
 		setTitle("CONTROL DE ACCESO");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 645, 333);
+		setBounds(100, 100, 645, 375);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -115,7 +114,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		btnIniciar.setAutoscrolls(true);
 		btnIniciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnIniciar.setBackground(new Color(0, 153, 102));
-		btnIniciar.setBounds(148, 199, 101, 38);
+		btnIniciar.setBounds(148, 247, 101, 38);
 		contentPane.add(btnIniciar);
 		
 		btnCerrar = new JButton("Cancelar");
@@ -124,7 +123,7 @@ public class frmLogin extends JFrame implements ActionListener {
 		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnCerrar.setBackground(new Color(153, 0, 51));
 		btnCerrar.setAutoscrolls(true);
-		btnCerrar.setBounds(270, 199, 101, 38);
+		btnCerrar.setBounds(270, 247, 101, 38);
 		contentPane.add(btnCerrar);
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -138,7 +137,7 @@ public class frmLogin extends JFrame implements ActionListener {
 	protected void actionPerformedBtnIniciar(ActionEvent e) {
 				//variables
 				String login,clave;				
-
+				
 				login=txtUsuario.getText();
 				clave=new String(txtClave.getPassword());
 				
@@ -149,9 +148,14 @@ public class frmLogin extends JFrame implements ActionListener {
 					uorg = usuarioDAO.iniciarSesionUnOrg(login, clave);
 					if(uorg != null) {
 						frmMenuUnidadOrganica frm = new frmMenuUnidadOrganica();
-						frm.setTitle("Unidad Organica : " + uorg.getNomUnidOrg());
+						apenom = uorg.getApenom();
+						dni = String.valueOf(uorg.getDnilogin());
+						unidad = uorg.getNomUnidOrg();
+						String[] part = unidad.split(" - ");
+						frm.lblBienvenido.setText("Bienvenido: " + apenom);
+						frm.setTitle("Unidad Organica : " + part[1]);
 						frm.lblNomCargo.setText("Cargo : " + uorg.getCargo());
-	
+						
 						frm.setVisible(true);
 						dispose();
 					}

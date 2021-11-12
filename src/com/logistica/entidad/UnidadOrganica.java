@@ -2,8 +2,8 @@ package com.logistica.entidad;
 
 public class UnidadOrganica {
 	
-	private String nomUnidOrg, cargo;
-	private int idCargo;
+	private String nomUnidOrg, cargo,apenom;
+	private int idCargo,dnilogin;
 
 	
 	public int getIdCargo() {
@@ -28,6 +28,22 @@ public class UnidadOrganica {
 
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
+	}
+
+	public String getApenom() {
+		return apenom;
+	}
+
+	public void setApenom(String apenom) {
+		this.apenom = apenom;
+	}
+
+	public int getDnilogin() {
+		return dnilogin;
+	}
+
+	public void setDnilogin(int dnilogin) {
+		this.dnilogin = dnilogin;
 	}
 	
 	

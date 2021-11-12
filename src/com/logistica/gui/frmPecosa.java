@@ -212,7 +212,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		lblUnid.setBounds(10, 86, 105, 23);
 		panel_1.add(lblUnid);
 		
-		txtUniOrg = new JTextFielBD("concat_ws(' - ',codUniOrg, nomUnidadOrg)","TB_UnidadOrganica");
+		txtUniOrg = new JTextFielBD("concat_ws(' - ',codUniOrg, nomUniOrg)","TB_Unidadorganica");
 		txtUniOrg.addKeyListener(this);
 		txtUniOrg.setEditable(false);
 		txtUniOrg.setColumns(10);
@@ -286,7 +286,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(txtEstado);
 		
 		tblDetallePecosa = new JScrollPane();
-		tblDetallePecosa.setBounds(10, 311, 993, 226);
+		tblDetallePecosa.setBounds(10, 310, 993, 226);
 		contentPane.add(tblDetallePecosa);
 		
 		table = new JTable();
