@@ -31,10 +31,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 					pstm.setInt(1, bean.getDni());
 					pstm.setString(2, bean.getNomApe());
 					pstm.setString(3, bean.getCargo());
-					pstm.setString(4, bean.getFecNac());
-					pstm.setDouble(5, bean.getSueldo());
 					pstm.setString(6, bean.getSexo());
-					pstm.setString(7, bean.getCodDis());
 					salida = pstm.executeUpdate();
 				} catch (SQLException e) {
 				  e.printStackTrace();
@@ -69,10 +66,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 			pstm = cn.prepareStatement(sql);
 			pstm.setString(1, bean.getNomApe());
 			pstm.setString(2, bean.getCargo());
-			pstm.setString(3, bean.getFecNac());
-			pstm.setDouble(4, bean.getSueldo());
 			pstm.setString(5, bean.getSexo());
-			pstm.setString(6, bean.getCodDis());
 			pstm.setInt(7, bean.getDni());
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -123,10 +117,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				tra.setDni(rs.getInt(1));
 				tra.setNomApe(rs.getString(2));
 				tra.setCargo(rs.getString(3));
-				tra.setFecNac(rs.getString(4));
-				tra.setSueldo(rs.getDouble(5));
 				tra.setSexo(rs.getString(6));
-				tra.setCodDis(rs.getString(7));
 				lista.add(tra);
 			}
 		} catch (SQLException e) {
@@ -144,28 +135,29 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 		return lista;
 	}
 	@Override
-	public ArrayList<Trabajador> buscarTrabajador(String apenom, String como, String cargo) {
+	public ArrayList<Trabajador> ListarBusqueda(String apenom,String comodin, String unidadOrg) {
 		ArrayList<Trabajador> lista = new ArrayList<Trabajador>();
 		Connection cn=null;
 		CallableStatement cstm=null;
 		ResultSet rs=null;
 		try {
 			cn=MySqlConexion.getConexion();
-			String sql="call sp_buscar_trabajador_por_apenom(?,?,?)";
+			String sql="call sp_buscar_trabajador(?,?,?)";
 			cstm=cn.prepareCall(sql);
 			cstm.setString(1, apenom);
-			cstm.setString(2, como);
-			cstm.setString(3, cargo);
+			cstm.setString(2, comodin);
+			cstm.setString(3, unidadOrg);
 			rs=cstm.executeQuery();
 			while(rs.next()){
 				Trabajador tra = new Trabajador();
 				tra.setDni(rs.getInt(1));
 				tra.setNomApe(rs.getString(2));
-				tra.setCargo(rs.getString(3));
+				tra.setUnidadOrga(rs.getString(3));
 				lista.add(tra);
-			}			
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println(">>Error en MySqlTrabajadorDAO.buscarTrabajador()");
 		}
 		finally {
 			try {
@@ -177,6 +169,37 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 			}
 		}
 		return lista;
+	}
+	@Override
+	public String[] buscarTrabajador(String str) {
+		String cadena[] = new String[2];
+		Connection cn = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String sql = "select t.apeNomTrabajador, uo.nomUniOrg from tb_trabajadores as t  join tb_unidadorganica as uo "+
+				"on t.codUniOrg = uo.codUniOrg "+
+				"where dnitrabajador like "+ '"'+str+'"';
+		try {
+			cn = MySqlConexion.getConexion();
+			pstm = cn.prepareStatement(sql);
+			rs = pstm.executeQuery();
+			while(rs.next()) {
+				cadena[0] = rs.getString(2);
+				cadena[1] = rs.getString(3);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Hay un problema en MySqlPecosaDAO");
+		} finally {
+			try {
+				if(cn !=null) cn.close();
+				if(pstm != null)pstm.close();
+				if(rs != null)rs.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return cadena;
 	}
 
 }

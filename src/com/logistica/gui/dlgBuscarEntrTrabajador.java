@@ -38,7 +38,7 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtBuscarTrabajadores;
 	private JTable tblTrabajadores;
-	private JComboBox cboCargo;
+	private JComboBox cboUnidadOrg;
 	private JButton btnAñadir;
 
 	/**
@@ -74,7 +74,7 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 			new Object[][] {
 			},
 			new String[] {
-				"DNI", "Apellidos y Nombres", "Cargo"
+				"DNI", "Apellidos y Nombres", "Unidad Organica"
 			}
 		));
 		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(16);
@@ -99,18 +99,19 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		lblNewLabel_1.setBounds(165, 11, 340, 36);
 		contentPanel.add(lblNewLabel_1);
 		
-		cboCargo = new JComboBox();
-		cboCargo.addActionListener(this);
-		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR", "SUB-ALMACENERO", "SECRETARIA","JUFA"}));
-		cboCargo.setBounds(444, 157, 197, 22);
-		contentPanel.add(cboCargo);
+		cboUnidadOrg = new JComboBox();
+		cboUnidadOrg.addActionListener(this);
+		cboUnidadOrg.setModel(new DefaultComboBoxModel(new String[] {"[TODOS]", "ALCALDIA", "ADMINISTRACION TRIBUTARIA", "GERENCIA MUNICIPAL", "SERENAZGO", "PRESIDENCIA", "CONTABILIDAD"}));
+		cboUnidadOrg.setBounds(444, 157, 197, 22);
+		contentPanel.add(cboUnidadOrg);
 		
-		JLabel lblCargo = new JLabel("Cargo:");
+		JLabel lblCargo = new JLabel("Unidad Organica:");
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCargo.setBounds(444, 126, 136, 22);
 		contentPanel.add(lblCargo);
 		{
 			btnAñadir = new JButton("");
+			btnAñadir.addActionListener(this);
 			btnAñadir.addMouseListener(this);
 			btnAñadir.setIcon(new ImageIcon(dlgBuscarEntrTrabajador.class.getResource("/iconos/add.png")));
 			btnAñadir.setBounds(444, 212, 197, 36);
@@ -118,6 +119,7 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 			btnAñadir.setActionCommand("OK");
 			getRootPane().setDefaultButton(btnAñadir);
 		}
+		listar("", "%", "");
 	}
 	public void keyPressed(KeyEvent e) {
 	}
@@ -141,52 +143,50 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == cboCargo) {
+		if (e.getSource() == cboUnidadOrg) {
 			actionPerformedCboCargo(e);
 		}
 	}
 	protected void keyReleasedTxtBuscarTrabajadores(KeyEvent e) {
 		String apenomTra = txtBuscarTrabajadores.getText();
 		String comodin = "%";
-		String cargo = cboCargo.getSelectedItem().toString();
-		listar(apenomTra, comodin, cargo);
+		String unidad = cboUnidadOrg.getSelectedItem().toString();
+		listar(apenomTra, comodin, unidad);
 	}
 	
 	protected void actionPerformedCboCargo(ActionEvent e) {
 		String apenomTra = "";
 		String comodin = "";
-		String cargo = cboCargo.getSelectedItem().toString();
-		listar(apenomTra, comodin, cargo);
+		String unidad = cboUnidadOrg.getSelectedItem().toString();
+		listar(apenomTra, comodin, unidad);
 	}
-	void listar(String apenomTra,String comodin, String cargo) {
-		if(apenomTra.equals("")) comodin = "";
+	void listar(String apenomTra,String comodin, String unidad) {
+		if(apenomTra.equals("") && unidad.equals("[TODOS]")) comodin = "%";
 		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
 		modelo.setRowCount(0);
-		ArrayList<Trabajador> lista = trabajadorDAO.buscarTrabajador(apenomTra, comodin, cargo);
+		ArrayList<Trabajador> lista = trabajadorDAO.ListarBusqueda(apenomTra, comodin, unidad);
 		for(Trabajador tra:lista) {
-			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getCargo()};
+			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getUnidadOrga()};
 			modelo.addRow(filas);
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
 				//varaible
-				String dni,apenom,cargo;
+				String dni,apenom,unidad;
 				//Obtener posicion de la fila seleccionada
 				int posFila;
 				posFila = tblTrabajadores.getSelectedRow();
 				//Obtener datos de la fila seleccionada
 				dni = tblTrabajadores.getValueAt(posFila, 0).toString();
 				apenom = tblTrabajadores.getValueAt(posFila, 1).toString();
-				cargo = tblTrabajadores.getValueAt(posFila, 2).toString();
+				unidad = tblTrabajadores.getValueAt(posFila, 2).toString();
 				
 					//Enviar valores a las cajas de formulario frmBoleta
-					frmPecosa.txtEntrDni.setText(dni);
-					frmPecosa.txtEntrApeNom.setText(apenom);
-					frmPecosa.txtCargoEntr.setText(cargo);
+					frmCuadroRequerimientos.txtdniEntr.setText(dni);
+					frmCuadroRequerimientos.txtNombreEntr.setText(apenom);
+					frmCuadroRequerimientos.txtParaUnidadOrg.setText(unidad);
 					//cerrar ventana actual
 					dispose();
-				
-				
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -196,5 +196,4 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 	}
 	public void mouseReleased(MouseEvent e) {
 	}
-	
 }

@@ -19,36 +19,59 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.logistica.componentes.JTextFielBD;
+import com.logistica.controlador.MySqlBienesDAO;
+import com.logistica.controlador.MySqlCuadroRequerimientosDAO;
+import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.controlador.MySqlTrabajadorDAO;
+import com.logistica.entidad.CuadroRequerimientos;
 import com.logistica.entidad.UnidadOrganica;
 
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.lang.annotation.Repeatable;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
 
-public class frmCuadroRequerimientos extends JFrame implements ActionListener {
+public class frmCuadroRequerimientos extends JFrame implements ActionListener, KeyListener {
+	MySqlCuadroRequerimientosDAO reqDAO = new MySqlCuadroRequerimientosDAO();
+	MySqlPecosaDAO pecosaDAO = new MySqlPecosaDAO();
+	MySqlBienesDAO bienDAO = new MySqlBienesDAO();
 	
 	
 	private JPanel contentPane;
-	public JTextField txtDeUnidadOrg;
-	private JTextField txtParaUnidadOrg;
-	private JTextField FechaEmi;
+	public static JTextField txtDeUnidadOrg;
+	public static JTextField txtParaUnidadOrg;
+	private JTextField txtFechaEmi;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JLabel lblCodigo;
-	private JTextField txtCodBien;
+	public static JTextField txtCodBien;
 	private JLabel lblDescripcion;
-	private JTextField txtDescPro;
-	private JTextField txtCant;
-	private JTextField txtUnidaMed;
+	public static JTextField txtDescPro;
+	public static JTextField txtCant;
+	public static JTextField txtUnidaMed;
 	private JLabel lblCuadroDeRequerimientos;
 	private JTable tblRequerimientos;
-	public JTextField txtNombreApeSoli;
-	public JTextField txtdniSoli;
-	private JTextField textField;
-	private JTextField txtdniEntr;
-	private JTextField txtNombreEntr;
-	private JTextField textField_3;
+	public static JTextField txtNombreApeSoli;
+	public static JTextField txtdniSoli;
+	private JTextField txtNumReq;
+	public static JTextField txtdniEntr;
+	public static JTextField txtNombreEntr;
+	private JTextField txtEstado;
 	private JButton btnNuevo;
+	private JButton btnBuscarEntrDni;
+	private JButton btnBuscarBien;
+	private JButton btnAgregarBien;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmEliminar;
 
 	/**
 	 * Launch the application.
@@ -71,8 +94,8 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 	 */
 	public frmCuadroRequerimientos() {
 		setTitle("Formulacion del Cuadro de Requerimientos");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 771, 692);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 807, 692);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -80,7 +103,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Cabecera", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 95, 735, 100);
+		panel.setBounds(10, 95, 771, 100);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -90,7 +113,8 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		lblPara.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		txtParaUnidadOrg = new JTextField();
-		txtParaUnidadOrg.setBounds(439, 50, 286, 20);
+		txtParaUnidadOrg.setEditable(false);
+		txtParaUnidadOrg.setBounds(439, 50, 322, 20);
 		panel.add(txtParaUnidadOrg);
 		txtParaUnidadOrg.setColumns(10);
 		
@@ -100,6 +124,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		lblDe.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		txtDeUnidadOrg = new JTextField();
+		txtDeUnidadOrg.setEditable(false);
 		txtDeUnidadOrg.setBounds(71, 53, 298, 20);
 		panel.add(txtDeUnidadOrg);
 		txtDeUnidadOrg.setColumns(10);
@@ -110,14 +135,16 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		panel.add(lblDni);
 		
 		txtNombreApeSoli = new JTextField();
+		txtNombreApeSoli.setEditable(false);
 		txtNombreApeSoli.setColumns(10);
-		txtNombreApeSoli.setBounds(175, 23, 194, 20);
+		txtNombreApeSoli.setBounds(204, 23, 165, 20);
 		panel.add(txtNombreApeSoli);
 		
 		txtdniSoli = new JTextField();
+		txtdniSoli.setEditable(false);
 		txtdniSoli.setBackground(SystemColor.info);
 		txtdniSoli.setColumns(10);
-		txtdniSoli.setBounds(92, 23, 73, 20);
+		txtdniSoli.setBounds(92, 23, 102, 20);
 		panel.add(txtdniSoli);
 		
 		JLabel lblEntregarA = new JLabel("Entregar A: ");
@@ -125,20 +152,29 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		lblEntregarA.setBounds(390, 24, 86, 17);
 		panel.add(lblEntregarA);
 		
-		txtdniEntr = new JTextField();
+		txtdniEntr = new JTextFielBD("dniTrabajador","tb_trabajadores");
+		txtdniEntr.setEnabled(false);
+		txtdniEntr.addKeyListener(this);
 		txtdniEntr.setColumns(10);
 		txtdniEntr.setBackground(SystemColor.info);
 		txtdniEntr.setBounds(475, 24, 73, 20);
 		panel.add(txtdniEntr);
 		
 		txtNombreEntr = new JTextField();
+		txtNombreEntr.setEditable(false);
 		txtNombreEntr.setColumns(10);
-		txtNombreEntr.setBounds(558, 24, 167, 20);
+		txtNombreEntr.setBounds(589, 24, 172, 20);
 		panel.add(txtNombreEntr);
+		
+		btnBuscarEntrDni = new JButton("");
+		btnBuscarEntrDni.addActionListener(this);
+		btnBuscarEntrDni.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/search.png")));
+		btnBuscarEntrDni.setBounds(553, 21, 33, 27);
+		panel.add(btnBuscarEntrDni);
 		
 		panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Datos del Bien o Servicio", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 206, 735, 124);
+		panel_1.setBounds(10, 206, 771, 124);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -147,64 +183,75 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		lblCodigo.setBounds(10, 41, 55, 17);
 		panel_1.add(lblCodigo);
 		
-		txtCodBien = new JTextField();
+		txtCodBien = new JTextFielBD("codBien","tb_bienes");
+		txtCodBien.addKeyListener(this);
+		txtCodBien.setEnabled(false);
 		txtCodBien.setColumns(10);
-		txtCodBien.setBounds(70, 41, 201, 20);
+		txtCodBien.setBounds(70, 41, 63, 20);
 		panel_1.add(txtCodBien);
 		
 		lblDescripcion = new JLabel("Descripcion: ");
 		lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblDescripcion.setBounds(10, 88, 97, 17);
+		lblDescripcion.setBounds(-188, 40, 97, 17);
 		panel_1.add(lblDescripcion);
 		
 		txtDescPro = new JTextField();
+		txtDescPro.setEditable(false);
+		txtDescPro.setEnabled(false);
 		txtDescPro.setColumns(10);
-		txtDescPro.setBounds(93, 88, 215, 20);
+		txtDescPro.setBounds(93, 80, 262, 20);
 		panel_1.add(txtDescPro);
 		
 		JLabel lblCantidad = new JLabel("Cantidad:");
 		lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCantidad.setBounds(365, 85, 77, 17);
+		lblCantidad.setBounds(167, 40, 77, 17);
 		panel_1.add(lblCantidad);
 		
 		txtCant = new JTextField();
+		txtCant.setEnabled(false);
 		txtCant.setColumns(10);
-		txtCant.setBounds(425, 85, 55, 20);
+		txtCant.setBounds(227, 38, 55, 20);
 		panel_1.add(txtCant);
 		
 		JLabel lblUnidadDeMedida = new JLabel("Unidad de Medida:");
 		lblUnidadDeMedida.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUnidadDeMedida.setBounds(507, 85, 129, 17);
+		lblUnidadDeMedida.setBounds(384, 82, 129, 17);
 		panel_1.add(lblUnidadDeMedida);
 		
 		txtUnidaMed = new JTextField();
+		txtUnidaMed.setEditable(false);
+		txtUnidaMed.setEnabled(false);
 		txtUnidaMed.setColumns(10);
-		txtUnidaMed.setBounds(624, 85, 101, 20);
+		txtUnidaMed.setBounds(508, 80, 136, 20);
 		panel_1.add(txtUnidaMed);
 		
-		JButton button = new JButton("");
-		button.setBounds(313, 33, 88, 41);
-		panel_1.add(button);
-		button.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/search.png")));
+		btnBuscarBien = new JButton("");
+		btnBuscarBien.addActionListener(this);
+		btnBuscarBien.setEnabled(false);
+		btnBuscarBien.setBounds(310, 28, 88, 41);
+		panel_1.add(btnBuscarBien);
+		btnBuscarBien.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/search.png")));
 		
-		JButton button_1 = new JButton("");
-		button_1.setBounds(415, 33, 82, 41);
-		panel_1.add(button_1);
-		button_1.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/add.png")));
+		btnAgregarBien = new JButton("");
+		btnAgregarBien.addActionListener(this);
+		btnAgregarBien.setEnabled(false);
+		btnAgregarBien.setBounds(424, 28, 82, 41);
+		panel_1.add(btnAgregarBien);
+		btnAgregarBien.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/add.png")));
 		
-		JButton button_2 = new JButton("");
-		button_2.setBounds(507, 33, 77, 41);
-		panel_1.add(button_2);
-		button_2.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/cerrar.png")));
+		JLabel lblDescripcion_1 = new JLabel("Descripcion:");
+		lblDescripcion_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDescripcion_1.setBounds(10, 83, 97, 14);
+		panel_1.add(lblDescripcion_1);
 		
 		lblCuadroDeRequerimientos = new JLabel("Cuadro de Requerimientos");
-		lblCuadroDeRequerimientos.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblCuadroDeRequerimientos.setFont(new Font("Swis721 LtEx BT", Font.BOLD, 18));
 		lblCuadroDeRequerimientos.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCuadroDeRequerimientos.setBounds(253, 13, 248, 38);
+		lblCuadroDeRequerimientos.setBounds(239, 11, 274, 38);
 		contentPane.add(lblCuadroDeRequerimientos);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 341, 735, 258);
+		scrollPane.setBounds(9, 341, 772, 258);
 		contentPane.add(scrollPane);
 		
 		tblRequerimientos = new JTable();
@@ -213,34 +260,40 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 			new Object[][] {
 			},
 			new String[] {
-				"Item", "Descripcion", "Unidad de Medida", "Cantidad"
+				"CODIGO", "DESCRIPCION", "UNIDAD DE MEDIDA", "CANTIDAD"
 			}
 		));
 		tblRequerimientos.getColumnModel().getColumn(0).setPreferredWidth(15);
 		tblRequerimientos.getColumnModel().getColumn(0).setMinWidth(7);
 		scrollPane.setViewportView(tblRequerimientos);
 		
+		popupMenu = new JPopupMenu();
+		addPopup(tblRequerimientos, popupMenu);
+		
+		mntmEliminar = new JMenuItem("ELIMINAR");
+		mntmEliminar.addActionListener(this);
+		mntmEliminar.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/cerrar.png")));
+		popupMenu.add(mntmEliminar);
+		
 		JLabel lblNumRequerimiento = new JLabel("N\u00BA Requerimiento:");
 		lblNumRequerimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNumRequerimiento.setBounds(13, 57, 124, 27);
 		contentPane.add(lblNumRequerimiento);
 		
-		textField = new JTextField();
-		textField.setBounds(131, 62, 79, 22);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtNumReq = new JTextField();
+		txtNumReq.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtNumReq.setEditable(false);
+		txtNumReq.setBounds(131, 62, 79, 22);
+		contentPane.add(txtNumReq);
+		txtNumReq.setColumns(10);
 		
-		JButton btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(581, 610, 93, 32);
+		JButton btnGuardar = new JButton("Cancelar");
+		btnGuardar.setBounds(688, 610, 93, 32);
 		contentPane.add(btnGuardar);
-		
-		JButton btnEnviar = new JButton("Enviar");
-		btnEnviar.setBounds(478, 610, 93, 32);
-		contentPane.add(btnEnviar);
 		
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(this);
-		btnNuevo.setBounds(379, 610, 89, 32);
+		btnNuevo.setBounds(577, 610, 89, 32);
 		contentPane.add(btnNuevo);
 		
 		JLabel lblFecha = new JLabel("Fecha Emision: ");
@@ -248,30 +301,157 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener {
 		contentPane.add(lblFecha);
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		FechaEmi = new JTextField();
-		FechaEmi.setBounds(319, 62, 81, 22);
-		contentPane.add(FechaEmi);
-		FechaEmi.setColumns(10);
+		txtFechaEmi = new JTextField();
+		txtFechaEmi.setEditable(false);
+		txtFechaEmi.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtFechaEmi.setText(lib.Fecha.fechaActual());
+		txtFechaEmi.setBounds(319, 62, 81, 22);
+		contentPane.add(txtFechaEmi);
+		txtFechaEmi.setColumns(10);
 		
 		JLabel lblEstado = new JLabel("Estado");
 		lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblEstado.setBounds(410, 62, 59, 22);
 		contentPane.add(lblEstado);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(463, 62, 108, 22);
-		contentPane.add(textField_3);
+		txtEstado = new JTextField();
+		txtEstado.setEditable(false);
+		txtEstado.setColumns(10);
+		txtEstado.setBounds(463, 62, 108, 22);
+		contentPane.add(txtEstado);
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmEliminar) {
+			actionPerformedMntmEliminar(e);
+		}
+		if (e.getSource() == btnAgregarBien) {
+			actionPerformedBtnAgregarBien(e);
+		}
+		if (e.getSource() == btnBuscarBien) {
+			actionPerformedBtnBuscarBien(e);
+		}
+		if (e.getSource() == btnBuscarEntrDni) {
+			actionPerformedBtnBuscarEntrDni(e);
+		}
 		if (e.getSource() == btnNuevo) {
 			actionPerformedBtnNuevo(e);
 		}
 	}
+	public void keyReleased(KeyEvent e) {
+		if (e.getSource() == txtCodBien) {
+			keyReleasedTxtCodBien(e);
+		}
+		if (e.getSource() == txtdniEntr) {
+			keyReleasedTxtdniEntr(e);
+		}
+	}
 	protected void actionPerformedBtnNuevo(ActionEvent e) {
 		frmLogin frm = new frmLogin();
-		txtNombreApeSoli.setText(frm.apenom); 
-		txtdniSoli.setText(frm.dni);
-		txtDeUnidadOrg.setText(frm.unidad);
+		if(txtdniEntr.isEnabled()==false) {
+			btnNuevo.setText("Enviar");
+			componentes(true);
+			txtNombreApeSoli.setText(frm.apenom); 
+			txtdniSoli.setText(frm.dni);
+			txtDeUnidadOrg.setText(frm.unidad);
+			txtNumReq.setText(codigoCorrelativo());
+			txtEstado.setText("EN REVISION");
+		}else {
+			
+		}
+	}
+	private String codigoCorrelativo() {
+		ArrayList<CuadroRequerimientos> data = reqDAO.listarTodo();
+		int num = Integer.parseInt(data.get(data.size()-1).getNumreq()) + 1;
+		String codigoSerial;
+		if(num==0) {
+			codigoSerial = "000001";
+		}else {
+			codigoSerial = String.format("%06d", num);
+		}
+		return codigoSerial;			
+	}
+	
+	protected void actionPerformedBtnBuscarEntrDni(ActionEvent e) {
+		dlgBuscarEntrTrabajador frm = new dlgBuscarEntrTrabajador();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void keyReleasedTxtdniEntr(KeyEvent e) {
+		String dni = txtdniEntr.getText();
+		String[] data = pecosaDAO.buscarTrabajador(dni);
+		txtNombreEntr.setText(data[0]);
+		txtParaUnidadOrg.setText(data[1]);
+	}
+	void componentes(boolean op) {
+		txtdniEntr.setEnabled(true);
+		txtCodBien.setEnabled(op);
+		txtDescPro.setEnabled(op);
+		txtCant.setEnabled(op);
+		txtUnidaMed.setEnabled(op);
+		btnBuscarBien.setEnabled(op);
+		btnAgregarBien.setEnabled(op);
+	}
+	public void keyPressed(KeyEvent e) {
+	}
+	
+	public void keyTyped(KeyEvent e) {
+	}
+	
+	protected void keyReleasedTxtCodBien(KeyEvent e) {
+		String codigoBien = txtCodBien.getText();
+		String[] data = bienDAO.buscarBienPorCodigo(codigoBien);
+		txtDescPro.setText(data[1]);
+		txtUnidaMed.setText(data[2]);
+	}
+	protected void actionPerformedBtnBuscarBien(ActionEvent e) {
+		dlgBuscarBienes dlg = new dlgBuscarBienes();
+		dlg.setVisible(true);
+		dlg.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedBtnAgregarBien(ActionEvent e) {
+		//variables
+		String codigo,descr, unidadMed;
+		int cant;
+		
+		codigo = txtCodBien.getText();
+		descr = txtDescPro.getText();
+		unidadMed = txtUnidaMed.getText();
+		cant = Integer.parseInt(txtCant.getText());
+		
+		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
+		
+		Object[] filas = {codigo,descr,unidadMed,cant};
+		modelo.addRow(filas);
+		
+		limpiarBien();
+	}
+	void limpiarBien() {
+		txtCodBien.setText("");
+		txtDescPro.setText("");
+		txtUnidaMed.setText("");
+		txtCant.setText("");
+		txtCodBien.requestFocus();
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
+	protected void actionPerformedMntmEliminar(ActionEvent e) {
+		int posFila = tblRequerimientos.getSelectedRow();
+		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
+		modelo.removeRow(posFila);
 	}
 }

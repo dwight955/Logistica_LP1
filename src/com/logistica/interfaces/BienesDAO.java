@@ -9,6 +9,8 @@ public interface BienesDAO {
 	public int Actualizar(Bienes bean);
 	int Eliminar(Bienes bean); 
 	public ArrayList<Bienes> ListarTodo();
+	public ArrayList<Bienes> buscarBien(String descr,String comodin,String categoria);
+	public String[] buscarBienPorCodigo(String codBien);
 	
 }
 

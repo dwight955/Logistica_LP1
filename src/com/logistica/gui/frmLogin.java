@@ -151,9 +151,8 @@ public class frmLogin extends JFrame implements ActionListener {
 						apenom = uorg.getApenom();
 						dni = String.valueOf(uorg.getDnilogin());
 						unidad = uorg.getNomUnidOrg();
-						String[] part = unidad.split(" - ");
 						frm.lblBienvenido.setText("Bienvenido: " + apenom);
-						frm.setTitle("Unidad Organica : " + part[1]);
+						frm.setTitle("Unidad Organica : " + unidad);
 						frm.lblNomCargo.setText("Cargo : " + uorg.getCargo());
 						
 						frm.setVisible(true);

@@ -64,16 +64,16 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		String filtro = str;
-		String sql = "select * from TB_Trabajadores " + 
-				"where dniTrabajador like  " +'"'+filtro+'"';
+		String sql = "select t.apeNomTrabajador, uo.nomUniOrg from tb_trabajadores as t  join tb_unidadorganica as uo "+
+				"on t.codUniOrg = uo.codUniOrg "+
+				"where dnitrabajador like "+ '"'+str+'"';
 		try {
 			cn = MySqlConexion.getConexion();
 			pstm = cn.prepareStatement(sql);
 			rs = pstm.executeQuery();
 			while(rs.next()) {
-				cadena[0] = rs.getString(2);
-				cadena[1] = rs.getString(3);
+				cadena[0] = rs.getString(1);
+				cadena[1] = rs.getString(2);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

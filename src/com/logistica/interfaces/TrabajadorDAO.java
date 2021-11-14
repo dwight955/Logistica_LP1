@@ -9,5 +9,6 @@ public interface TrabajadorDAO {
 	public int Actualizar(Trabajador bean);
 	public int Eliminar(Trabajador bean);
 	public ArrayList<Trabajador> ListarTodo();
-	public ArrayList<Trabajador> buscarTrabajador(String nomape, String como, String cargo);
+	public String[] buscarTrabajador(String dni);
+	public ArrayList<Trabajador> ListarBusqueda(String nomape,String comodin, String unidadorg);
 }

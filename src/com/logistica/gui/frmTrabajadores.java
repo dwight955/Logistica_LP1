@@ -307,12 +307,11 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				tra.setDni(Integer.parseInt(dni));
 				tra.setNomApe(nomape);
 				tra.setCargo(cargo);
-				tra.setFecNac(fecnac);
-				tra.setSueldo(Double.parseDouble(sueldo));
+				
 				tra.setSexo(sexo);
 				codDis = cboDistrito.getSelectedItem().toString();
 				String[] part = codDis.split("/");
-				tra.setCodDis(part[0]);
+				
 				int salida = trabajadorDAO.Ingresar(tra);
 					if(salida > 0) {
 						Mensajes.dialogo("El registro fue un exito");
@@ -353,11 +352,9 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			tra.setDni(Integer.parseInt(dni));
 			tra.setNomApe(nomape);
 			tra.setCargo(cargo);
-			tra.setFecNac(fecnac);
-			tra.setSueldo(Double.parseDouble(sueldo));
 			tra.setSexo(sexo);
 			String[] sep = codDistrito.split("/");
-			tra.setCodDis(sep[0]);
+			
 			int salida = trabajadorDAO.Actualizar(tra);
 			if(salida > 0) {
 				Mensajes.dialogo("La actualizacion fue un exito");
@@ -399,7 +396,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> data = trabajadorDAO.ListarTodo();
 		for(Trabajador tra:data) {
-			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getFecNac(),tra.getSueldo(),tra.getSexo(),tra.getCodDis()};
+			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo()};
 			modelo.addRow(filas);
 		}
 	}
