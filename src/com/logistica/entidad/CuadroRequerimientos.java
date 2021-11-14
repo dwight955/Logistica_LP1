@@ -1,8 +1,9 @@
 package com.logistica.entidad;
 
 public class CuadroRequerimientos {
-	private String numreq, deUnidadOrg, paraUnidadOrg, estado, fechaEmi;   
+	private String numreq,deUnidadOrg, paraUnidadOrg, estado, fechaEmi;   
 	private int dniSoli,dniEntr;
+	
 	public String getNumreq() {
 		return numreq;
 	}

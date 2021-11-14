@@ -27,7 +27,7 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 			rs=cstm.executeQuery();
 			if(rs.next()) {
 				bean= new Logistica();
-				bean.setDni(rs.getString(1));
+				bean.setDni(rs.getInt(1));
 				bean.setNombre(rs.getString(2));
 				bean.setFecNac(rs.getString(3));
 				bean.setSueldo(rs.getDouble(4));

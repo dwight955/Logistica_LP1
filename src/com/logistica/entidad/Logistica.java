@@ -1,9 +1,9 @@
 package com.logistica.entidad;
 
 public class Logistica {
-	private String dni, nombre, fecNac, sexo, cargo;
+	private String nombre, fecNac, sexo, cargo;
 	private double sueldo;
-	private int idCargo;
+	private int idCargo, dni;
 	
 	public int getIdCargo() {
 		return idCargo;
@@ -11,10 +11,10 @@ public class Logistica {
 	public void setIdCargo(int idCargo) {
 		this.idCargo = idCargo;
 	}
-	public String getDni() {
+	public int getDni() {
 		return dni;
 	}
-	public void setDni(String dni) {
+	public void setDni(int dni) {
 		this.dni = dni;
 	}
 	public String getNombre() {

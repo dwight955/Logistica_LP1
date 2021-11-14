@@ -25,7 +25,12 @@ import com.logistica.controlador.MySqlCuadroRequerimientosDAO;
 import com.logistica.controlador.MySqlPecosaDAO;
 import com.logistica.controlador.MySqlTrabajadorDAO;
 import com.logistica.entidad.CuadroRequerimientos;
+import com.logistica.entidad.DetalleRequerimientos;
 import com.logistica.entidad.UnidadOrganica;
+import com.logistica.interfaces.CuadroRequerimientosDAO;
+import com.logistica.utils.Libreria;
+
+import lib.Mensajes;
 
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
@@ -346,7 +351,9 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		}
 	}
 	protected void actionPerformedBtnNuevo(ActionEvent e) {
+		
 		frmLogin frm = new frmLogin();
+		
 		if(txtdniEntr.isEnabled()==false) {
 			btnNuevo.setText("Enviar");
 			componentes(true);
@@ -356,9 +363,44 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			txtNumReq.setText(codigoCorrelativo());
 			txtEstado.setText("EN REVISION");
 		}else {
-			
+			try {
+				CuadroRequerimientos cure = new CuadroRequerimientos();
+				
+				cure.setNumreq(txtNumReq.getText());
+				cure.setFechaEmi(txtFechaEmi.getText());
+				cure.setEstado(txtEstado.getText());
+				cure.setDniSoli(Libreria.codigoTrabajadorSesion);
+				cure.setDniEntr(Integer.parseInt(txtdniEntr.getText()));
+				
+				ArrayList<DetalleRequerimientos> data = new ArrayList<DetalleRequerimientos>();
+				
+				for(int i = 0; i<tblRequerimientos.getRowCount(); i++) {
+					DetalleRequerimientos dr = new DetalleRequerimientos();
+					
+					String codBien, cant;
+					
+					codBien = tblRequerimientos.getValueAt(i, 0).toString();
+					cant = tblRequerimientos.getValueAt(i, 3).toString();
+					
+					dr.setCodBien(codBien);
+					dr.setCant(Integer.parseInt(cant));
+					
+					data.add(dr);
+				}
+				
+				reqDAO.registrar(cure, data);
+				
+				Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");
+				
+				btnNuevo.setText("Nuevo");
+			} catch (Exception e2) {
+				Mensajes.error("No se logro registrar \n");
+			}
 		}
 	}
+	
+	
+	
 	private String codigoCorrelativo() {
 		ArrayList<CuadroRequerimientos> data = reqDAO.listarTodo();
 		int num = Integer.parseInt(data.get(data.size()-1).getNumreq()) + 1;
