@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import com.logistica.controlador.MySqlUsuarioDAO;
 import com.logistica.entidad.Logistica;
 import com.logistica.entidad.UnidadOrganica;
+import com.logistica.utils.Libreria;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -147,6 +148,7 @@ public class frmLogin extends JFrame implements ActionListener {
 					UnidadOrganica uorg = new UnidadOrganica();
 					uorg = usuarioDAO.iniciarSesionUnOrg(login, clave);
 					if(uorg != null) {
+						Libreria.codigoTrabajadorSesion = uorg.getDnilogin();
 						frmMenuUnidadOrganica frm = new frmMenuUnidadOrganica();
 						apenom = uorg.getApenom();
 						dni = String.valueOf(uorg.getDnilogin());
@@ -169,7 +171,7 @@ public class frmLogin extends JFrame implements ActionListener {
 					
 					Logistica lgt = usuarioDAO.iniciarSesionLog(login, clave);
 					if(lgt != null) {
-						
+						Libreria.codigoTrabajadorSesion = lgt.getDni();
 						if(lgt.getIdCargo() == 2) {
 							frmMenuDirecEjecLogistica frm = new frmMenuDirecEjecLogistica();
 							frm.lblNomDirec.setText(lgt.getNombre());
