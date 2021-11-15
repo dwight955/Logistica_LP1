@@ -544,7 +544,10 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			mensaje("Ingrese Cantidad");
 			txtCant.requestFocus();
 		}
-		
+		else if(cantidad.matches("[1-9]{2}")) {
+			mensaje ("Numero hasta 50");
+			txtCant.requestFocus();
+		}
 		
 	}
 }
