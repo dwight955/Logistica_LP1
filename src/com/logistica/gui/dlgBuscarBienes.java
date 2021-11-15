@@ -194,7 +194,7 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 						dispose();
 					
 				} catch (Exception e2) {
-					mensaje("		Seleccione uno ");
+					mensaje("Seleccione uno ");
 				}
 	}
 	public void mouseEntered(MouseEvent e) {

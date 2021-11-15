@@ -294,15 +294,6 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		contentPane.add(txtNumReq);
 		txtNumReq.setColumns(10);
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				actionPerformedBtnGuardar(e);
-			}
-		});
-		btnCancelar.setBounds(688, 610, 93, 32);
-		contentPane.add(btnCancelar);
-		
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(this);
 		btnNuevo.setBounds(577, 610, 89, 32);
@@ -331,6 +322,15 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		txtEstado.setColumns(10);
 		txtEstado.setBounds(463, 62, 108, 22);
 		contentPane.add(txtEstado);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnCancelar(e);
+			}
+		});
+		btnCancelar.setBounds(692, 610, 89, 32);
+		contentPane.add(btnCancelar);
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mntmEliminar) {
@@ -462,7 +462,8 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		dlg.setLocationRelativeTo(null);
 	}
 	protected void actionPerformedBtnAgregarBien(ActionEvent e) {
-		try {
+		validacion();
+		
 			//variables
 			String codigo,descr, unidadMed;
 			int cant;
@@ -477,10 +478,10 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			Object[] filas = {codigo,descr,unidadMed,cant};
 			modelo.addRow(filas);
 			
+			
+			
 			limpiarBien();
-		} catch (Exception e2) {
-			mensaje("Selecionar Bien");
-		}
+	
 	}
 	
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -505,7 +506,9 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
 		modelo.removeRow(posFila);
 	}
-	protected void actionPerformedBtnGuardar(ActionEvent e) {
+	
+	
+	protected void actionPerformedBtnCancelar(ActionEvent e) {
 		dispose();
 	}
 	
@@ -527,5 +530,21 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	
 	void mensaje(String m){
 		JOptionPane.showMessageDialog(null, m);
+	}
+	
+	void validacion(){
+		String codBien,cantidad;
+		codBien=txtCodBien.getText();
+		cantidad=txtCant.getText();
+		if(codBien.equals("")){
+			mensaje("Comienze con BI-");
+			txtCodBien.requestFocus();
+		}
+		else if(cantidad.equals("")){
+			mensaje("Ingrese Cantidad");
+			txtCant.requestFocus();
+		}
+		
+		
 	}
 }

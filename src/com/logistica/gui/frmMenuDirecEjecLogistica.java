@@ -1,12 +1,12 @@
 package com.logistica.gui;
 
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -19,7 +19,7 @@ import java.awt.Insets;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Frame;
+
 
 public class frmMenuDirecEjecLogistica extends JFrame {
 
@@ -73,15 +73,30 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmRequerimientos = new JMenuItem("Ver Cuadro de Requerimientos");
+		mntmRequerimientos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmRequerimientos(e);
+			}
+		});
 		mnNewMenu.add(mntmRequerimientos);
 		
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
 		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+		mntmProveedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmProveedores(e);
+			}
+		});
 		mnMantenimiento.add(mntmProveedores);
 		
 		JMenuItem mntmTrabajadores = new JMenuItem("Trabajadores");
+		mntmTrabajadores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmTrabajadores(e);
+			}
+		});
 		mnMantenimiento.add(mntmTrabajadores);
 		getContentPane().setLayout(null);
 		
@@ -120,5 +135,20 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 	}
 	protected void actionPerformedMntmSalir(ActionEvent e) {
 		dispose();
+	}
+	protected void actionPerformedMntmRequerimientos(ActionEvent e) {
+		frmCuadroRequerimientos frm= new frmCuadroRequerimientos();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmProveedores(ActionEvent e) {
+		frmProveedores frm= new frmProveedores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmTrabajadores(ActionEvent e) {
+		frmTrabajadores frm= new frmTrabajadores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
 	}
 }

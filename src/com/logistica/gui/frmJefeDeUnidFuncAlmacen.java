@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class frmJefeDeUnidFuncAlmacen extends JFrame {
 
@@ -58,18 +60,33 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		menuBar.add(mnSistema);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmSalir(e);
+			}
+		});
 		mnSistema.add(mntmSalir);
 		
 		JMenu mnBandejaDeEntrada = new JMenu("Bandeja de Entrada");
 		menuBar.add(mnBandejaDeEntrada);
 		
 		JMenuItem mntmVerPecosas = new JMenuItem("Ver PECOSAS");
+		mntmVerPecosas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmVerPecosas(e);
+			}
+		});
 		mnBandejaDeEntrada.add(mntmVerPecosas);
 		
 		JMenu mnAlmacen = new JMenu("Almacen");
 		menuBar.add(mnAlmacen);
 		
 		JMenuItem mntmGenerarCuadroDe = new JMenuItem("Generar Cuadro de Adquisiciones");
+		mntmGenerarCuadroDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmGenerarCuadroDe(e);
+			}
+		});
 		mnAlmacen.add(mntmGenerarCuadroDe);
 		
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
@@ -82,20 +99,21 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		JLabel lblNewLabel = new JLabel("BIENVENIDO");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 17));
-		lblNewLabel.setBounds(298, 35, 130, 36);
+		lblNewLabel.setBounds(295, 11, 130, 36);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Jefe de Unidad Funcional de Almacen");
+		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_1.setBounds(221, 128, 288, 16);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_1.setBounds(215, 47, 288, 16);
 		getContentPane().add(lblNewLabel_1);
 		
 		lblNomJufa = new JLabel("New label");
 		lblNomJufa.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNomJufa.setForeground(new Color(65, 105, 225));
+		lblNomJufa.setForeground(Color.BLUE);
 		lblNomJufa.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblNomJufa.setBounds(144, 88, 439, 16);
+		lblNomJufa.setBounds(138, 87, 439, 16);
 		getContentPane().add(lblNomJufa);
 		
 	}
@@ -114,5 +132,18 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 			super.paint(g);
 			
 		}
+	}
+	protected void actionPerformedMntmGenerarCuadroDe(ActionEvent e) {
+		frmCuadroRequerimientos frm = new frmCuadroRequerimientos();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmSalir(ActionEvent e) {
+		dispose();
+	}
+	protected void actionPerformedMntmVerPecosas(ActionEvent e) {
+		frmPecosa frm = new frmPecosa();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
 	}
 }
