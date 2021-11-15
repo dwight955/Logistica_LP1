@@ -44,8 +44,10 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class frmCuadroRequerimientos extends JFrame implements ActionListener, KeyListener {
+	private static final DefaultTableModel DefaultTableModel = null;
 	MySqlCuadroRequerimientosDAO reqDAO = new MySqlCuadroRequerimientosDAO();
 	MySqlPecosaDAO pecosaDAO = new MySqlPecosaDAO();
 	MySqlBienesDAO bienDAO = new MySqlBienesDAO();
@@ -292,9 +294,14 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		contentPane.add(txtNumReq);
 		txtNumReq.setColumns(10);
 		
-		JButton btnGuardar = new JButton("Cancelar");
-		btnGuardar.setBounds(688, 610, 93, 32);
-		contentPane.add(btnGuardar);
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnGuardar(e);
+			}
+		});
+		btnCancelar.setBounds(688, 610, 93, 32);
+		contentPane.add(btnCancelar);
 		
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(this);
@@ -352,7 +359,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	}
 	protected void actionPerformedBtnNuevo(ActionEvent e) {
 		
-		frmLogin frm = new frmLogin();
+		frmLogin frm= new frmLogin();
 		
 		if(txtdniEntr.isEnabled()==false) {
 			btnNuevo.setText("Enviar");
@@ -383,19 +390,22 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 					cant = tblRequerimientos.getValueAt(i, 3).toString();
 					
 					dr.setCodBien(codBien);
-					dr.setCant(Integer.parseInt(cant));
-					
-					data.add(dr);
+					dr.setCant(Integer.parseInt(cant));			
+														
 				}
 				
-				reqDAO.registrar(cure, data);
 				
-				Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");
-				
+				reqDAO.registrar(cure, data);				
+				Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");				
 				btnNuevo.setText("Nuevo");
+				
+				borrar();
+				
 			} catch (Exception e2) {
 				Mensajes.error("No se logro registrar \n");
+				
 			}
+			
 		}
 	}
 	
@@ -412,6 +422,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		}
 		return codigoSerial;			
 	}
+	
 	
 	protected void actionPerformedBtnBuscarEntrDni(ActionEvent e) {
 		dlgBuscarEntrTrabajador frm = new dlgBuscarEntrTrabajador();
@@ -451,29 +462,27 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		dlg.setLocationRelativeTo(null);
 	}
 	protected void actionPerformedBtnAgregarBien(ActionEvent e) {
-		//variables
-		String codigo,descr, unidadMed;
-		int cant;
-		
-		codigo = txtCodBien.getText();
-		descr = txtDescPro.getText();
-		unidadMed = txtUnidaMed.getText();
-		cant = Integer.parseInt(txtCant.getText());
-		
-		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
-		
-		Object[] filas = {codigo,descr,unidadMed,cant};
-		modelo.addRow(filas);
-		
-		limpiarBien();
+		try {
+			//variables
+			String codigo,descr, unidadMed;
+			int cant;
+			
+			codigo = txtCodBien.getText();
+			descr = txtDescPro.getText();
+			unidadMed = txtUnidaMed.getText();
+			cant = Integer.parseInt(txtCant.getText());
+			txtCodBien.requestFocus();
+			DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
+			
+			Object[] filas = {codigo,descr,unidadMed,cant};
+			modelo.addRow(filas);
+			
+			limpiarBien();
+		} catch (Exception e2) {
+			mensaje("Selecionar Bien");
+		}
 	}
-	void limpiarBien() {
-		txtCodBien.setText("");
-		txtDescPro.setText("");
-		txtUnidaMed.setText("");
-		txtCant.setText("");
-		txtCodBien.requestFocus();
-	}
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -495,5 +504,28 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		int posFila = tblRequerimientos.getSelectedRow();
 		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
 		modelo.removeRow(posFila);
+	}
+	protected void actionPerformedBtnGuardar(ActionEvent e) {
+		dispose();
+	}
+	
+	void borrar(){
+		txtdniEntr.setText("");
+		txtNombreEntr.setText("");
+		txtParaUnidadOrg.setText("");
+		DefaultTableModel requerimiento=(DefaultTableModel) tblRequerimientos.getModel();
+		requerimiento.setRowCount(0);	
+	}
+	
+	void limpiarBien() {
+		txtCodBien.setText("");
+		txtDescPro.setText("");
+		txtUnidaMed.setText("");
+		txtCant.setText("");
+		txtCodBien.requestFocus();
+	}
+	
+	void mensaje(String m){
+		JOptionPane.showMessageDialog(null, m);
 	}
 }

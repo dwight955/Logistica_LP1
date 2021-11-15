@@ -17,6 +17,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Frame;
 
 public class frmMenuDirecEjecLogistica extends JFrame {
 
@@ -59,6 +62,11 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		menuBar.add(mnSistema);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmSalir(e);
+			}
+		});
 		mnSistema.add(mntmSalir);
 		
 		JMenu mnNewMenu = new JMenu("Bandeja de Entrada");
@@ -102,14 +110,15 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		
 		@Override
 		public void paint(Graphics g) {
-			img = new ImageIcon(getClass().getResource("/img/Director.jpg")).getImage();
-			
-			g.drawImage(img, 0, 0, getWidth(), getHeight(),this);
-			
+			img = new ImageIcon(getClass().getResource("/img/Director.jpg")).getImage();			
+			g.drawImage(img, 0, 0, getWidth(), getHeight(),this);			
 			setOpaque(false);
 			
 			super.paint(g);
 			
 		}
+	}
+	protected void actionPerformedMntmSalir(ActionEvent e) {
+		dispose();
 	}
 }
