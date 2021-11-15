@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class frmMenuSubAlmacenero extends JFrame {
 
@@ -59,18 +61,33 @@ public class frmMenuSubAlmacenero extends JFrame {
 		menuBar.add(mnSistema);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmSalir(e);
+			}
+		});
 		mnSistema.add(mntmSalir);
 		
 		JMenu mnBandejaDeEntrada = new JMenu("Bandeja de Entrada");
 		menuBar.add(mnBandejaDeEntrada);
 		
 		JMenuItem mntmRequerimientos = new JMenuItem("Ver Requerimientos");
+		mntmRequerimientos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmRequerimientos(e);
+			}
+		});
 		mnBandejaDeEntrada.add(mntmRequerimientos);
 		
 		JMenu mnAlmacen = new JMenu("Almacen");
 		menuBar.add(mnAlmacen);
 		
 		JMenuItem mntmFormulacionDeUna = new JMenuItem("Formulacion de una PECOSA");
+		mntmFormulacionDeUna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmFormulacionDeUna(e);
+			}
+		});
 		mnAlmacen.add(mntmFormulacionDeUna);
 		getContentPane().setLayout(null);
 		
@@ -107,5 +124,16 @@ public class frmMenuSubAlmacenero extends JFrame {
 			super.paint(g);
 			
 		}
+	}
+	protected void actionPerformedMntmSalir(ActionEvent e) {
+		dispose();
+	}
+	protected void actionPerformedMntmRequerimientos(ActionEvent e) {
+	
+	}
+	protected void actionPerformedMntmFormulacionDeUna(ActionEvent e) {
+		frmPecosa frm = new frmPecosa();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
 	}
 }

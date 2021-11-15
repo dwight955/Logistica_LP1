@@ -76,6 +76,11 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 		menuBar.add(mnSitem);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmSalir(e);
+			}
+		});
 		mnSitem.add(mntmSalir);
 		
 		JMenu mnAlmacen = new JMenu("Almacen");
@@ -138,5 +143,8 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 		frmCuadroRequerimientos frm =new frmCuadroRequerimientos();
 		frm.setVisible(true);
 		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmSalir(ActionEvent e) {
+		dispose();
 	}
 }

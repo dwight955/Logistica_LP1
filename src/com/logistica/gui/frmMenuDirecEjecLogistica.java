@@ -1,12 +1,12 @@
 package com.logistica.gui;
 
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -17,6 +17,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class frmMenuDirecEjecLogistica extends JFrame {
 
@@ -59,21 +62,41 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		menuBar.add(mnSistema);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmSalir(e);
+			}
+		});
 		mnSistema.add(mntmSalir);
 		
 		JMenu mnNewMenu = new JMenu("Bandeja de Entrada");
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmRequerimientos = new JMenuItem("Ver Cuadro de Requerimientos");
+		mntmRequerimientos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmRequerimientos(e);
+			}
+		});
 		mnNewMenu.add(mntmRequerimientos);
 		
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
 		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+		mntmProveedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmProveedores(e);
+			}
+		});
 		mnMantenimiento.add(mntmProveedores);
 		
 		JMenuItem mntmTrabajadores = new JMenuItem("Trabajadores");
+		mntmTrabajadores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedMntmTrabajadores(e);
+			}
+		});
 		mnMantenimiento.add(mntmTrabajadores);
 		getContentPane().setLayout(null);
 		
@@ -102,14 +125,30 @@ public class frmMenuDirecEjecLogistica extends JFrame {
 		
 		@Override
 		public void paint(Graphics g) {
-			img = new ImageIcon(getClass().getResource("/img/Director.jpg")).getImage();
-			
-			g.drawImage(img, 0, 0, getWidth(), getHeight(),this);
-			
+			img = new ImageIcon(getClass().getResource("/img/Director.jpg")).getImage();			
+			g.drawImage(img, 0, 0, getWidth(), getHeight(),this);			
 			setOpaque(false);
 			
 			super.paint(g);
 			
 		}
+	}
+	protected void actionPerformedMntmSalir(ActionEvent e) {
+		dispose();
+	}
+	protected void actionPerformedMntmRequerimientos(ActionEvent e) {
+		frmCuadroRequerimientos frm= new frmCuadroRequerimientos();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmProveedores(ActionEvent e) {
+		frmProveedores frm= new frmProveedores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmTrabajadores(ActionEvent e) {
+		frmTrabajadores frm= new frmTrabajadores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
 	}
 }

@@ -1,6 +1,6 @@
 package com.logistica.gui;
 
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -13,7 +13,7 @@ import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,10 +36,10 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+
 
 import java.awt.Color;
-import java.awt.Canvas;
+
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
 import com.toedter.calendar.JDateChooser;
