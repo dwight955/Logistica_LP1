@@ -312,9 +312,6 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		panel_3.add(lblNewLabel_2);
 	}
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnBuscarProveedor) {
-			actionPerformedBtnBuscarSoliTrabajador(e);
-		}
 		if (e.getSource() == btnGuardar) {
 			actionPerformedBtnGuardar(e);
 		}
@@ -403,10 +400,5 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		String dni = txtDireccion.getText();
 		String[] data = pecosaDao.buscarTrabajador(dni);
 		txtTelefono.setText(data[0]);
-	}
-	protected void actionPerformedBtnBuscarSoliTrabajador(ActionEvent e) {
-		dlgBuscarSolicTrabajador buscartra = new dlgBuscarSolicTrabajador();
-		buscartra.setVisible(true);
-		buscartra.setLocationRelativeTo(null);
 	}
 }
