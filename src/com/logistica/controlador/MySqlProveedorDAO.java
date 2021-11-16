@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.logistica.entidad.Proveedor;
-import com.logistica.entidad.Trabajador;
+
 import com.logistica.interfaces.ProveedorDAO;
-import com.logistica.interfaces.UsuarioDAO;
+
 import com.logistica.utils.MySqlConexion;
 
 import lib.Mensajes;

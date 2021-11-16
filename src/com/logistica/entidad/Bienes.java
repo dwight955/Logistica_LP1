@@ -1,6 +1,6 @@
 package com.logistica.entidad;
 
-import java.io.Reader;
+
 
 public class Bienes {
 	private int stockDisponible;
