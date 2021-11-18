@@ -160,6 +160,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		panel.add(lblEntregarA);
 		
 		txtdniEntr = new JTextFielBD("dniTrabajador","tb_trabajadores");
+		
 		txtdniEntr.setEnabled(false);
 		txtdniEntr.addKeyListener(this);
 		txtdniEntr.setColumns(10);
@@ -425,10 +426,17 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	
 	
 	protected void actionPerformedBtnBuscarEntrDni(ActionEvent e) {
-		dlgBuscarEntrTrabajador frm = new dlgBuscarEntrTrabajador();
-		frm.setVisible(true);
-		frm.setLocationRelativeTo(null);
+			dlgBuscarEntrTrabajador frm = new dlgBuscarEntrTrabajador();
+			frm.setVisible(true);
+			frm.setLocationRelativeTo(null);
+		
+				
+						
+			
+		
 	}
+	
+	
 	protected void keyReleasedTxtdniEntr(KeyEvent e) {
 		String dni = txtdniEntr.getText();
 		String[] data = pecosaDAO.buscarTrabajador(dni);
@@ -462,9 +470,30 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		dlg.setLocationRelativeTo(null);
 	}
 	protected void actionPerformedBtnAgregarBien(ActionEvent e) {
-		validacion();
+		String codBien,cantidad;
+		codBien=txtCodBien.getText();
+		cantidad=txtCant.getText();
+		if(codBien.equals("")){
+			mensaje("Ingrese Codigo Valido");
+			txtCodBien.requestFocus();
+		}
 		
-			//variables
+		else if(cantidad.equals("")){
+			mensaje("Ingrese Cantidad");
+			txtCant.requestFocus();
+		}
+		else if(cantidad.matches("[0-9]{0,2}")==false) {
+			mensaje ("Cantidad Max-99");
+			txtCant.requestFocus();
+		}
+	
+		else if(codBien.matches("[BI[-][0-9]]{5}")==false) {
+			mensaje("Codigo debe Comenzar con BI - + numero");
+			txtCodBien.requestFocus();
+		}
+		
+		
+		else {
 			String codigo,descr, unidadMed;
 			int cant;
 			
@@ -481,6 +510,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			
 			
 			limpiarBien();
+		}	
 	
 	}
 	
@@ -509,7 +539,8 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	
 	
 	protected void actionPerformedBtnCancelar(ActionEvent e) {
-		dispose();
+		borrar();
+		
 	}
 	
 	void borrar(){
@@ -532,22 +563,6 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		JOptionPane.showMessageDialog(null, m);
 	}
 	
-	void validacion(){
-		String codBien,cantidad;
-		codBien=txtCodBien.getText();
-		cantidad=txtCant.getText();
-		if(codBien.equals("")){
-			mensaje("Comienze con BI-");
-			txtCodBien.requestFocus();
-		}
-		else if(cantidad.equals("")){
-			mensaje("Ingrese Cantidad");
-			txtCant.requestFocus();
-		}
-		else if(cantidad.matches("[1-9]{2}")) {
-			mensaje ("Numero hasta 50");
-			txtCant.requestFocus();
-		}
-		
-	}
+	
+	
 }

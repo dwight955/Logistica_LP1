@@ -285,10 +285,15 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
-		btnGuardar.setBounds(608, 593, 81, 38);
+		btnGuardar.setBounds(595, 593, 94, 38);
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnSalir(e);
+			}
+		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSalir.setBounds(910, 592, 81, 38);
 		contentPane.add(btnSalir);
@@ -408,5 +413,8 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		dlgBuscarSolicTrabajador buscartra = new dlgBuscarSolicTrabajador();
 		buscartra.setVisible(true);
 		buscartra.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedBtnSalir(ActionEvent e) {
+		dispose();
 	}
 }

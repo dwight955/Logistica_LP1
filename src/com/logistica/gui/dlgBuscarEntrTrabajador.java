@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -171,22 +172,31 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
-				//varaible
-				String dni,apenom,unidad;
-				//Obtener posicion de la fila seleccionada
-				int posFila;
-				posFila = tblTrabajadores.getSelectedRow();
-				//Obtener datos de la fila seleccionada
-				dni = tblTrabajadores.getValueAt(posFila, 0).toString();
-				apenom = tblTrabajadores.getValueAt(posFila, 1).toString();
-				unidad = tblTrabajadores.getValueAt(posFila, 2).toString();
+				try {
+					//varaible
+					String dni,apenom,unidad;
+					//Obtener posicion de la fila seleccionada
+					int posFila;
+					posFila = tblTrabajadores.getSelectedRow();
+					//Obtener datos de la fila seleccionada
+					dni = tblTrabajadores.getValueAt(posFila, 0).toString();
+					apenom = tblTrabajadores.getValueAt(posFila, 1).toString();
+					unidad = tblTrabajadores.getValueAt(posFila, 2).toString();
+					
+						//Enviar valores a las cajas de formulario frmBoleta
+						frmCuadroRequerimientos.txtdniEntr.setText(dni);
+						frmCuadroRequerimientos.txtNombreEntr.setText(apenom);
+						frmCuadroRequerimientos.txtParaUnidadOrg.setText(unidad);
+						//cerrar ventana actual
+						dispose();
+					
+					
+					
+				} catch (Exception e2) {
+					mensaje("Seleccionar Trabajador");
+				}
+		
 				
-					//Enviar valores a las cajas de formulario frmBoleta
-					frmCuadroRequerimientos.txtdniEntr.setText(dni);
-					frmCuadroRequerimientos.txtNombreEntr.setText(apenom);
-					frmCuadroRequerimientos.txtParaUnidadOrg.setText(unidad);
-					//cerrar ventana actual
-					dispose();
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -195,5 +205,8 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 	public void mousePressed(MouseEvent e) {
 	}
 	public void mouseReleased(MouseEvent e) {
+	}
+	void mensaje(String m){
+		JOptionPane.showMessageDialog(null, m);
 	}
 }
