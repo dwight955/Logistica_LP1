@@ -50,33 +50,34 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	MySqlPecosaDAO pecosaDAO = new MySqlPecosaDAO();
 	MySqlBienesDAO bienDAO = new MySqlBienesDAO();
 	
-	
-	private JPanel contentPane;
+	public static JTextField txtNombreApeSoli;
+	public static JTextField txtdniSoli;
+	public static JTextField txtNumReq;
+	public static JTextField txtdniEntr;
+	public static JTextField txtNombreEntr;
 	public static JTextField txtDeUnidadOrg;
 	public static JTextField txtParaUnidadOrg;
+	public static JTextField txtDescPro;
+	public static JTextField txtCant;
+	public static JTextField txtUnidaMed;
+	public static JTextField txtCodBien;
+	private JTextField txtEstado;
+	private JPanel contentPane;
 	private JTextField txtFechaEmi;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JLabel lblCodigo;
-	public static JTextField txtCodBien;
 	private JLabel lblDescripcion;
-	public static JTextField txtDescPro;
-	public static JTextField txtCant;
-	public static JTextField txtUnidaMed;
 	private JLabel lblCuadroDeRequerimientos;
 	private JTable tblRequerimientos;
-	public static JTextField txtNombreApeSoli;
-	public static JTextField txtdniSoli;
-	private JTextField txtNumReq;
-	public static JTextField txtdniEntr;
-	public static JTextField txtNombreEntr;
-	private JTextField txtEstado;
 	private JButton btnNuevo;
 	private JButton btnBuscarEntrDni;
 	private JButton btnBuscarBien;
 	private JButton btnAgregarBien;
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmEliminar;
+	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -192,7 +193,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		txtCodBien.addKeyListener(this);
 		txtCodBien.setEnabled(false);
 		txtCodBien.setColumns(10);
-		txtCodBien.setBounds(70, 41, 63, 20);
+		txtCodBien.setBounds(70, 39, 63, 20);
 		panel_1.add(txtCodBien);
 		
 		lblDescripcion = new JLabel("Descripcion: ");
@@ -209,13 +210,13 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		
 		JLabel lblCantidad = new JLabel("Cantidad:");
 		lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCantidad.setBounds(167, 40, 77, 17);
+		lblCantidad.setBounds(143, 41, 77, 17);
 		panel_1.add(lblCantidad);
 		
 		txtCant = new JTextField();
 		txtCant.setEnabled(false);
 		txtCant.setColumns(10);
-		txtCant.setBounds(227, 38, 55, 20);
+		txtCant.setBounds(219, 41, 55, 20);
 		panel_1.add(txtCant);
 		
 		JLabel lblUnidadDeMedida = new JLabel("Unidad de Medida:");
@@ -233,14 +234,14 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		btnBuscarBien = new JButton("");
 		btnBuscarBien.addActionListener(this);
 		btnBuscarBien.setEnabled(false);
-		btnBuscarBien.setBounds(310, 28, 88, 41);
+		btnBuscarBien.setBounds(284, 25, 88, 41);
 		panel_1.add(btnBuscarBien);
 		btnBuscarBien.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/search.png")));
 		
 		btnAgregarBien = new JButton("");
 		btnAgregarBien.addActionListener(this);
 		btnAgregarBien.setEnabled(false);
-		btnAgregarBien.setBounds(424, 28, 82, 41);
+		btnAgregarBien.setBounds(679, 25, 82, 41);
 		panel_1.add(btnAgregarBien);
 		btnAgregarBien.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/add.png")));
 		
@@ -248,6 +249,21 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		lblDescripcion_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDescripcion_1.setBounds(10, 83, 97, 14);
 		panel_1.add(lblDescripcion_1);
+		
+		textField = new JTextField();
+		textField.setBounds(492, 41, 63, 20);
+		panel_1.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblStockDisponible = new JLabel("Stock Disponible");
+		lblStockDisponible.setBounds(384, 39, 114, 25);
+		panel_1.add(lblStockDisponible);
+		
+		textField_1 = new JTextField();
+		textField_1.setBackground(new Color(238, 232, 170));
+		textField_1.setBounds(581, 41, 63, 20);
+		panel_1.add(textField_1);
+		textField_1.setColumns(10);
 		
 		lblCuadroDeRequerimientos = new JLabel("Cuadro de Requerimientos");
 		lblCuadroDeRequerimientos.setFont(new Font("Swis721 LtEx BT", Font.BOLD, 18));
@@ -292,9 +308,9 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		contentPane.add(txtNumReq);
 		txtNumReq.setColumns(10);
 		
-		JButton btnGuardar = new JButton("Cancelar");
-		btnGuardar.setBounds(688, 610, 93, 32);
-		contentPane.add(btnGuardar);
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(688, 610, 93, 32);
+		contentPane.add(btnCancelar);
 		
 		btnNuevo = new JButton("Nuevo");
 		btnNuevo.addActionListener(this);
@@ -364,6 +380,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			txtEstado.setText("EN REVISION");
 		}else {
 			try {
+				//cabecera
 				CuadroRequerimientos cure = new CuadroRequerimientos();
 				
 				cure.setNumreq(txtNumReq.getText());
@@ -372,6 +389,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 				cure.setDniSoli(Libreria.codigoTrabajadorSesion);
 				cure.setDniEntr(Integer.parseInt(txtdniEntr.getText()));
 				
+				//detalle
 				ArrayList<DetalleRequerimientos> data = new ArrayList<DetalleRequerimientos>();
 				
 				for(int i = 0; i<tblRequerimientos.getRowCount(); i++) {
@@ -398,16 +416,13 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			}
 		}
 	}
-	
-	
-	
 	private String codigoCorrelativo() {
-		ArrayList<CuadroRequerimientos> data = reqDAO.listarTodo();
-		int num = Integer.parseInt(data.get(data.size()-1).getNumreq()) + 1;
+		ArrayList<CuadroRequerimientos> data = reqDAO.listarPorNum("[todo]");
 		String codigoSerial;
-		if(num==0) {
+		if(data.size()==0) {
 			codigoSerial = "000001";
 		}else {
+			int num = Integer.parseInt(data.get(data.size()-1).getNumreq()) + 1;
 			codigoSerial = String.format("%06d", num);
 		}
 		return codigoSerial;			

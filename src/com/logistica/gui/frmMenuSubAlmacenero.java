@@ -16,8 +16,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class frmMenuSubAlmacenero extends JFrame {
+public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	public JLabel lblBienvenido;
@@ -43,11 +45,13 @@ public class frmMenuSubAlmacenero extends JFrame {
 	 * Create the frame.
 	 */
 	FondoPanel imagen = new FondoPanel();
+	private JMenuItem mntmRequerimientos;
+	public static JLabel lblnombreSesion;
 	
 	public frmMenuSubAlmacenero() {
 		setTitle("Sub Almacen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 627, 501);
+		setBounds(100, 100, 756, 596);
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
 		this.setContentPane(imagen);
@@ -64,13 +68,14 @@ public class frmMenuSubAlmacenero extends JFrame {
 		JMenu mnBandejaDeEntrada = new JMenu("Bandeja de Entrada");
 		menuBar.add(mnBandejaDeEntrada);
 		
-		JMenuItem mntmRequerimientos = new JMenuItem("Ver Requerimientos");
+		mntmRequerimientos = new JMenuItem("Ver Requerimientos aprobados");
+		mntmRequerimientos.addActionListener(this);
 		mnBandejaDeEntrada.add(mntmRequerimientos);
 		
 		JMenu mnAlmacen = new JMenu("Almacen");
 		menuBar.add(mnAlmacen);
 		
-		JMenuItem mntmFormulacionDeUna = new JMenuItem("Formulacion de una PECOSA");
+		JMenuItem mntmFormulacionDeUna = new JMenuItem("Ver PECOSAs");
 		mnAlmacen.add(mntmFormulacionDeUna);
 		getContentPane().setLayout(null);
 		
@@ -82,7 +87,7 @@ public class frmMenuSubAlmacenero extends JFrame {
 		panel.setLayout(null);
 		
 		lblBienvenido = new JLabel("Bienvenido:");
-		lblBienvenido.setBounds(10, 11, 354, 21);
+		lblBienvenido.setBounds(10, 11, 103, 21);
 		panel.add(lblBienvenido);
 		lblBienvenido.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		
@@ -90,6 +95,11 @@ public class frmMenuSubAlmacenero extends JFrame {
 		lblCargo.setBounds(10, 47, 354, 21);
 		panel.add(lblCargo);
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		
+		lblnombreSesion = new JLabel("");
+		lblnombreSesion.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblnombreSesion.setBounds(99, 11, 245, 21);
+		panel.add(lblnombreSesion);
 		
 	}
 	class FondoPanel extends JPanel
@@ -107,5 +117,15 @@ public class frmMenuSubAlmacenero extends JFrame {
 			super.paint(g);
 			
 		}
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmRequerimientos) {
+			actionPerformedMntmRequerimientos(e);
+		}
+	}
+	protected void actionPerformedMntmRequerimientos(ActionEvent e) {
+		dlgBandejaEntradaSubAlmacen dlg = new dlgBandejaEntradaSubAlmacen();
+		dlg.setVisible(true);
+		dlg.setLocationRelativeTo(null);
 	}
 }

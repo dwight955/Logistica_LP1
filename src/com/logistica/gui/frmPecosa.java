@@ -25,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.logistica.componentes.JTextFielBD;
 import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.entidad.CuadroRequerimientos;
+import com.logistica.entidad.DetallePecosa;
 import com.logistica.entidad.Pecosa;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
@@ -34,28 +36,42 @@ import java.awt.Button;
 
 import javax.swing.JButton;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import javax.swing.JMenuItem;
 
 public class frmPecosa extends JFrame implements ActionListener, KeyListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	MySqlPecosaDAO pecosaDao = new MySqlPecosaDAO();
 	
 	private JPanel contentPane;
-	private JTextField txtNumPecosa;
+	private static JTextField txtNumPecosa;
 	private JTextField txtFecha;
-
+	
+	public static JTextField txtapeNomFormPor;
 	public static JTextField txtEntrDni;
 	public static JTextField txtEntrApeNom;
-	private JTextField txtMeta;
-	private JTextField txtReferencia;
+	public static JTextField txtMeta;
+	public static JTextField txtNumReq;
+	public static JTextField txtUnidadOrgaSoli;
+	public static JTextField txtAprobadoPor;
+	public static JTextField txtUnidadBeneficiara;
+	public static JTextField txtReferencia;
 	private JTextField txtEstado;
-	private JTable table;
-	private JTextField txtPrecioTotal;
-	private JScrollPane tblDetallePecosa;
-	private JButton btnGuardar;
+	public static JTable tblDetallePecosa;
+	public static JTextField txtPrecioTotal;
+	private JScrollPane scrollPecosa;
+	public static JButton btnGuardar;
 	private TextAutoCompleter ac;
 	public static JTextField txtCargoEntr;
 	private JButton btnCancelar;
@@ -63,21 +79,20 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	private JButton btnSalir;
 	private TextAutoCompleter auto;
 	private JLabel lblPecosa;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JLabel lblUnidadBeneficiaria;
-	private JTextField textField_2;
-	private JTextField textField_3;
 	private JLabel lblAprobadoPor;
 	private JPanel panel_4;
-	private JTextField textField_4;
+	private JTextField txtFechaApro;
 	private JLabel lblFechaApro;
 	private JPanel panel_5;
-	private JTextField textField_5;
+	private JTextField txtFechaEntr;
 	private JLabel lblFechaEntr;
 	private JLabel lblNewLabel;
 	private JLabel lblFormuladoPor;
-	private JTextField textField_6;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmAadirBienes;
+	private JMenuItem mntmEliminar;
+
 
 
 	/**
@@ -124,6 +139,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel.add(lblNPecosa);
 		
 		txtNumPecosa = new JTextField();
+		txtNumPecosa.setText(codigoCorrelativo());
 		txtNumPecosa.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtNumPecosa.setEditable(false);
 		txtNumPecosa.setBounds(110, 12, 126, 28);
@@ -147,12 +163,12 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		lblNRequerimiento.setBounds(10, 53, 126, 23);
 		panel.add(lblNRequerimiento);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(139, 50, 97, 28);
-		panel.add(textField);
+		txtNumReq = new JTextField();
+		txtNumReq.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtNumReq.setEditable(false);
+		txtNumReq.setColumns(10);
+		txtNumReq.setBounds(139, 50, 97, 28);
+		panel.add(txtNumReq);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
@@ -208,11 +224,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtCargoEntr.setBounds(579, 49, 188, 27);
 		panel_1.add(txtCargoEntr);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(221, 10, 263, 27);
-		panel_1.add(textField_1);
+		txtUnidadOrgaSoli = new JTextField();
+		txtUnidadOrgaSoli.setEditable(false);
+		txtUnidadOrgaSoli.setColumns(10);
+		txtUnidadOrgaSoli.setBounds(221, 10, 263, 27);
+		panel_1.add(txtUnidadOrgaSoli);
 		
 		JLabel lblUnidadOrganicaSolicitante = new JLabel("Unidad Organica Solicitante :");
 		lblUnidadOrganicaSolicitante.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -224,23 +240,23 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		lblUnidadBeneficiaria.setBounds(10, 93, 150, 14);
 		panel_1.add(lblUnidadBeneficiaria);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(148, 87, 169, 27);
-		panel_1.add(textField_3);
-		textField_3.setColumns(10);
+		txtUnidadBeneficiara = new JTextField();
+		txtUnidadBeneficiara.setBounds(148, 87, 169, 27);
+		txtUnidadBeneficiara.setEditable(false);
+		panel_1.add(txtUnidadBeneficiara);
+		txtUnidadBeneficiara.setColumns(10);
 		
 		lblFormuladoPor = new JLabel("Formu. por :");
 		lblFormuladoPor.setBounds(494, 11, 105, 23);
 		panel_1.add(lblFormuladoPor);
 		lblFormuladoPor.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
-		textField_6 = new JTextField();
-		textField_6.setBackground(SystemColor.info);
-		textField_6.setForeground(SystemColor.info);
-		textField_6.setBounds(579, 12, 188, 27);
-		panel_1.add(textField_6);
-		textField_6.setEditable(false);
-		textField_6.setColumns(10);
+		txtapeNomFormPor = new JTextField();
+		txtapeNomFormPor.setBackground(SystemColor.info);
+		txtapeNomFormPor.setBounds(579, 12, 188, 27);
+		panel_1.add(txtapeNomFormPor);
+		txtapeNomFormPor.setEditable(false);
+		txtapeNomFormPor.setColumns(10);
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setForeground(Color.BLACK);
@@ -255,7 +271,6 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_2.add(lblReferencia);
 		
 		txtReferencia = new JTextField();
-		txtReferencia.setEnabled(false);
 		txtReferencia.setEditable(false);
 		txtReferencia.setColumns(10);
 		txtReferencia.setBounds(106, 7, 661, 27);
@@ -272,20 +287,32 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtEstado.setBounds(949, 24, 94, 27);
 		contentPane.add(txtEstado);
 		
-		tblDetallePecosa = new JScrollPane();
-		tblDetallePecosa.setBounds(10, 310, 1033, 226);
-		contentPane.add(tblDetallePecosa);
+		scrollPecosa = new JScrollPane();
+		scrollPecosa.setBounds(10, 310, 1033, 226);
+		contentPane.add(scrollPecosa);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		tblDetallePecosa = new JTable();
+		tblDetallePecosa.setFillsViewportHeight(true);
+		tblDetallePecosa.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Codigo", "Uni. Med", "Bienes", "P. U. Salida", "Cant. Salida", "Precio Total Salida", "Doc. Ref", "Num. Refe"
+				"Codigo", "Descripcion", "Unidad Medida", "Nro O/C", "Cant. Salida", "P. U. Salida", "Sub Total"
 			}
 		));
-		table.getColumnModel().getColumn(3).setPreferredWidth(104);
-		tblDetallePecosa.setViewportView(table);
+		tblDetallePecosa.getColumnModel().getColumn(5).setPreferredWidth(104);
+		scrollPecosa.setViewportView(tblDetallePecosa);
+		
+		popupMenu = new JPopupMenu();
+		addPopup(tblDetallePecosa, popupMenu);
+		
+		mntmAadirBienes = new JMenuItem("A\u00F1adir Bienes");
+		mntmAadirBienes.addActionListener(this);
+		popupMenu.add(mntmAadirBienes);
+		
+		mntmEliminar = new JMenuItem("Eliminar");
+		mntmEliminar.addActionListener(this);
+		popupMenu.add(mntmEliminar);
 		
 		JLabel lblPrecioTotal = new JLabel("Precio Total  S/. :");
 		lblPrecioTotal.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -331,11 +358,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(panel_3);
 		panel_3.setLayout(null);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(116, 6, 229, 27);
-		panel_3.add(textField_2);
-		textField_2.setEditable(false);
-		textField_2.setColumns(10);
+		txtAprobadoPor = new JTextField();
+		txtAprobadoPor.setBounds(116, 6, 229, 27);
+		panel_3.add(txtAprobadoPor);
+		txtAprobadoPor.setEditable(false);
+		txtAprobadoPor.setColumns(10);
 		
 		lblAprobadoPor = new JLabel("Aprobado por:");
 		lblAprobadoPor.setForeground(UIManager.getColor("CheckBox.foreground"));
@@ -349,11 +376,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_4.setBounds(631, 203, 201, 41);
 		contentPane.add(panel_4);
 		
-		textField_4 = new JTextField();
-		textField_4.setEditable(false);
-		textField_4.setColumns(10);
-		textField_4.setBounds(98, 6, 86, 27);
-		panel_4.add(textField_4);
+		txtFechaApro = new JTextField();
+		txtFechaApro.setEditable(false);
+		txtFechaApro.setColumns(10);
+		txtFechaApro.setBounds(98, 6, 86, 27);
+		panel_4.add(txtFechaApro);
 		
 		lblFechaApro = new JLabel("Fecha Apro.");
 		lblFechaApro.setForeground(Color.BLACK);
@@ -367,11 +394,11 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_5.setBounds(842, 203, 201, 41);
 		contentPane.add(panel_5);
 		
-		textField_5 = new JTextField();
-		textField_5.setEditable(false);
-		textField_5.setColumns(10);
-		textField_5.setBounds(98, 6, 93, 27);
-		panel_5.add(textField_5);
+		txtFechaEntr = new JTextField();
+		txtFechaEntr.setEditable(false);
+		txtFechaEntr.setColumns(10);
+		txtFechaEntr.setBounds(98, 6, 93, 27);
+		panel_5.add(txtFechaEntr);
 		
 		lblFechaEntr = new JLabel("Fecha Entr.");
 		lblFechaEntr.setForeground(Color.BLACK);
@@ -386,8 +413,16 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		lblNewLabel.setIcon(icon);
 		lblNewLabel.setBounds(10, 167, 246, 129);
 		contentPane.add(lblNewLabel);
+		
+		
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmEliminar) {
+			actionPerformedMntmEliminar(e);
+		}
+		if (e.getSource() == mntmAadirBienes) {
+			actionPerformedMntmAadirBienes(e);
+		}
 		if (e.getSource() == btnGuardar) {
 			actionPerformedBtnGuardar(e);
 		}
@@ -403,35 +438,67 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		}
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
-		
-		
-		/*String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
-		fecPec = txtFecha.getText();
-		soliDni = txtSoliDni.getText();
-		entrDni = txtEntrDni.getText();
-		estad = txtEstado.getText();
-		refe = txtReferencia.getText();
-		uniOrg = txtUniOrg.getText();
-		meta = txtMeta.getText();
-		if(soliDni.equals("")) {
-			Mensajes.dialogo("Es obligatorio el campo DNI SOLICITANTE");
-		}
-		/*
-		Pecosa pec = new Pecosa();
-		pec.setFecPec(fecPec);
-		pec.setDniSoliPec(Integer.parseInt(soliDni));
-		pec.setDniEntrPec(Integer.parseInt(entrDni));
-		pec.setEstadoPec(estad);
-		pec.setReferencia(refe);
-		pec.setUniOrgPec(uniOrg);
-		pec.setMeta(meta);
-		int salida = pecosaDao.Ingresar(pec);
-		if(salida > 0) {
-			mensaje("El registro de la PECOSA fue un exito");
-		}else {
-			mensaje("Fallo en el Ingreso");
-		}*/
-	}
+					//Cabecera PECOSA
+					Pecosa pec = new Pecosa();
+				try {
+					//El estado de la PECOSA pasa a EN REVISION
+					txtEstado.setText("EN REVISION");
+					
+					String referencia;
+					int filas;
+					
+					filas = tblDetallePecosa.getRowCount();
+					referencia = txtReferencia.getText();
+					
+					if(referencia.equals("")) {
+						Mensajes.dialogo("El campo REFERENCIA es obligatorio");
+					}else if(filas == 0) {
+						Mensajes.error("Inserte Bienes antes de Enviar");
+					}else {
+						pec.setNumPec(Integer.parseInt(txtNumPecosa.getText()));
+						pec.setEstadoPec(txtEstado.getText());
+						pec.setFecForm(txtFecha.getText());//fijarse el formato de la fecha
+						pec.setReferencia(txtReferencia.getText());
+						pec.setNumReq(txtNumReq.getText());
+						String[] part = txtapeNomFormPor.getText().split("-");
+						pec.setDniForm(Integer.parseInt(part[0]));
+						pec.setTotal(Double.parseDouble(txtPrecioTotal.getText()));
+						
+						//Detalle Pecosa
+						ArrayList<DetallePecosa> data = new ArrayList<DetallePecosa>();
+						
+						for(int i  = 0;i<tblDetallePecosa.getRowCount();i++) {
+							DetallePecosa dp = new DetallePecosa();
+							
+							String codBien,desc,uniMed,cant,preUni;
+							//Falta OC
+							codBien = tblDetallePecosa.getValueAt(i, 0).toString();
+							desc = tblDetallePecosa.getValueAt(i, 1).toString();
+							uniMed = tblDetallePecosa.getValueAt(i, 2).toString();
+							cant = tblDetallePecosa.getValueAt(i, 4).toString();
+							preUni = tblDetallePecosa.getValueAt(i, 5).toString();
+							
+							dp.setCodBien(codBien);
+							dp.setDesc(desc);
+							dp.setUniMed(uniMed);
+							dp.setCant(Integer.parseInt(cant));
+							dp.setPrecUnit(Double.parseDouble(preUni));
+
+							data.add(dp);
+						}
+							int salida = pecosaDao.Ingresar(pec, data);
+							if(salida>=0) {
+								lib.Estado.ActualizarEstado("tb_cabecreq", "FORMULADO", "numreq", txtNumReq.getText());
+								btnGuardar.setText("Nuevo");
+								frmPecosa.limpiar();
+							}else {
+								Mensajes.error("No se actualizo el Cuadro de Requerimientos");
+							}
+					}
+				} catch (NumberFormatException e2) {
+					Mensajes.error("Debe poner filas");
+				}
+			}
 
 	public void keyPressed(KeyEvent e) {
 	}
@@ -449,5 +516,68 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		String[] data = pecosaDao.buscarTrabajador(dni);
 		txtEntrApeNom.setText(data[0]);
 		txtCargoEntr.setText(data[1]);
+	}
+	public String codigoCorrelativo() {
+		ArrayList<Pecosa> data = pecosaDao.ListarTodo();
+		String codigoSerial;
+		if(data.size()==0) {
+			codigoSerial = "000001";
+		}else {
+			int num = data.get(data.size()-1).getNumPec() + 1;
+			codigoSerial = String.format("%06d", num);
+		}
+		return codigoSerial;			
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
+	protected void actionPerformedMntmAadirBienes(ActionEvent e) {
+		dlgAgregarBienesPecosa dlg = new dlgAgregarBienesPecosa();
+		dlg.setVisible(true);
+		dlg.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmEliminar(ActionEvent e) {
+		DefaultTableModel modelo = (DefaultTableModel) tblDetallePecosa.getModel();
+		int fila = tblDetallePecosa.getSelectedRow();
+		if(fila >= 0) {
+			modelo.removeRow(fila);
+			txtPrecioTotal.setText(String.valueOf(sumaImporte()));
+		}else {
+			Mensajes.error("Debe seleccionar una fila");
+		}
+	}
+	public static void limpiar() {
+		txtNumReq.setText("");
+		txtNumPecosa.setText("");
+		txtUnidadOrgaSoli.setText("");
+		txtEntrApeNom.setText("");
+		txtEntrDni.setText("");
+		txtCargoEntr.setText("");
+		txtUnidadBeneficiara.setText("");
+		txtMeta.setText("");
+		txtReferencia.setText("");
+		txtPrecioTotal.setText("");
+		DefaultTableModel modelo = (DefaultTableModel) tblDetallePecosa.getModel();
+		modelo.setRowCount(0);
+	}
+	public double sumaImporte() {
+		double suma=0;
+		for(int i=0; i< tblDetallePecosa.getRowCount();i++) 
+			suma += Double.parseDouble(frmPecosa.tblDetallePecosa.getValueAt(i, 6).toString());
+		return suma;
 	}
 }

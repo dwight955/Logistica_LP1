@@ -178,7 +178,7 @@ public class frmLogin extends JFrame implements ActionListener {
 							frm.setVisible(true);
 						} else if(lgt.getIdCargo() == 3) {
 							frmMenuSubAlmacenero frm = new frmMenuSubAlmacenero();
-							frm.lblBienvenido.setText("Bienvenido : " + lgt.getNombre());
+							frm.lblnombreSesion.setText(lgt.getNombre());
 							frm.lblCargo.setText("Cargo : " + lgt.getCargo());
 							frm.setVisible(true);
 						} else if(lgt.getIdCargo() == 4) {

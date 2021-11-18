@@ -1,4 +1,4 @@
-package hora;
+package lib;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -4,6 +4,33 @@ public class CuadroRequerimientos {
 	private String numreq,deUnidadOrg, paraUnidadOrg, estado, fechaEmi;   
 	private int dniSoli,dniEntr;
 	
+	//Variables solo para el listado / No entran en la base de datos
+	private String nomUniSoli,nomUniEntr,apenomSoli,apenomEntre;
+	
+	public String getNomUniSoli() {
+		return nomUniSoli;
+	}
+	public void setNomUniSoli(String nomUniSoli) {
+		this.nomUniSoli = nomUniSoli;
+	}
+	public String getNomUniEntr() {
+		return nomUniEntr;
+	}
+	public void setNomUniEntr(String nomUniEntr) {
+		this.nomUniEntr = nomUniEntr;
+	}
+	public String getApenomSoli() {
+		return apenomSoli;
+	}
+	public void setApenomSoli(String apenomSoli) {
+		this.apenomSoli = apenomSoli;
+	}
+	public String getApenomEntre() {
+		return apenomEntre;
+	}
+	public void setApenomEntre(String apenomEntre) {
+		this.apenomEntre = apenomEntre;
+	}
 	public String getNumreq() {
 		return numreq;
 	}

@@ -15,7 +15,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
-import hora.MostraHora;
+import lib.MostraHora;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;

@@ -2,6 +2,7 @@ package com.logistica.controlador;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,43 +79,37 @@ public class MySqlCuadroRequerimientosDAO implements CuadroRequerimientosDAO{
 	}
 
 	@Override
-	public ArrayList<CuadroRequerimientos> listarTodo() {
+	public ArrayList<CuadroRequerimientos> listarPorNum(String num) {
 		ArrayList<CuadroRequerimientos> lista = new ArrayList<CuadroRequerimientos>();
 		Connection cn = null;
 		CallableStatement cstm = null;
 		ResultSet rs = null;
-		String sql = "call sp_listarRequerimientos";
-		
+		String sql = "call sp_cabereq(?)";
 		try {
 			cn = MySqlConexion.getConexion();
 			cstm = cn.prepareCall(sql);
+			cstm.setString(1, num);
 			rs = cstm.executeQuery();
 			while(rs.next()) {
-				CuadroRequerimientos cr = new CuadroRequerimientos();
-				cr.setNumreq(rs.getString(1));
-				cr.setFechaEmi(rs.getString(2));
-				cr.setDniSoli(rs.getInt(3));
-				cr.setDniEntr(rs.getInt(4));
-				cr.setEstado(rs.getString(5));
-				
-				lista.add(cr);
+				CuadroRequerimientos cua = new CuadroRequerimientos();
+				cua.setNumreq(rs.getString(1));
+				cua.setNomUniSoli(rs.getString(2));
+				cua.setApenomEntre(rs.getString(3));
+				cua.setNomUniEntr(rs.getString(4));
+				lista.add(cua);
 			}
-			return lista;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println(">> error en ListarTodo() de MySqlCuadrReq");
 		} finally {
 			try {
 				if(cn != null) cn.close();
-				if(cstm != null) cstm.close();
-				if(rs != null) rs.close();
+				if(cstm != null)cstm.close();
+				if(rs != null)rs.close();
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 			}
 		}
-		
-		return null;
+		return lista;
 	}
-
-	
-
 }
