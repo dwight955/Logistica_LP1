@@ -1,41 +1,41 @@
 package com.logistica.gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.ImageIcon;
-import javax.swing.table.DefaultTableModel;
-
-import com.logistica.controlador.MySqlCuadroRequerimientosDAO;
-import com.logistica.controlador.MySqlDirectorEjeLogisticaDAO;
-import com.logistica.entidad.CuadroRequerimientos;
-
-import lib.Mensajes;
-
-import javax.swing.JPopupMenu;
 import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
+import com.logistica.controlador.MySqlDirectorEjeLogisticaDAO;
+import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.entidad.CuadroRequerimientos;
+import com.logistica.entidad.DetalleRequerimientos;
+
+import lib.Mensajes;
 
 public class dlgBandejaEntradaDirector extends JDialog implements ActionListener {
 	MySqlDirectorEjeLogisticaDAO directorLog = new MySqlDirectorEjeLogisticaDAO();
+	
 	private static JTable tblCuadroReq;
 	private JButton btnAporbar;
 	private static String numReq;
-
+	private static JTable tblDetalleReq;
+	private static int cantReq;
+	private static JLabel lblCuadrosDe;
 	/**
 	 * Launch the application.
 	 */
@@ -56,17 +56,17 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 	 * Create the frame.
 	 */
 	public dlgBandejaEntradaDirector() {
-		setBounds(100, 100, 713, 533);
+		setBounds(100, 100, 713, 571);
 		getContentPane().setLayout(null);
 		
 		JLabel lblListadoDeCuadro = new JLabel("Listado de Cuadro de Requerimientos");
 		lblListadoDeCuadro.setHorizontalAlignment(SwingConstants.CENTER);
 		lblListadoDeCuadro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblListadoDeCuadro.setBounds(198, 17, 334, 27);
+		lblListadoDeCuadro.setBounds(181, 17, 334, 27);
 		getContentPane().add(lblListadoDeCuadro);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 80, 677, 223);
+		scrollPane.setBounds(10, 80, 677, 185);
 		getContentPane().add(scrollPane);
 		
 		tblCuadroReq = new JTable();
@@ -87,26 +87,49 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 		JPopupMenu popupMenu = new JPopupMenu();
 		addPopup(tblCuadroReq, popupMenu);
 		
-		JMenuItem mntmVerDetalles = new JMenuItem("Ver Detalles");
+		JMenuItem mntmVerDetalles = new JMenuItem("Aprobar");
 		popupMenu.add(mntmVerDetalles);
 		
-		JLabel lblCuadrosDe = new JLabel("0 Cuadros de Requerimientos");
+		JMenuItem mntmRechazar = new JMenuItem("Rechazar");
+		popupMenu.add(mntmRechazar);
+		
+		lblCuadrosDe = new JLabel("0 Cuadros de Requerimientos");
 		lblCuadrosDe.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblCuadrosDe.setBounds(21, 55, 190, 14);
 		getContentPane().add(lblCuadrosDe);
 		
 		btnAporbar = new JButton("Aprobar");
 		btnAporbar.addActionListener(this);
-		btnAporbar.setBounds(10, 316, 132, 33);
+		btnAporbar.setBounds(413, 488, 132, 33);
 		getContentPane().add(btnAporbar);
 		
 		JButton btnRechazar = new JButton("Rechazar");
 		btnRechazar.setIcon(new ImageIcon(dlgBandejaEntradaDirector.class.getResource("/iconos/cerrar.png")));
-		btnRechazar.setBounds(152, 314, 132, 35);
+		btnRechazar.setBounds(555, 486, 132, 35);
 		getContentPane().add(btnRechazar);
 		
+		JLabel label = new JLabel("Detalles");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		label.setBounds(10, 270, 112, 19);
+		getContentPane().add(label);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 295, 677, 178);
+		getContentPane().add(scrollPane_1);
+		
+		tblDetalleReq = new JTable();
+		tblDetalleReq.setFillsViewportHeight(true);
+		tblDetalleReq.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Codigo Bien", "Descripcion", "Unidad Medida", "cantidad", "Precio Unitario"
+			}
+		));
+		scrollPane_1.setViewportView(tblDetalleReq);
+		
 		listar("EN REVISION");
-
+		
 	}
 	void listar(String estado) {
 		DefaultTableModel modelo = (DefaultTableModel) tblCuadroReq.getModel();
@@ -116,6 +139,8 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 			Object[] filas = {cua.getNumreq(),cua.getApenomSoli(),cua.getApenomEntre(),cua.getNomUniSoli(), cua.getNomUniEntr(), cua.getFechaEmi()};
 			modelo.addRow(filas);
 		}
+		cantReq = modelo.getRowCount();
+		lblCuadrosDe.setText(cantReq + " Cuadros de Requerimientos");
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -157,5 +182,15 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 	protected static void mouseClickedTblCuadroReq(MouseEvent e) {
 		int posFila = tblCuadroReq.getSelectedRow();
 		numReq = tblCuadroReq.getValueAt(posFila, 0).toString();
+		
+		DefaultTableModel modelo = (DefaultTableModel) tblDetalleReq.getModel();
+		modelo.setRowCount(0);
+		
+		ArrayList<DetalleRequerimientos> data = new MySqlPecosaDAO().listarDetalleReqPorNum(numReq);
+		
+		for(DetalleRequerimientos dr:data) {
+			Object[] filas = {dr.getCodBien(),dr.getDescripcion(),dr.getUniMed(),dr.getCant(),dr.getPreUni()};
+			modelo.addRow(filas);
+		}
 	}
 }

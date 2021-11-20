@@ -114,7 +114,6 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 			setOpaque(false);
 			
 			super.paint(g);
-			
 		}
 	}
 	public void actionPerformed(ActionEvent e) {

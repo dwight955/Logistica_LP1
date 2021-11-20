@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
 
 public class frmJefeDeUnidFuncAlmacen extends JFrame {
 
@@ -96,25 +97,31 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		mnMantenimiento.add(mntmBienes);
 		getContentPane().setLayout(null);
 		
+		JPanel panel = new JPanel();
+		panel.setBackground(SystemColor.activeCaption);
+		panel.setBounds(10, 26, 411, 122);
+		getContentPane().add(panel);
+		panel.setLayout(null);
+		
 		JLabel lblNewLabel = new JLabel("BIENVENIDO");
+		lblNewLabel.setBounds(154, 0, 130, 36);
+		panel.add(lblNewLabel);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 17));
-		lblNewLabel.setBounds(295, 11, 130, 36);
-		getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Jefe de Unidad Funcional de Almacen");
+		lblNewLabel_1.setBounds(72, 47, 288, 16);
+		panel.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1.setBounds(215, 47, 288, 16);
-		getContentPane().add(lblNewLabel_1);
 		
 		lblNomJufa = new JLabel("New label");
+		lblNomJufa.setBounds(0, 84, 439, 16);
+		panel.add(lblNomJufa);
 		lblNomJufa.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNomJufa.setForeground(Color.BLUE);
 		lblNomJufa.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
-		lblNomJufa.setBounds(138, 87, 439, 16);
-		getContentPane().add(lblNomJufa);
 		
 	}
 	class FondoPanel extends JPanel
@@ -142,8 +149,6 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		dispose();
 	}
 	protected void actionPerformedMntmVerPecosas(ActionEvent e) {
-		frmPecosa frm = new frmPecosa();
-		frm.setVisible(true);
-		frm.setLocationRelativeTo(null);
+		
 	}
 }

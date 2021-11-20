@@ -45,7 +45,6 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	private JTextField txtFecha;
 	public static JTextField txtRuc;
 	public static JTextField txtRazonSocial;
-
 	public static JTextField txtDireccion;
 	public static JTextField txtTelefono;
 	private JTextField txtDocRefe;
@@ -210,7 +209,8 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		lblFuentesFto.setBounds(10, 45, 105, 23);
 		panel_2.add(lblFuentesFto);
 		
-		txtFuentesFto = new JTextField();
+		txtFuentesFto = new JTextFielBD("concat_ws(' - ',codFin,nombre)","tb_ftfinanciamiento");
+		txtFuentesFto.addKeyListener(this);
 		txtFuentesFto.setEditable(false);
 		txtFuentesFto.setColumns(10);
 		txtFuentesFto.setBounds(100, 41, 652, 27);
@@ -334,10 +334,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	}
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
 		if(txtRuc.isEditable()==false) {
-			txtRuc.setEditable(true);
-			txtDireccion.setEditable(true);
-			txtEstado.setEditable(true);
-			txtDocRefe.setEditable(true);
+			componentes(true);
 			btnGuardar.setText("Guardar");
 			btnBuscarProveedor.setEnabled(true);
 		}
@@ -400,5 +397,15 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		String dni = txtDireccion.getText();
 		String[] data = pecosaDao.buscarTrabajador(dni);
 		txtTelefono.setText(data[0]);
+	}
+	void componentes(boolean op) {
+		txtRuc.setEditable(op);
+		txtDireccion.setEditable(op);
+		txtEstado.setEditable(op);
+		txtDocRefe.setEditable(op);
+		txtFuentesFto.setEditable(op);
+	}
+	void codigoCorrelativo() {
+		
 	}
 }

@@ -16,8 +16,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.logistica.controlador.MySqlCuadroRequerimientosDAO;
 import com.logistica.controlador.MySqlDirectorEjeLogisticaDAO;
+import com.logistica.controlador.MySqlPecosaDAO;
 import com.logistica.controlador.MySqlSubAlmaceneroDAO;
 import com.logistica.entidad.CuadroRequerimientos;
+import com.logistica.entidad.DetalleRequerimientos;
 
 import lib.Mensajes;
 import com.logistica.utils.Libreria;
@@ -35,10 +37,13 @@ import java.awt.event.ActionEvent;
 public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListener {
 	MySqlSubAlmaceneroDAO subDAO = new MySqlSubAlmaceneroDAO();
 	MySqlCuadroRequerimientosDAO cuaDAO = new MySqlCuadroRequerimientosDAO();
+	MySqlPecosaDAO pecosaDAO = new MySqlPecosaDAO();
 	private static JTable tblCuadroReq;
 	private JButton btnGenerarPecosa;
 	private static String numReq;
-
+	private static JTable tblDetalleReq;
+	private static int cantReq;
+	private static JLabel lblCuadrosDe;
 	/**
 	 * Launch the application.
 	 */
@@ -59,7 +64,7 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 	 * Create the frame.
 	 */
 	public dlgBandejaEntradaSubAlmacen() {
-		setBounds(100, 100, 713, 533);
+		setBounds(100, 100, 713, 571);
 		getContentPane().setLayout(null);
 		
 		JLabel lblListadoDeCuadro = new JLabel("Listado de Cuadro de Requerimientos");
@@ -69,7 +74,7 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 		getContentPane().add(lblListadoDeCuadro);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 80, 677, 223);
+		scrollPane.setBounds(10, 80, 677, 180);
 		getContentPane().add(scrollPane);
 		
 		tblCuadroReq = new JTable();
@@ -90,7 +95,7 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 		JPopupMenu popupMenu = new JPopupMenu();
 		addPopup(tblCuadroReq, popupMenu);
 		
-		JMenuItem mntmVerDetalles = new JMenuItem("Ver Detalles");
+		JMenuItem mntmVerDetalles = new JMenuItem("Generar PECOSA");
 		popupMenu.add(mntmVerDetalles);
 		
 		JLabel lblCuadrosDe = new JLabel("0 Cuadros de Requerimientos aprobados");
@@ -100,8 +105,28 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 		
 		btnGenerarPecosa = new JButton("Generar Pecosa");
 		btnGenerarPecosa.addActionListener(this);
-		btnGenerarPecosa.setBounds(10, 316, 132, 33);
+		btnGenerarPecosa.setBounds(555, 487, 132, 33);
 		getContentPane().add(btnGenerarPecosa);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 298, 677, 178);
+		getContentPane().add(scrollPane_1);
+		
+		tblDetalleReq = new JTable();
+		tblDetalleReq.setFillsViewportHeight(true);
+		tblDetalleReq.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Codigo Bien", "Descripcion", "Unidad Medida", "Cantidad", "Precio Unitario"
+			}
+		));
+		scrollPane_1.setViewportView(tblDetalleReq);
+		
+		JLabel lblDetalles = new JLabel("Detalles");
+		lblDetalles.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblDetalles.setBounds(10, 268, 112, 19);
+		getContentPane().add(lblDetalles);
 		
 		listar("APROBADO");
 	}
@@ -113,6 +138,8 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 			Object[] filas = {cua.getNumreq(),cua.getApenomSoli(),cua.getApenomEntre(),cua.getNomUniSoli(), cua.getNomUniEntr(), cua.getFechaEmi()};
 			modelo.addRow(filas);
 		}
+		/*cantReq = modelo.getRowCount();
+		lblCuadrosDe.setText(cantReq + " Cuadros de Requerimientos");*/
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -170,5 +197,15 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 	protected static void mouseClickedTblCuadroReq(MouseEvent e) {
 		int posFila = tblCuadroReq.getSelectedRow();
 		numReq = tblCuadroReq.getValueAt(posFila, 0).toString();
+		
+		DefaultTableModel modelo = (DefaultTableModel) tblDetalleReq.getModel();
+		modelo.setRowCount(0);
+		
+		ArrayList<DetalleRequerimientos> data = new MySqlPecosaDAO().listarDetalleReqPorNum(numReq);
+		
+		for(DetalleRequerimientos dr:data) {
+			Object[] filas = {dr.getCodBien(),dr.getDescripcion(),dr.getUniMed(),dr.getCant(),dr.getPreUni()};
+			modelo.addRow(filas);
+		}
 	}
 }

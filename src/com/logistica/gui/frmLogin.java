@@ -16,24 +16,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.SwingConstants;
 import java.awt.Color;
 
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.text.Format;
 
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.SystemColor;
 
 public class  frmLogin extends JFrame implements ActionListener {
 	MySqlUsuarioDAO usuarioDAO= new MySqlUsuarioDAO();
 	private JPanel contentPane;
-	private JLabel lblNewLabel_1;
 	private JTextField txtUsuario;
 	private JPasswordField txtClave;
 	private JLabel lblNewLabel;
@@ -41,6 +43,8 @@ public class  frmLogin extends JFrame implements ActionListener {
 	private JButton btnCerrar;
 	public UnidadOrganica uorg;
 	public static String apenom,dni,unidad;
+	private JComboBox cboTipoUsuario;
+	private JLabel lblFondo;
 	/**
 	 * Launch the application.
 	 */
@@ -66,47 +70,40 @@ public class  frmLogin extends JFrame implements ActionListener {
 		setForeground(Color.WHITE);
 		setTitle("CONTROL DE ACCESO");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 645, 375);
+		setBounds(100, 100, 455, 538);
+		
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.GRAY);
+		contentPane.setBackground(SystemColor.control);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(frmLogin.class.getResource("/iconos/Logo3.png")));
-		lblNewLabel.setBounds(438, 98, 94, 139);
+		lblNewLabel.setBounds(172, 93, 94, 139);
 		contentPane.add(lblNewLabel);
-		
-		lblNewLabel_1 = new JLabel("Usuario");
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setOpaque(true);
-		lblNewLabel_1.setBackground(Color.BLACK);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 37));
-		lblNewLabel_1.setBounds(0, 0, 629, 46);
-		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("USUARIO");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1.setBounds(148, 82, 94, 14);
+		lblNewLabel_1_1.setBounds(112, 243, 94, 14);
 		contentPane.add(lblNewLabel_1_1);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setFont(new Font("Tahoma", Font.BOLD, 12));
 		txtUsuario.setColumns(10);
 		txtUsuario.setBackground(new Color(255, 255, 224));
-		txtUsuario.setBounds(148, 100, 223, 26);
+		txtUsuario.setBounds(112, 261, 223, 26);
 		contentPane.add(txtUsuario);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("CONTRASE\u00D1A:");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1_1.setBounds(148, 137, 94, 14);
+		lblNewLabel_1_1_1.setBounds(112, 298, 94, 14);
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		txtClave = new JPasswordField();
 		txtClave.setBackground(new Color(255, 255, 204));
-		txtClave.setBounds(148, 162, 223, 26);
+		txtClave.setBounds(112, 323, 223, 26);
 		contentPane.add(txtClave);
 		
 		btnIniciar = new JButton("Ingresar");
@@ -115,7 +112,7 @@ public class  frmLogin extends JFrame implements ActionListener {
 		btnIniciar.setAutoscrolls(true);
 		btnIniciar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnIniciar.setBackground(new Color(0, 153, 102));
-		btnIniciar.setBounds(148, 247, 101, 38);
+		btnIniciar.setBounds(112, 397, 101, 38);
 		contentPane.add(btnIniciar);
 		
 		btnCerrar = new JButton("Cancelar");
@@ -124,8 +121,21 @@ public class  frmLogin extends JFrame implements ActionListener {
 		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnCerrar.setBackground(new Color(153, 0, 51));
 		btnCerrar.setAutoscrolls(true);
-		btnCerrar.setBounds(270, 247, 101, 38);
+		btnCerrar.setBounds(234, 397, 101, 38);
 		contentPane.add(btnCerrar);
+		
+		cboTipoUsuario = new JComboBox();
+		cboTipoUsuario.setModel(new DefaultComboBoxModel(new String[] {"LOGISTICA", "UNIDAD ORGANICA"}));
+		cboTipoUsuario.setBounds(112, 360, 223, 26);
+		contentPane.add(cboTipoUsuario);
+		
+		ImageIcon icon = new ImageIcon(new ImageIcon(frmPecosa.class.getResource("/img/fondoLogin.png")).getImage().getScaledInstance(468, 500, Image.SCALE_SMOOTH));
+		
+		lblFondo = new JLabel("");
+		lblFondo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFondo.setIcon(icon);
+		lblFondo.setBounds(0, 0, 439, 501);
+		contentPane.add(lblFondo);
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCerrar) {
@@ -142,9 +152,10 @@ public class  frmLogin extends JFrame implements ActionListener {
 				login=txtUsuario.getText();
 				clave=new String(txtClave.getPassword());
 				
-				String[] log = login.split("/");
+				//String[] log = login.split("/");
+				String tipoUsu = cboTipoUsuario.getSelectedItem().toString();
 				
-				if(log[0].equals("UO")) {
+				if(tipoUsu.equals("UNIDAD ORGANICA")) {
 					UnidadOrganica uorg = new UnidadOrganica();
 					uorg = usuarioDAO.iniciarSesionUnOrg(login, clave);
 					if(uorg != null) {
@@ -167,7 +178,7 @@ public class  frmLogin extends JFrame implements ActionListener {
 						txtUsuario.requestFocus();
 					}
 				}
-				else if(log[0].equals("LO")) {
+				else if(tipoUsu.equals("LOGISTICA")) {
 					
 					Logistica lgt = usuarioDAO.iniciarSesionLog(login, clave);
 					if(lgt != null) {
