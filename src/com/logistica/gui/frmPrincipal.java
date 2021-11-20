@@ -15,7 +15,6 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
-import lib.MostraHora;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -141,8 +140,6 @@ public class frmPrincipal extends JFrame implements ActionListener {
 		lblFecha2.setBounds(10, 5, 158, 36);
 		contentPane.add(lblFecha2);
 		
-		MostraHora hora=new MostraHora();
-		hora.start();
 		
 			
 		
