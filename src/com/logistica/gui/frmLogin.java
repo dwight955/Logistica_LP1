@@ -30,7 +30,7 @@ import java.text.Format;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
-public class frmLogin extends JFrame implements ActionListener {
+public class  frmLogin extends JFrame implements ActionListener {
 	MySqlUsuarioDAO usuarioDAO= new MySqlUsuarioDAO();
 	private JPanel contentPane;
 	private JLabel lblNewLabel_1;

@@ -44,8 +44,10 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class frmCuadroRequerimientos extends JFrame implements ActionListener, KeyListener {
+	private static final DefaultTableModel DefaultTableModel = null;
 	MySqlCuadroRequerimientosDAO reqDAO = new MySqlCuadroRequerimientosDAO();
 	MySqlPecosaDAO pecosaDAO = new MySqlPecosaDAO();
 	MySqlBienesDAO bienDAO = new MySqlBienesDAO();
@@ -159,6 +161,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		panel.add(lblEntregarA);
 		
 		txtdniEntr = new JTextFielBD("dniTrabajador","tb_trabajadores");
+		
 		txtdniEntr.setEnabled(false);
 		txtdniEntr.addKeyListener(this);
 		txtdniEntr.setColumns(10);
@@ -340,6 +343,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		txtEstado.setColumns(10);
 		txtEstado.setBounds(463, 62, 108, 22);
 		contentPane.add(txtEstado);
+
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mntmEliminar) {
@@ -368,7 +372,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	}
 	protected void actionPerformedBtnNuevo(ActionEvent e) {
 		
-		frmLogin frm = new frmLogin();
+		frmLogin frm= new frmLogin();
 		
 		if(txtdniEntr.isEnabled()==false) {
 			btnNuevo.setText("Enviar");
@@ -403,17 +407,20 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 					dr.setCodBien(codBien);
 					dr.setCant(Integer.parseInt(cant));
 					
-					data.add(dr);
+					data.add(dr);							
 				}
-				
-				reqDAO.registrar(cure, data);
-				
-				Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");
-				
+
+				reqDAO.registrar(cure, data);				
+				Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");				
 				btnNuevo.setText("Nuevo");
+				
+				borrar();
+				
 			} catch (Exception e2) {
 				Mensajes.error("No se logro registrar \n");
+				
 			}
+			
 		}
 	}
 	private String codigoCorrelativo() {
@@ -428,11 +435,14 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		return codigoSerial;			
 	}
 	
+	
 	protected void actionPerformedBtnBuscarEntrDni(ActionEvent e) {
-		dlgBuscarEntrTrabajador frm = new dlgBuscarEntrTrabajador();
-		frm.setVisible(true);
-		frm.setLocationRelativeTo(null);
+			dlgBuscarEntrTrabajador frm = new dlgBuscarEntrTrabajador();
+			frm.setVisible(true);
+			frm.setLocationRelativeTo(null);
 	}
+	
+	
 	protected void keyReleasedTxtdniEntr(KeyEvent e) {
 		String dni = txtdniEntr.getText();
 		String[] data = pecosaDAO.buscarTrabajador(dni);
@@ -466,29 +476,48 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		dlg.setLocationRelativeTo(null);
 	}
 	protected void actionPerformedBtnAgregarBien(ActionEvent e) {
-		//variables
-		String codigo,descr, unidadMed;
-		int cant;
+		String codBien,cantidad;
+		codBien=txtCodBien.getText();
+		cantidad=txtCant.getText();
+		if(codBien.equals("")){
+			mensaje("Ingrese Codigo Valido");
+			txtCodBien.requestFocus();
+		}
 		
-		codigo = txtCodBien.getText();
-		descr = txtDescPro.getText();
-		unidadMed = txtUnidaMed.getText();
-		cant = Integer.parseInt(txtCant.getText());
+		else if(cantidad.equals("")){
+			mensaje("Ingrese Cantidad");
+			txtCant.requestFocus();
+		}
+		else if(cantidad.matches("[0-9]{0,2}")==false) {
+			mensaje ("Cantidad Max-99");
+			txtCant.requestFocus();
+		}
+	
+		else if(codBien.matches("[BI[-][0-9]]{5}")==false) {
+			mensaje("Codigo debe Comenzar con BI - + numero");
+			txtCodBien.requestFocus();
+		}
 		
-		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
 		
-		Object[] filas = {codigo,descr,unidadMed,cant};
-		modelo.addRow(filas);
-		
-		limpiarBien();
+		else {
+			String codigo,descr, unidadMed;
+			int cant;
+			
+			codigo = txtCodBien.getText();
+			descr = txtDescPro.getText();
+			unidadMed = txtUnidaMed.getText();
+			cant = Integer.parseInt(txtCant.getText());
+			txtCodBien.requestFocus();
+			DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
+			
+			Object[] filas = {codigo,descr,unidadMed,cant};
+			modelo.addRow(filas);
+
+			limpiarBien();
+		}	
+	
 	}
-	void limpiarBien() {
-		txtCodBien.setText("");
-		txtDescPro.setText("");
-		txtUnidaMed.setText("");
-		txtCant.setText("");
-		txtCodBien.requestFocus();
-	}
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -511,4 +540,33 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
 		modelo.removeRow(posFila);
 	}
+	
+	
+	protected void actionPerformedBtnCancelar(ActionEvent e) {
+		borrar();
+		
+	}
+	
+	void borrar(){
+		txtdniEntr.setText("");
+		txtNombreEntr.setText("");
+		txtParaUnidadOrg.setText("");
+		DefaultTableModel requerimiento=(DefaultTableModel) tblRequerimientos.getModel();
+		requerimiento.setRowCount(0);	
+	}
+	
+	void limpiarBien() {
+		txtCodBien.setText("");
+		txtDescPro.setText("");
+		txtUnidaMed.setText("");
+		txtCant.setText("");
+		txtCodBien.requestFocus();
+	}
+	
+	void mensaje(String m){
+		JOptionPane.showMessageDialog(null, m);
+	}
+	
+	
+	
 }

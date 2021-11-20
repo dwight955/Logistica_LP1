@@ -129,3 +129,4 @@ public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 		dlg.setLocationRelativeTo(null);
 	}
 }
+

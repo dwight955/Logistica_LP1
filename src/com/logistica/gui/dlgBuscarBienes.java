@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -174,22 +175,27 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
-				//varaible
-				String codigo,descr,unidadMed;
-				//Obtener posicion de la fila seleccionada
-				int posFila;
-				posFila = tblBienes.getSelectedRow();
-				//Obtener datos de la fila seleccionada
-				codigo = tblBienes.getValueAt(posFila, 0).toString();
-				descr = tblBienes.getValueAt(posFila, 1).toString();
-				unidadMed = tblBienes.getValueAt(posFila, 2).toString();
-				
-					//Enviar valores a las cajas de formulario 
-					frmCuadroRequerimientos.txtCodBien.setText(codigo);
-					frmCuadroRequerimientos.txtDescPro.setText(descr);
-					frmCuadroRequerimientos.txtUnidaMed.setText(unidadMed);
-					//cerrar ventana actual
-					dispose();
+				try {
+					//varaible
+					String codigo,descr,unidadMed;
+					//Obtener posicion de la fila seleccionada
+					int posFila;
+					posFila = tblBienes.getSelectedRow();
+					//Obtener datos de la fila seleccionada
+					codigo = tblBienes.getValueAt(posFila, 0).toString();
+					descr = tblBienes.getValueAt(posFila, 1).toString();
+					unidadMed = tblBienes.getValueAt(posFila, 2).toString();
+					
+						//Enviar valores a las cajas de formulario 
+						frmCuadroRequerimientos.txtCodBien.setText(codigo);
+						frmCuadroRequerimientos.txtDescPro.setText(descr);
+						frmCuadroRequerimientos.txtUnidaMed.setText(unidadMed);
+						//cerrar ventana actual
+						dispose();
+					
+				} catch (Exception e2) {
+					mensaje("Seleccione uno ");
+				}
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -198,5 +204,9 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 	public void mousePressed(MouseEvent e) {
 	}
 	public void mouseReleased(MouseEvent e) {
+	}
+	
+	void mensaje(String m){
+		JOptionPane.showMessageDialog(null, m);
 	}
 }

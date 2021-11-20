@@ -285,7 +285,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
-		btnGuardar.setBounds(608, 593, 81, 38);
+		btnGuardar.setBounds(595, 593, 94, 38);
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");

@@ -338,10 +338,15 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnGuardar.addActionListener(this);
 		btnGuardar.setActionCommand("");
-		btnGuardar.setBounds(608, 590, 81, 38);
+		btnGuardar.setBounds(592, 590, 97, 38);
 		contentPane.add(btnGuardar);
 		
 		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actionPerformedBtnSalir(e);
+			}
+		});
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSalir.setBounds(910, 589, 81, 38);
 		contentPane.add(btnSalir);
@@ -579,5 +584,8 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		for(int i=0; i< tblDetallePecosa.getRowCount();i++) 
 			suma += Double.parseDouble(frmPecosa.tblDetallePecosa.getValueAt(i, 6).toString());
 		return suma;
+	}
+	protected void actionPerformedBtnSalir(ActionEvent e) {
+		dispose();
 	}
 }
