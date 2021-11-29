@@ -53,17 +53,15 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 	private JPanel contentPane;
 	private JTextField txtDni;
 	private JTextField txtApeNom;
-	private JTextField txtSueldo;
 	private JTextField txtBuscarTrabajador;
 	private JTable tblTrabajadores;
 	private JButton btnGuardar;
-	private JComboBox cboCargo;
-	private JButton btnActualizar;
-	private JMenuItem mntmEliminar;
+	public JButton btnActualizar;
+	public JMenuItem mntmEliminar;
 	private JComboBox cboSexo;
-	private JComboBox cboDistrito;
-	private JDateChooser dtFecNac;
+	private JComboBox cboUnidadOrganica;
 	private JButton btnCancelar;
+	private JTextField txtCargo;
 
 	/**
 	 * Launch the application.
@@ -88,14 +86,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		setTitle("Trabajadores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		setBounds(100, 100, 858, 515);
+		setBounds(100, 100, 728, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 48, 822, 191);
+		scrollPane.setBounds(10, 48, 682, 191);
 		contentPane.add(scrollPane);
 		
 		tblTrabajadores = new JTable();
@@ -105,17 +103,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			new Object[][] {
 			},
 			new String[] {
-				"Dni", "Apellidos y Nombres", "Cargo", "Fecha de Nacimiento", "Sueldo", "Sexo", "Distrito"
+				"Dni", "Apellidos y Nombres", "Cargo", "Sexo", "Unidad Organica"
 			}
 		));
 		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(39);
 		tblTrabajadores.getColumnModel().getColumn(0).setMinWidth(11);
 		tblTrabajadores.getColumnModel().getColumn(1).setPreferredWidth(138);
 		tblTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(102);
-		tblTrabajadores.getColumnModel().getColumn(3).setPreferredWidth(60);
-		tblTrabajadores.getColumnModel().getColumn(4).setPreferredWidth(17);
-		tblTrabajadores.getColumnModel().getColumn(5).setPreferredWidth(21);
-		tblTrabajadores.getColumnModel().getColumn(6).setPreferredWidth(93);
+		tblTrabajadores.getColumnModel().getColumn(3).setPreferredWidth(21);
 		scrollPane.setViewportView(tblTrabajadores);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -138,7 +133,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		contentPane.add(lblApellidosYNombres);
 		
 		JLabel lblCargo = new JLabel("Cargo");
-		lblCargo.setBounds(247, 250, 86, 14);
+		lblCargo.setBounds(281, 250, 86, 25);
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblCargo);
 		
@@ -158,37 +153,13 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		contentPane.add(txtApeNom);
 		txtApeNom.setColumns(10);
 		
-		cboCargo = new JComboBox();
-		cboCargo.setEnabled(false);
-		cboCargo.setBounds(247, 268, 183, 25);
-		cboCargo.setModel(new DefaultComboBoxModel(new String[] {"SUB-ALMACENERO", "SECRETARIA", "ASISTENTE DE ALMACEN", "EMPAQUETADOR", "COORDINADOR","JUFA"}));
-		contentPane.add(cboCargo);
-		
-		JLabel lblFecha = new JLabel("Sueldo");
-		lblFecha.setBounds(10, 354, 86, 14);
-		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		contentPane.add(lblFecha);
-		
-		txtSueldo = new JTextField();
-		txtSueldo.addKeyListener(this);
-		txtSueldo.setBounds(10, 379, 86, 25);
-		txtSueldo.setEditable(false);
-		txtSueldo.setDisabledTextColor(Color.DARK_GRAY);
-		contentPane.add(txtSueldo);
-		txtSueldo.setColumns(10);
-		
-		JLabel lblFechaDeNacimiento = new JLabel("Fecha de Nacimiento");
-		lblFechaDeNacimiento.setBounds(247, 300, 159, 14);
-		lblFechaDeNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		contentPane.add(lblFechaDeNacimiento);
-		
 		btnGuardar = new JButton("Nuevo");
-		btnGuardar.setBounds(726, 249, 106, 35);
+		btnGuardar.setBounds(586, 260, 106, 35);
 		btnGuardar.addActionListener(this);
 		contentPane.add(btnGuardar);
 		
 		btnActualizar = new JButton("Actualizar");
-		btnActualizar.setBounds(726, 298, 106, 35);
+		btnActualizar.setBounds(586, 309, 106, 35);
 		btnActualizar.setEnabled(false);
 		btnActualizar.addActionListener(this);
 		contentPane.add(btnActualizar);
@@ -204,44 +175,44 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtBuscarTrabajador.setColumns(10);
 		
 		JLabel lblSexo = new JLabel("Sexo");
-		lblSexo.setBounds(247, 356, 46, 14);
+		lblSexo.setBounds(10, 359, 46, 14);
 		lblSexo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(lblSexo);
 		
 		cboSexo = new JComboBox();
 		cboSexo.setEnabled(false);
-		cboSexo.setBounds(247, 380, 183, 25);
+		cboSexo.setBounds(10, 383, 183, 25);
 		cboSexo.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
 		contentPane.add(cboSexo);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
-		panel.setBounds(493, 250, 183, 85);
+		panel.setBounds(281, 323, 183, 85);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		cboDistrito = new JComboBoxBD("concat_ws('/',codDis,nomDis)","TB_Distrito");
-		cboDistrito.setEnabled(false);
-		cboDistrito.setBounds(10, 36, 163, 27);
-		panel.add(cboDistrito);
+		cboUnidadOrganica = new JComboBoxBD("concat_ws('-',codUniOrg,nomUniOrg)","tb_unidadorganica");
+		cboUnidadOrganica.setEnabled(false);
+		cboUnidadOrganica.setBounds(10, 36, 163, 27);
+		panel.add(cboUnidadOrganica);
 		
-		JLabel lblDistrito = new JLabel("Distrito");
+		JLabel lblDistrito = new JLabel("Unidad Organica");
 		lblDistrito.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblDistrito.setBounds(10, 11, 86, 14);
+		lblDistrito.setBounds(10, 11, 122, 14);
 		panel.add(lblDistrito);
 		
 		Date dt = new Date();
-		dtFecNac = new JDateChooser();
-		dtFecNac.setDateFormatString("dd/MM/yyyy");
-		dtFecNac.setDate(dt);
-		dtFecNac.setEnabled(false);
-		dtFecNac.setBounds(247, 323, 183, 25);
-		contentPane.add(dtFecNac);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
-		btnCancelar.setBounds(726, 351, 106, 35);
+		btnCancelar.setBounds(586, 362, 106, 35);
 		contentPane.add(btnCancelar);
+		
+		txtCargo = new JTextField();
+		txtCargo.setEditable(false);
+		txtCargo.setBounds(281, 281, 183, 25);
+		contentPane.add(txtCargo);
+		txtCargo.setColumns(10);
 		
 		listar();
 	}
@@ -268,9 +239,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		if (e.getSource() == txtApeNom) {
 			keyTypedTxtApeNom(e);
 		}
-		if (e.getSource() == txtSueldo) {
-			keyTypedTxtSueldo(e);
-		}
 		if (e.getSource() == txtDni) {
 			keyTypedTxtDni(e);
 		}
@@ -281,12 +249,12 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			Elementos(true);
 			btnGuardar.setText("Guardar");
 		}else {
-			String dni,nomape,cargo,fecnac,sueldo,sexo,codDis;
+			String dni,nomape,cargo,sexo,codUniOrg;
 			dni = txtDni.getText();
 			nomape = txtApeNom.getText().toUpperCase();
-			cargo = cboCargo.getSelectedItem().toString();
-			sueldo = txtSueldo.getText();
+			cargo = txtCargo.getText();
 			sexo = cboSexo.getSelectedItem().toString();
+			
 			ArrayList<Trabajador> listaTra = trabajadorDAO.ListarTodo();//luego lo eliminas
 			//Validacion
 			if(dni.equals("")) {
@@ -295,23 +263,15 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				Mensajes.dialogo("El campo APELLIDO Y NOMBRES es obligatorio");
 			}else if(nomape.matches("^[A-Za-z\\s]{10,30}$")==false){
 				Mensajes.dialogo("Nombre y Apellido: Minimo:3 Maximo: 30 LETRAS");
-			}else if(sueldo.equals("")) {
-				Mensajes.dialogo("El campo sueldo es obligatorio");	
-			}else if(sueldo.matches("([2-9]\\d||[1-9]\\d\\d||[1][0][0])||([2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")==false) {
-				Mensajes.dialogo("Sueldo: Min: 29.99 Max: 1999.99 ");	
-			}else if(dtFecNac.getDate()==null) {
-				Mensajes.dialogo("Ingrese fecha de Nacimiento");	
 			}else {
-				fecnac = fec.leerFecha(dtFecNac);
 				Trabajador tra = new Trabajador();
 				tra.setDni(Integer.parseInt(dni));
 				tra.setNomApe(nomape);
 				tra.setCargo(cargo);
-				
 				tra.setSexo(sexo);
-				codDis = cboDistrito.getSelectedItem().toString();
-				String[] part = codDis.split("/");
-				
+				codUniOrg = cboUnidadOrganica.getSelectedItem().toString();
+				String[] part = codUniOrg.split("-");
+				tra.setCodUnidadOrga(part[0]);
 				int salida = trabajadorDAO.Ingresar(tra);
 					if(salida > 0) {
 						Mensajes.dialogo("El registro fue un exito");
@@ -329,10 +289,8 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		String dni,nomape,cargo,fecnac,sueldo,sexo,codDistrito;
 		dni = txtDni.getText();
 		nomape = txtApeNom.getText().toUpperCase();
-		cargo = cboCargo.getSelectedItem().toString();
-		sueldo = txtSueldo.getText();
 		sexo = cboSexo.getSelectedItem().toString();
-		codDistrito = cboDistrito.getSelectedItem().toString();
+		codDistrito = cboUnidadOrganica.getSelectedItem().toString();
 		//Validacion
 		if(dni.equals("")) {
 			Mensajes.dialogo("El campo DNI es obligatorio");
@@ -340,20 +298,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 			Mensajes.dialogo("El campo APELLIDO Y NOMBRES es obligatorio");
 		}else if(nomape.matches("^[A-Za-z\\s]{10,30}$")==false){
 			Mensajes.dialogo("Nombre y Apellido: Minimo:3 Maximo: 30 LETRAS");
-		}else if(sueldo.equals("")) {
-			Mensajes.dialogo("El campo sueldo es obligatorio");	
-		}else if(sueldo.matches("([2-9]\\d||[1-9]\\d\\d||[1][0][0])||([2-9]\\d[.]\\d{1,2}||[1-9]\\d\\d[.]\\d{1,2}||[1][0][0][.]\\d\\d)")==false) {
-			Mensajes.dialogo("Sueldo Invalido");	
-		}else if(dtFecNac.getDate()==null) {
-			Mensajes.dialogo("Ingrese fecha de Nacimiento");	
 		}else {
-			fecnac = fec.leerFecha(dtFecNac);
 			Trabajador tra = new Trabajador();
 			tra.setDni(Integer.parseInt(dni));
 			tra.setNomApe(nomape);
-			tra.setCargo(cargo);
 			tra.setSexo(sexo);
+			
 			String[] sep = codDistrito.split("/");
+			tra.setCodUnidadOrga(sep[0]);
 			
 			int salida = trabajadorDAO.Actualizar(tra);
 			if(salida > 0) {
@@ -396,7 +348,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> data = trabajadorDAO.ListarTodo();
 		for(Trabajador tra:data) {
-			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo()};
+			Object[] filas= {tra.getDni(),tra.getNomApe(),tra.getCargo(),tra.getSexo(),tra.getCodUnidadOrga()};
 			modelo.addRow(filas);
 		}
 	}
@@ -404,11 +356,9 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		txtDni.setEditable(op);
 		txtDni.requestFocus();
 		txtApeNom.setEditable(op);
-		txtSueldo.setEditable(op);
-		cboCargo.setEnabled(op);
+		txtCargo.setEditable(op);
 		cboSexo.setEnabled(op);
-		cboDistrito.setEnabled(op);
-		dtFecNac.setEnabled(op);
+		cboUnidadOrganica.setEnabled(op);
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -427,7 +377,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		}else {
 				Elementos(true);
 				txtDni.setEditable(false);
-				btnActualizar.setEnabled(true);
+				if(mntmEliminar.isEnabled())btnActualizar.setEnabled(true);
 				btnGuardar.setEnabled(false);
 				String dni,nomape,cargo,sueldo;
 				Date fecnac;
@@ -442,16 +392,14 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				//mostrar variables en las cajas
 				txtDni.setText(dni);
 				txtApeNom.setText(nomape);
-				cboCargo.setSelectedItem(cargo);
 				//dtFecNac.setDate(fecnac);;
-				txtSueldo.setText(sueldo);
 		}
 	}
 	void limpiar() {
 		txtDni.setText("");
 		txtDni.requestFocus();
+		txtCargo.setText("");
 		txtApeNom.setText("");
-		txtSueldo.setText("");
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -480,15 +428,6 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		if(!Character.isDigit(c)) {
 			e.consume();
 		} else if(dni.length()==8) {
-			e.consume();
-		}
-	}
-	protected void keyTypedTxtSueldo(KeyEvent e) {
-		char c = e.getKeyChar();
-		String suel = txtSueldo.getText();
-		if(!Character.isDigit(c) && c!='.') {
-			e.consume();
-		}else if(suel.length()==6) {
 			e.consume();
 		}
 	}

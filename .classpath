@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="librerias/mysql-connector-java-8.0.21.jar"/>
 	<classpathentry kind="lib" path="librerias/AutoCompleter.jar"/>
 	<classpathentry kind="lib" path="librerias/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="librerias/timingframework-classic-1.1.jar"/>
+	<classpathentry kind="lib" path="librerias/JCarrierPigeon-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

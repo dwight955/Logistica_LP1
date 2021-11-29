@@ -41,6 +41,7 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 	private JTable tblTrabajadores;
 	private JComboBox cboUnidadOrg;
 	private JButton btnAñadir;
+	private JButton btnAñadirTrabajador;
 
 	/**
 	 * Launch the application.
@@ -60,14 +61,14 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 	 */
 	public dlgBuscarEntrTrabajador() {
 		setTitle("Trabajadores");
-		setBounds(100, 100, 667, 475);
+		setBounds(100, 100, 682, 482);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 58, 424, 334);
+		scrollPane.setBounds(10, 58, 439, 334);
 		contentPanel.add(scrollPane);
 		
 		tblTrabajadores = new JTable();
@@ -78,20 +79,21 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 				"DNI", "Apellidos y Nombres", "Unidad Organica"
 			}
 		));
-		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(16);
+		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(15);
+		tblTrabajadores.getColumnModel().getColumn(0).setMinWidth(9);
 		tblTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(51);
 		scrollPane.setViewportView(tblTrabajadores);
 		
 		txtBuscarTrabajadores = new JTextField();
 		txtBuscarTrabajadores.setToolTipText("Apellidos o Nombres");
 		txtBuscarTrabajadores.addKeyListener(this);
-		txtBuscarTrabajadores.setBounds(444, 85, 197, 26);
+		txtBuscarTrabajadores.setBounds(459, 83, 197, 26);
 		contentPanel.add(txtBuscarTrabajadores);
 		txtBuscarTrabajadores.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Apellidos o Nombres:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel.setBounds(445, 60, 136, 14);
+		lblNewLabel.setBounds(460, 58, 136, 14);
 		contentPanel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("BUSQUEDA DE TRABAJADORES");
@@ -103,23 +105,28 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		cboUnidadOrg = new JComboBox();
 		cboUnidadOrg.addActionListener(this);
 		cboUnidadOrg.setModel(new DefaultComboBoxModel(new String[] {"[TODOS]", "ALCALDIA", "ADMINISTRACION TRIBUTARIA", "GERENCIA MUNICIPAL", "SERENAZGO", "PRESIDENCIA", "CONTABILIDAD"}));
-		cboUnidadOrg.setBounds(444, 157, 197, 22);
+		cboUnidadOrg.setBounds(459, 155, 197, 22);
 		contentPanel.add(cboUnidadOrg);
 		
 		JLabel lblCargo = new JLabel("Unidad Organica:");
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCargo.setBounds(444, 126, 136, 22);
+		lblCargo.setBounds(459, 124, 136, 22);
 		contentPanel.add(lblCargo);
 		{
 			btnAñadir = new JButton("");
 			btnAñadir.addActionListener(this);
 			btnAñadir.addMouseListener(this);
 			btnAñadir.setIcon(new ImageIcon(dlgBuscarEntrTrabajador.class.getResource("/iconos/add.png")));
-			btnAñadir.setBounds(444, 212, 197, 36);
+			btnAñadir.setBounds(459, 210, 197, 36);
 			contentPanel.add(btnAñadir);
 			btnAñadir.setActionCommand("OK");
 			getRootPane().setDefaultButton(btnAñadir);
 		}
+		
+		btnAñadirTrabajador = new JButton("A\u00F1adir Trabajador");
+		btnAñadirTrabajador.addActionListener(this);
+		btnAñadirTrabajador.setBounds(10, 400, 136, 36);
+		contentPanel.add(btnAñadirTrabajador);
 		listar("", "%", "");
 	}
 	public void keyPressed(KeyEvent e) {
@@ -144,6 +151,9 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnAñadirTrabajador) {
+			actionPerformedBtnAñadirTrabajador(e);
+		}
 		if (e.getSource() == cboUnidadOrg) {
 			actionPerformedCboCargo(e);
 		}
@@ -161,13 +171,13 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		String unidad = cboUnidadOrg.getSelectedItem().toString();
 		listar(apenomTra, comodin, unidad);
 	}
-	void listar(String apenomTra,String comodin, String unidad) {
+	public void listar(String apenomTra,String comodin, String unidad) {
 		if(apenomTra.equals("") && unidad.equals("[TODOS]")) comodin = "%";
 		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> lista = trabajadorDAO.ListarBusqueda(apenomTra, comodin, unidad);
 		for(Trabajador tra:lista) {
-			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getUnidadOrga()};
+			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getCodUnidadOrga()};
 			modelo.addRow(filas);
 		}
 	}
@@ -189,9 +199,6 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 						frmCuadroRequerimientos.txtParaUnidadOrg.setText(unidad);
 						//cerrar ventana actual
 						dispose();
-					
-					
-					
 				} catch (Exception e2) {
 					mensaje("Seleccionar Trabajador");
 				}
@@ -208,5 +215,10 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 	}
 	void mensaje(String m){
 		JOptionPane.showMessageDialog(null, m);
+	}
+	protected void actionPerformedBtnAñadirTrabajador(ActionEvent e) {
+		frmTrabajadores frm = new frmTrabajadores();
+		frm.setVisible(true);
+		frm.mntmEliminar.setEnabled(false);
 	}
 }

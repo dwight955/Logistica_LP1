@@ -76,23 +76,26 @@ public class MySqlPecosaDAO implements PecosaDAO {
 	}
 
 	@Override
-	public ArrayList<Pecosa> ListarTodo() {
+	public ArrayList<Pecosa> ListarTodo(int op,String estado) {
 		ArrayList<Pecosa> lista = new ArrayList<Pecosa>();
 		Connection cn = null;
-		CallableStatement cstm = null;
-		String sql = "call sp_listarPecosa";
+		PreparedStatement pstm = null;
+		String sql = "call sp_listarPecosa(?,?)";
 		ResultSet rs = null;
 		try {
 			cn = MySqlConexion.getConexion();
-			cstm = cn.prepareCall(sql);
-			rs = cstm.executeQuery();
+			pstm = cn.prepareCall(sql);
+			pstm.setInt(1, op);
+			pstm.setString(2, estado);
+			rs = pstm.executeQuery();
 			while(rs.next()) {
 				Pecosa pec = new Pecosa();
 				pec.setNumPec(rs.getInt(1));
 				pec.setNumReq(rs.getString(2));
-				pec.setNomUnidadSoli(rs.getString(3));
-				pec.setNomUnidadEntr(rs.getString(4));
-				pec.setFecForm(rs.getString(5));
+				pec.setNombreFormulo(rs.getString(3));
+				pec.setFecForm(rs.getString(4));
+				pec.setTotal(rs.getDouble(5));
+				pec.setReferencia(rs.getString(6));
 				lista.add(pec);
 			}
 		} catch (SQLException e) {
@@ -101,7 +104,7 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		} finally {
 			try {
 				if(cn != null)cn.close();
-				if(cstm != null)cstm.close();
+				if(pstm != null)pstm.close();
 				if(rs != null)rs.close();
 			} catch (SQLException e2) {
 				e2.printStackTrace();
@@ -178,5 +181,35 @@ public class MySqlPecosaDAO implements PecosaDAO {
 			}
 		}
 		return lista;
+	}
+
+	@Override
+	public int ActualizarFechaYDni(Pecosa bean) {
+		int salida = -1;
+		Connection cn = null;
+		PreparedStatement pstmPec = null;
+		String sqlCabePec = "update tb_pecosa "
+				+ " set FechApro = ?,"
+				+ " 	dniJefeApro = ?"
+				+ " where nroPecosa = ?";
+		try {
+			cn = MySqlConexion.getConexion();
+			pstmPec = cn.prepareStatement(sqlCabePec);
+			pstmPec.setString(1, bean.getFecApro());
+			pstmPec.setInt(2, bean.getDniJefeApro());
+			pstmPec.setInt(3, bean.getNumPec());
+			salida = pstmPec.executeUpdate();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(">>Error al momento de actualizar la Fecha y Dni de la Pecosa");
+		}finally {
+			try {
+				if(cn!=null) cn.close();
+				if(pstmPec!=null)pstmPec.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}	
+		}
+		return salida;
 	}
 }

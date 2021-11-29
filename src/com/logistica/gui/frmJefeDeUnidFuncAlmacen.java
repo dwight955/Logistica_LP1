@@ -23,7 +23,7 @@ import java.awt.SystemColor;
 public class frmJefeDeUnidFuncAlmacen extends JFrame {
 
 	private JPanel contentPane;
-	public JLabel lblNomJufa;
+	public static JLabel lblNomJufa;
 	
 	/**
 	 * Launch the application.
@@ -79,17 +79,6 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		});
 		mnBandejaDeEntrada.add(mntmVerPecosas);
 		
-		JMenu mnAlmacen = new JMenu("Almacen");
-		menuBar.add(mnAlmacen);
-		
-		JMenuItem mntmGenerarCuadroDe = new JMenuItem("Generar Cuadro de Adquisiciones");
-		mntmGenerarCuadroDe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				actionPerformedMntmGenerarCuadroDe(e);
-			}
-		});
-		mnAlmacen.add(mntmGenerarCuadroDe);
-		
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
@@ -140,15 +129,11 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 			
 		}
 	}
-	protected void actionPerformedMntmGenerarCuadroDe(ActionEvent e) {
-		frmCuadroRequerimientos frm = new frmCuadroRequerimientos();
-		frm.setVisible(true);
-		frm.setLocationRelativeTo(null);
-	}
 	protected void actionPerformedMntmSalir(ActionEvent e) {
 		dispose();
 	}
 	protected void actionPerformedMntmVerPecosas(ActionEvent e) {
-		
+		dlgBandejaEntradaJefe dlg = new dlgBandejaEntradaJefe();
+		dlg.setVisible(true);
 	}
 }

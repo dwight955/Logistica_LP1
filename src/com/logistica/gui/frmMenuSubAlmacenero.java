@@ -47,6 +47,7 @@ public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 	FondoPanel imagen = new FondoPanel();
 	private JMenuItem mntmRequerimientos;
 	public static JLabel lblnombreSesion;
+	private JMenuItem mntmVerPECOSAs;
 	
 	public frmMenuSubAlmacenero() {
 		setTitle("Sub Almacen");
@@ -75,8 +76,9 @@ public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 		JMenu mnAlmacen = new JMenu("Almacen");
 		menuBar.add(mnAlmacen);
 		
-		JMenuItem mntmFormulacionDeUna = new JMenuItem("Ver PECOSAs");
-		mnAlmacen.add(mntmFormulacionDeUna);
+		mntmVerPECOSAs = new JMenuItem("Ver PECOSAs");
+		mntmVerPECOSAs.addActionListener(this);
+		mnAlmacen.add(mntmVerPECOSAs);
 		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -119,6 +121,9 @@ public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmVerPECOSAs) {
+			actionPerformedMntmFormulacionDeUna(e);
+		}
 		if (e.getSource() == mntmRequerimientos) {
 			actionPerformedMntmRequerimientos(e);
 		}
@@ -127,6 +132,9 @@ public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 		dlgBandejaEntradaSubAlmacen dlg = new dlgBandejaEntradaSubAlmacen();
 		dlg.setVisible(true);
 		dlg.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmFormulacionDeUna(ActionEvent e) {
+		
 	}
 }
 

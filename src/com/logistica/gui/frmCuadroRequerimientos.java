@@ -192,9 +192,9 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		lblCodigo.setBounds(10, 41, 55, 17);
 		panel_1.add(lblCodigo);
 		
-		txtCodBien = new JTextFielBD("codBien","tb_bienes");
+		txtCodBien = new JTextField();
 		txtCodBien.addKeyListener(this);
-		txtCodBien.setEnabled(false);
+		txtCodBien.setEditable(false);
 		txtCodBien.setColumns(10);
 		txtCodBien.setBounds(70, 39, 63, 20);
 		panel_1.add(txtCodBien);
@@ -441,8 +441,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 			frm.setVisible(true);
 			frm.setLocationRelativeTo(null);
 	}
-	
-	
+
 	protected void keyReleasedTxtdniEntr(KeyEvent e) {
 		String dni = txtdniEntr.getText();
 		String[] data = pecosaDAO.buscarTrabajador(dni);
@@ -451,7 +450,6 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	}
 	void componentes(boolean op) {
 		txtdniEntr.setEnabled(true);
-		txtCodBien.setEnabled(op);
 		txtDescPro.setEnabled(op);
 		txtCant.setEnabled(op);
 		txtUnidaMed.setEnabled(op);
@@ -462,6 +460,13 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	}
 	
 	public void keyTyped(KeyEvent e) {
+		char c = e.getKeyChar();
+		String ruc = txtdniEntr.getText();
+		if(!Character.isDigit(c)) {
+			e.consume();
+		} else if(ruc.length() == 8) {
+			e.consume();
+		}
 	}
 	
 	protected void keyReleasedTxtCodBien(KeyEvent e) {

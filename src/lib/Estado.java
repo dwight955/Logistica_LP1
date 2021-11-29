@@ -23,7 +23,7 @@ public class Estado {
 			salida = pstm.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(">>Error al aprobar requerimiento");
+			System.out.println(">>Error al cambiar de estado el documento");
 		} finally {
 			try {
 				if(cn != null)cn.close();

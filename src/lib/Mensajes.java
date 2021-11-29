@@ -13,4 +13,8 @@ public class Mensajes extends JOptionPane{
 		int s = JOptionPane.showConfirmDialog(null, "¿Esta seguro de querer eliminar el registro?", "Confirmar Eliminacion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		return s;
 	}
+	public static int confirmarRechazo() {
+		int s = JOptionPane.showConfirmDialog(null, "¿Esta seguro de querer rechazar este documento?", "Confirmar Rechazo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		return s;
+	}
 }

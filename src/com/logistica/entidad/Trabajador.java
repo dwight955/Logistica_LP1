@@ -1,9 +1,16 @@
 package com.logistica.entidad;
 
 public class Trabajador {
-	private String nomApe, cargo,sexo, unidadOrga;
+	private String nomApe, cargo,sexo, codUnidadOrga;
 	private int dni;
 	
+	
+	public String getCodUnidadOrga() {
+		return codUnidadOrga;
+	}
+	public void setCodUnidadOrga(String codUnidadOrga) {
+		this.codUnidadOrga = codUnidadOrga;
+	}
 	public String getSexo() {
 		return sexo;
 	}
@@ -27,11 +34,5 @@ public class Trabajador {
 	}
 	public void setDni(int dni) {
 		this.dni = dni;
-	}
-	public String getUnidadOrga() {
-		return unidadOrga;
-	}
-	public void setUnidadOrga(String unidadOrga) {
-		this.unidadOrga = unidadOrga;
 	}
 }

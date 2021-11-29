@@ -48,6 +48,7 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 	FondoPanel imagen = new FondoPanel();
 	public JLabel lblNomDirec;
 	private JMenuItem mntmRequerimientos;
+	private JMenuItem mntmSalir;
 	public frmMenuDirecEjecLogistica() {
 		setTitle("Director Ejecutivo de Logistica");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,7 +63,8 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 		JMenu mnSistema = new JMenu("Sistema");
 		menuBar.add(mnSistema);
 		
-		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(this);
 		mnSistema.add(mntmSalir);
 		
 		JMenu mnNewMenu = new JMenu("Bandeja de Entrada");
@@ -117,6 +119,9 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmSalir) {
+			actionPerformedMntmSalir(e);
+		}
 		if (e.getSource() == mntmRequerimientos) {
 			actionPerformedMntmRequerimientos(e);
 		}
@@ -125,5 +130,8 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 		dlgBandejaEntradaDirector frm = new dlgBandejaEntradaDirector();
 		frm.setVisible(true);
 		frm.setLocationRelativeTo(null);
+	}
+	protected void actionPerformedMntmSalir(ActionEvent e) {
+		this.dispose();
 	}
 }

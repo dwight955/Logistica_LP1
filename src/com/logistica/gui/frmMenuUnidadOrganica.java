@@ -25,6 +25,8 @@ import java.awt.Cursor;
 
 import com.logistica.entidad.UnidadOrganica;
 import com.logistica.gui.frmLogin;
+import com.logistica.utils.Libreria;
+
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -40,7 +42,6 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 	private JPanel contentPane;
 	public JFrame windows;
 	public JLabel lblNomCargo;
-	
 	/**
 	 * Launch the application.
 	 */
@@ -59,6 +60,7 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 	FondoPanel imagen = new FondoPanel();
 	public JLabel lblBienvenido;
 	private JMenuItem mntmGenerarCuadroDe;
+	private JMenuItem mntmVerListadoDe;
 	
 	public frmMenuUnidadOrganica() {
 		setTitle("Unidad Organica: (Nombre de la unidad org.)");
@@ -93,7 +95,8 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 		JMenu mnConsultar = new JMenu("Consultar");
 		menuBar.add(mnConsultar);
 		
-		JMenuItem mntmVerListadoDe = new JMenuItem("Ver listado de Requerimientos");
+		mntmVerListadoDe = new JMenuItem("Consultar Cuadros de Requerimientos");
+		mntmVerListadoDe.addActionListener(this);
 		mnConsultar.add(mntmVerListadoDe);
 		getContentPane().setLayout(null);
 		
@@ -113,10 +116,13 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 		panel.setBackground(new Color(230, 230, 250));
 		panel.setBounds(10, 11, 397, 83);
 		getContentPane().add(panel);
-
+		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmVerListadoDe) {
+			actionPerformedMntmVerListadoDe(e);
+		}
 		if (e.getSource() == mntmGenerarCuadroDe) {
 			actionPerformedMntmGenerarCuadroDe(e);
 		}
@@ -146,5 +152,9 @@ public class frmMenuUnidadOrganica extends JFrame implements ActionListener{
 	}
 	protected void actionPerformedMntmSalir(ActionEvent e) {
 		dispose();
+	}
+	protected void actionPerformedMntmVerListadoDe(ActionEvent e) {
+		dlgConsultaCuadroRequerimientos dlg = new dlgConsultaCuadroRequerimientos();
+		dlg.setVisible(true);
 	}
 }

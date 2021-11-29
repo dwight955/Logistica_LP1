@@ -523,7 +523,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtCargoEntr.setText(data[1]);
 	}
 	public String codigoCorrelativo() {
-		ArrayList<Pecosa> data = pecosaDao.ListarTodo();
+		ArrayList<Pecosa> data = pecosaDao.ListarTodo(1,"");
 		String codigoSerial;
 		if(data.size()==0) {
 			codigoSerial = "000001";
@@ -531,7 +531,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 			int num = data.get(data.size()-1).getNumPec() + 1;
 			codigoSerial = String.format("%06d", num);
 		}
-		return codigoSerial;			
+		return codigoSerial;		
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {

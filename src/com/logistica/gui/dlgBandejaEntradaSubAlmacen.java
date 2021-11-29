@@ -98,9 +98,9 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 		JMenuItem mntmVerDetalles = new JMenuItem("Generar PECOSA");
 		popupMenu.add(mntmVerDetalles);
 		
-		JLabel lblCuadrosDe = new JLabel("0 Cuadros de Requerimientos aprobados");
+		lblCuadrosDe = new JLabel("No hay cuadros de requerimientos que mostrar");
 		lblCuadrosDe.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblCuadrosDe.setBounds(21, 55, 247, 14);
+		lblCuadrosDe.setBounds(21, 55, 307, 14);
 		getContentPane().add(lblCuadrosDe);
 		
 		btnGenerarPecosa = new JButton("Generar Pecosa");
@@ -138,8 +138,8 @@ public class dlgBandejaEntradaSubAlmacen extends JDialog implements ActionListen
 			Object[] filas = {cua.getNumreq(),cua.getApenomSoli(),cua.getApenomEntre(),cua.getNomUniSoli(), cua.getNomUniEntr(), cua.getFechaEmi()};
 			modelo.addRow(filas);
 		}
-		/*cantReq = modelo.getRowCount();
-		lblCuadrosDe.setText(cantReq + " Cuadros de Requerimientos");*/
+		cantReq = modelo.getRowCount();
+		if(cantReq>0) {lblCuadrosDe.setText(cantReq + " Cuadro de Requerimientos aprobados");}
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {

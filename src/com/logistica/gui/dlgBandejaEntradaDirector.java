@@ -36,6 +36,7 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 	private static JTable tblDetalleReq;
 	private static int cantReq;
 	private static JLabel lblCuadrosDe;
+	private JButton btnRechazar;
 	/**
 	 * Launch the application.
 	 */
@@ -93,9 +94,9 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 		JMenuItem mntmRechazar = new JMenuItem("Rechazar");
 		popupMenu.add(mntmRechazar);
 		
-		lblCuadrosDe = new JLabel("0 Cuadros de Requerimientos");
+		lblCuadrosDe = new JLabel("No hay Cuadros de Requerimientos que mostrar");
 		lblCuadrosDe.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblCuadrosDe.setBounds(21, 55, 190, 14);
+		lblCuadrosDe.setBounds(21, 55, 293, 14);
 		getContentPane().add(lblCuadrosDe);
 		
 		btnAporbar = new JButton("Aprobar");
@@ -103,7 +104,8 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 		btnAporbar.setBounds(413, 488, 132, 33);
 		getContentPane().add(btnAporbar);
 		
-		JButton btnRechazar = new JButton("Rechazar");
+		btnRechazar = new JButton("Rechazar");
+		btnRechazar.addActionListener(this);
 		btnRechazar.setIcon(new ImageIcon(dlgBandejaEntradaDirector.class.getResource("/iconos/cerrar.png")));
 		btnRechazar.setBounds(555, 486, 132, 35);
 		getContentPane().add(btnRechazar);
@@ -140,7 +142,7 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 			modelo.addRow(filas);
 		}
 		cantReq = modelo.getRowCount();
-		lblCuadrosDe.setText(cantReq + " Cuadros de Requerimientos");
+		if(cantReq>0) {lblCuadrosDe.setText(cantReq + " Cuadros de Requerimientos");}
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -166,6 +168,9 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 		});
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnRechazar) {
+			actionPerformedBtnRechazar(e);
+		}
 		if (e.getSource() == btnAporbar) {
 			actionPerformedBtnAporbar(e);
 		}
@@ -181,16 +186,30 @@ public class dlgBandejaEntradaDirector extends JDialog implements ActionListener
 	}
 	protected static void mouseClickedTblCuadroReq(MouseEvent e) {
 		int posFila = tblCuadroReq.getSelectedRow();
-		numReq = tblCuadroReq.getValueAt(posFila, 0).toString();
-		
-		DefaultTableModel modelo = (DefaultTableModel) tblDetalleReq.getModel();
-		modelo.setRowCount(0);
-		
-		ArrayList<DetalleRequerimientos> data = new MySqlPecosaDAO().listarDetalleReqPorNum(numReq);
-		
-		for(DetalleRequerimientos dr:data) {
-			Object[] filas = {dr.getCodBien(),dr.getDescripcion(),dr.getUniMed(),dr.getCant(),dr.getPreUni()};
-			modelo.addRow(filas);
+		if(posFila < 0) {posFila = 0;}else {
+			numReq = tblCuadroReq.getValueAt(posFila, 0).toString();
+			
+			DefaultTableModel modelo = (DefaultTableModel) tblDetalleReq.getModel();
+			modelo.setRowCount(0);
+			
+			ArrayList<DetalleRequerimientos> data = new MySqlPecosaDAO().listarDetalleReqPorNum(numReq);
+			
+			for(DetalleRequerimientos dr:data) {
+				Object[] filas = {dr.getCodBien(),dr.getDescripcion(),dr.getUniMed(),dr.getCant(),dr.getPreUni()};
+				modelo.addRow(filas);
+			}
+		}
+	}
+	protected void actionPerformedBtnRechazar(ActionEvent e) {
+		int delete = Mensajes.confirmarELiminar();
+		if(delete == 0) {
+			int salida = lib.Estado.ActualizarEstado("tb_cabecreq", "RECHAZADO", "numreq", numReq);
+			if(salida < 0) {
+				Mensajes.error("Ooops! hubo un problema al momento de actualizar el estado del documento");
+			}else {
+				Mensajes.dialogo("Acaba de rechazar el Cuadro de Requerimientos numero "+ numReq);
+				listar("EN REVISION");
+			}
 		}
 	}
 }

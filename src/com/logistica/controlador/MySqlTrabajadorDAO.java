@@ -17,7 +17,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 		boolean repetido = false;
 		Connection cn = null;
 		PreparedStatement pstm = null;
-		String sql = "insert into TB_Trabajadores values (?,?,?,?,?,?,?)";
+		String sql = "insert into TB_Trabajadores values (?,?,?,?,?)";
 			ArrayList<Trabajador> listaTra = this.ListarTodo();
 			for(int i=0;i< listaTra.size();i++) {
 				if(bean.getDni() == listaTra.get(i).getDni()) {
@@ -31,7 +31,8 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 					pstm.setInt(1, bean.getDni());
 					pstm.setString(2, bean.getNomApe());
 					pstm.setString(3, bean.getCargo());
-					pstm.setString(6, bean.getSexo());
+					pstm.setString(4, bean.getSexo());
+					pstm.setString(5, bean.getCodUnidadOrga());
 					salida = pstm.executeUpdate();
 				} catch (SQLException e) {
 				  e.printStackTrace();
@@ -106,7 +107,8 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 		Connection cn = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		String sql = "call sp_ListarTrabajadores()";
+		String sql = "select t.dniTrabajador, t.apeNomTrabajador,t.cargoTrabajador,t.sexo,concat_ws('-',t.codUniOrg,uo.nomUniOrg) from tb_trabajadores as t join tb_unidadorganica as uo " + 
+				"on t.codUniOrg = uo.codUniOrg";
 			
 		try {
 			cn = MySqlConexion.getConexion();
@@ -117,7 +119,8 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				tra.setDni(rs.getInt(1));
 				tra.setNomApe(rs.getString(2));
 				tra.setCargo(rs.getString(3));
-				tra.setSexo(rs.getString(6));
+				tra.setSexo(rs.getString(4));
+				tra.setCodUnidadOrga(rs.getString(5));
 				lista.add(tra);
 			}
 		} catch (SQLException e) {
@@ -152,7 +155,7 @@ public class MySqlTrabajadorDAO implements TrabajadorDAO{
 				Trabajador tra = new Trabajador();
 				tra.setDni(rs.getInt(1));
 				tra.setNomApe(rs.getString(2));
-				tra.setUnidadOrga(rs.getString(3));
+				tra.setCodUnidadOrga(rs.getString(3));
 				lista.add(tra);
 			}
 		} catch (SQLException e) {

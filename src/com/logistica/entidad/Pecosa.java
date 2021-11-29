@@ -1,12 +1,12 @@
 package com.logistica.entidad;
 
 public class Pecosa {
-	private String referencia,fecPec,fecForm,FecApro,FecEntr,estadoPec,numReq,dniJefeApro;
-	private int numPec,dniForm;
+	private String referencia,fecPec,fecForm,FecApro,FecEntr,estadoPec,numReq;
+	private int numPec,dniForm,dniJefeApro;
 	private double total;
 	
 	//variables para el listado
-	private String nomUnidadSoli,nomUnidadEntr;
+	private String nomUnidadSoli,nomUnidadEntr, nombreFormulo;
 	public String getReferencia() {
 		return referencia;
 	}
@@ -79,10 +79,16 @@ public class Pecosa {
 	public void setNomUnidadSoli(String nomUnidadSoli) {
 		this.nomUnidadSoli = nomUnidadSoli;
 	}
-	public String getDniJefeApro() {
+	public int getDniJefeApro() {
 		return dniJefeApro;
 	}
-	public void setDniJefeApro(String dniJefeApro) {
+	public void setDniJefeApro(int dniJefeApro) {
 		this.dniJefeApro = dniJefeApro;
+	}
+	public String getNombreFormulo() {
+		return nombreFormulo;
+	}
+	public void setNombreFormulo(String nombreFormulo) {
+		this.nombreFormulo = nombreFormulo;
 	}
 }
