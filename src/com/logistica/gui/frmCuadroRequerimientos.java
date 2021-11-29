@@ -63,6 +63,8 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	public static JTextField txtCant;
 	public static JTextField txtUnidaMed;
 	public static JTextField txtCodBien;
+	public static JTextField txtStockTotSeparado;
+	public static JTextField txtStockSepaResto;
 	private JTextField txtEstado;
 	private JPanel contentPane;
 	private JTextField txtFechaEmi;
@@ -78,8 +80,6 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	private JButton btnAgregarBien;
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmEliminar;
-	private JTextField textField;
-	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -253,20 +253,22 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		lblDescripcion_1.setBounds(10, 83, 97, 14);
 		panel_1.add(lblDescripcion_1);
 		
-		textField = new JTextField();
-		textField.setBounds(492, 41, 63, 20);
-		panel_1.add(textField);
-		textField.setColumns(10);
+		JTextField txtStockTotSeparado = new JTextField();
+		txtStockTotSeparado.setEnabled(false);
+		txtStockTotSeparado.setBounds(492, 41, 63, 20);
+		panel_1.add(txtStockTotSeparado);
+		txtStockTotSeparado.setColumns(10);
 		
 		JLabel lblStockDisponible = new JLabel("Stock Disponible");
 		lblStockDisponible.setBounds(384, 39, 114, 25);
 		panel_1.add(lblStockDisponible);
 		
-		textField_1 = new JTextField();
-		textField_1.setBackground(new Color(238, 232, 170));
-		textField_1.setBounds(581, 41, 63, 20);
-		panel_1.add(textField_1);
-		textField_1.setColumns(10);
+		JTextField txtStockSepaResto = new JTextField();
+		txtStockSepaResto.setEnabled(false);
+		txtStockSepaResto.setBackground(new Color(238, 232, 170));
+		txtStockSepaResto.setBounds(581, 41, 63, 20);
+		panel_1.add(txtStockSepaResto);
+		txtStockSepaResto.setColumns(10);
 		
 		lblCuadroDeRequerimientos = new JLabel("Cuadro de Requerimientos");
 		lblCuadroDeRequerimientos.setFont(new Font("Swis721 LtEx BT", Font.BOLD, 18));
