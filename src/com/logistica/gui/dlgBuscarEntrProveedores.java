@@ -16,9 +16,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.logistica.componentes.JComboBoxBD;
-import com.logistica.controlador.MySqlBienesDAO;
+import com.logistica.controlador.MySqlProveedorDAO;
 import com.logistica.controlador.MySqlTrabajadorDAO;
-import com.logistica.entidad.Bienes;
 import com.logistica.entidad.Trabajador;
 
 import java.awt.event.ActionListener;
@@ -35,13 +34,13 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
-public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListener, MouseListener{
-	MySqlBienesDAO bienDAO = new MySqlBienesDAO();
+public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, ActionListener, MouseListener{
+	MySqlProveedorDAO proveedorDAO = new MySqlProveedorDAO();
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtDescripcion;
-	private JTable tblBienes;
-	private JComboBox cboUnidadMedida;
+	private JTextField txtBuscarProveedor;
+	private JTable tblTrabajadores;
+	private JComboBox cboDistrito;
 	private JButton btnAñadir;
 
 	/**
@@ -49,7 +48,7 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 	 */
 	public static void main(String[] args) {
 		try {
-			dlgBuscarBienes dialog = new dlgBuscarBienes();
+			dlgBuscarEntrProveedores dialog = new dlgBuscarEntrProveedores();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -60,8 +59,8 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 	/**
 	 * Create the dialog.
 	 */
-	public dlgBuscarBienes() {
-		setTitle("Bienes");
+	public dlgBuscarEntrProveedores() {
+		setTitle("Proveedores");
 		setBounds(100, 100, 667, 475);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,51 +71,44 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		scrollPane.setBounds(10, 58, 424, 334);
 		contentPanel.add(scrollPane);
 		
-		tblBienes = new JTable();
-		tblBienes.setModel(new DefaultTableModel(
+		tblTrabajadores = new JTable();
+		tblTrabajadores.setModel(new DefaultTableModel(
 			new Object[][] {
+				{null, null, null, null},
 			},
 			new String[] {
-				"CODIGO", "DESCRIPCION", "STOCK AL.", "UNIDAD MEDIDA"
+				"RUC", "RAZON SOCIAL", "TELEFONO", "DISTRITO"
 			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		tblBienes.getColumnModel().getColumn(0).setPreferredWidth(16);
-		tblBienes.getColumnModel().getColumn(1).setPreferredWidth(104);
-		tblBienes.getColumnModel().getColumn(3).setPreferredWidth(51);
-		scrollPane.setViewportView(tblBienes);
+		));
+		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(16);
+		tblTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(51);
+		scrollPane.setViewportView(tblTrabajadores);
 		
-		txtDescripcion = new JTextField();
-		txtDescripcion.setToolTipText("Apellidos o Nombres");
-		txtDescripcion.addKeyListener(this);
-		txtDescripcion.setBounds(444, 85, 197, 26);
-		contentPanel.add(txtDescripcion);
-		txtDescripcion.setColumns(10);
+		txtBuscarProveedor = new JTextField();
+		txtBuscarProveedor.setToolTipText("Apellidos o Nombres");
+		txtBuscarProveedor.addKeyListener(this);
+		txtBuscarProveedor.setBounds(444, 85, 197, 26);
+		contentPanel.add(txtBuscarProveedor);
+		txtBuscarProveedor.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Descripcion:");
+		JLabel lblNewLabel = new JLabel("Razon Social:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setBounds(445, 60, 136, 14);
 		contentPanel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("BUSQUEDA DE BIENES");
+		JLabel lblNewLabel_1 = new JLabel("BUSQUEDA DE TRABAJADORES");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Swis721 Blk BT", Font.PLAIN, 18));
 		lblNewLabel_1.setBounds(165, 11, 340, 36);
 		contentPanel.add(lblNewLabel_1);
 		
-		cboUnidadMedida = new JComboBox();
-		cboUnidadMedida.addActionListener(this);
-		cboUnidadMedida.setModel(new DefaultComboBoxModel(new String[] {"[TODOS]", "MUEBLE", "VIRTUAL", "INMUEBLE", "CONSUMO", "INTERMEDIO"}));
-		cboUnidadMedida.setBounds(444, 157, 197, 22);
-		contentPanel.add(cboUnidadMedida);
+		cboDistrito = new JComboBox();
+		cboDistrito.addActionListener(this);
+		cboDistrito.setModel(new DefaultComboBoxModel(new String[] {"[TODOS]"}));
+		cboDistrito.setBounds(444, 157, 197, 22);
+		contentPanel.add(cboDistrito);
 		
-		JLabel lblCargo = new JLabel("Categoria:");
+		JLabel lblCargo = new JLabel("Distrito :");
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCargo.setBounds(444, 126, 136, 22);
 		contentPanel.add(lblCargo);
@@ -124,8 +116,8 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 			btnAñadir = new JButton("");
 			btnAñadir.addActionListener(this);
 			btnAñadir.addMouseListener(this);
-			btnAñadir.setIcon(new ImageIcon(dlgBuscarBienes.class.getResource("/iconos/add.png")));
-			btnAñadir.setBounds(444, 212, 197, 36);
+			btnAñadir.setIcon(new ImageIcon(dlgBuscarEntrProveedores.class.getResource("/iconos/add.png")));
+			btnAñadir.setBounds(444, 214, 197, 36);
 			contentPanel.add(btnAñadir);
 			btnAñadir.setActionCommand("OK");
 			getRootPane().setDefaultButton(btnAñadir);
@@ -135,13 +127,13 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 	public void keyPressed(KeyEvent e) {
 	}
 	public void keyReleased(KeyEvent e) {
-		if (e.getSource() == txtDescripcion) {
+		if (e.getSource() == txtBuscarProveedor) {
 			keyReleasedTxtBuscarTrabajadores(e);
 		}
 	}
 	public void keyTyped(KeyEvent e) {
 		char c = e.getKeyChar();
-		String apeNom = txtDescripcion.getText();
+		String apeNom = txtBuscarProveedor.getText();
 		if(!Character.isAlphabetic(c) && c != ' ') {
 			e.consume();
 		} else if(apeNom.length()==30) {
@@ -154,61 +146,59 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == cboUnidadMedida) {
+		if (e.getSource() == cboDistrito) {
 			actionPerformedCboCargo(e);
 		}
 	}
 	protected void keyReleasedTxtBuscarTrabajadores(KeyEvent e) {
-		String desc = txtDescripcion.getText();
+		String apenomTra = txtBuscarProveedor.getText();
 		String comodin = "%";
-		String categoria = cboUnidadMedida.getSelectedItem().toString();
-		listar(desc, comodin, categoria);
+		String unidad = cboDistrito.getSelectedItem().toString();
+		listar(apenomTra, comodin, unidad);
 	}
 	
 	protected void actionPerformedCboCargo(ActionEvent e) {
-		String desc = "";
+		String apenomTra = "";
 		String comodin = "";
-		String categoria = cboUnidadMedida.getSelectedItem().toString();
-		listar(desc, comodin, categoria);
+		String unidad = cboDistrito.getSelectedItem().toString();
+		listar(apenomTra, comodin, unidad);
 	}
-	
-	void listar(String descr,String comodin, String categoria) {
-		if(descr.equals("") && categoria.equals("[TODOS]")) comodin = "%";
-		DefaultTableModel modelo = (DefaultTableModel) tblBienes.getModel();
+	void listar(String apenomTra,String comodin, String unidad) {
+		if(apenomTra.equals("") && unidad.equals("[TODOS]")) comodin = "%";
+		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
 		modelo.setRowCount(0);
-		ArrayList<Bienes> lista = bienDAO.buscarBien(descr, comodin, categoria);
-		for(Bienes bien:lista) {
-			Object[] filas = {	bien.getCodBien(),
-								bien.getDescBien(),
-								bien.getStockAlmacen(),
-								bien.getCategoria()};
+		ArrayList<Trabajador> lista = trabajadorDAO.ListarBusqueda(apenomTra, comodin, unidad);
+		for(Trabajador tra:lista) {
+			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getUnidadOrga()};
 			modelo.addRow(filas);
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
 				try {
 					//varaible
-					String codigo,descr,unidadMed,stockAl;
+					String dni,apenom,unidad;
 					//Obtener posicion de la fila seleccionada
 					int posFila;
-					posFila = tblBienes.getSelectedRow();
+					posFila = tblTrabajadores.getSelectedRow();
 					//Obtener datos de la fila seleccionada
-					codigo = tblBienes.getValueAt(posFila, 0).toString();
-					descr = tblBienes.getValueAt(posFila, 1).toString();
-					stockAl = tblBienes.getValueAt(posFila, 2).toString();
-					unidadMed = tblBienes.getValueAt(posFila, 3).toString();
+					dni = tblTrabajadores.getValueAt(posFila, 0).toString();
+					apenom = tblTrabajadores.getValueAt(posFila, 1).toString();
+					unidad = tblTrabajadores.getValueAt(posFila, 2).toString();
 					
-						//Enviar valores a las cajas de formulario 
-						frmCuadroRequerimientos.txtCodBien.setText(codigo);
-						frmCuadroRequerimientos.txtDescPro.setText(descr);
-						frmCuadroRequerimientos.txtStockTotSeparado.setText(stockAl);
-						frmCuadroRequerimientos.txtUnidaMed.setText(unidadMed);
+						//Enviar valores a las cajas de formulario frmBoleta
+						frmCuadroRequerimientos.txtdniEntr.setText(dni);
+						frmCuadroRequerimientos.txtNombreEntr.setText(apenom);
+						frmCuadroRequerimientos.txtParaUnidadOrg.setText(unidad);
 						//cerrar ventana actual
 						dispose();
 					
+					
+					
 				} catch (Exception e2) {
-					mensaje("Seleccione uno ");
+					mensaje("Seleccionar Trabajador");
 				}
+		
+				
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -218,7 +208,6 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 	}
 	public void mouseReleased(MouseEvent e) {
 	}
-	
 	void mensaje(String m){
 		JOptionPane.showMessageDialog(null, m);
 	}

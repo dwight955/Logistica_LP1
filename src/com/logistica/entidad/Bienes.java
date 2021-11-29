@@ -3,10 +3,17 @@ package com.logistica.entidad;
 
 
 public class Bienes {
-	private int stockDisponible;
+	private int stockAlmacen, stockDisponible;
 	private double precUni;
 	private String descBien, uniMed, fecIngreso,codBien,categoria;
 	
+	
+	public int getStockAlmacen() {
+		return stockAlmacen;
+	}
+	public void setStockAlmacen(int stockAlmacen) {
+		this.stockAlmacen = stockAlmacen;
+	}
 	public String getCategoria() {
 		return categoria;
 	}

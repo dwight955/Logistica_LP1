@@ -23,7 +23,8 @@ import javax.swing.table.DefaultTableModel;
 
 
 import com.logistica.componentes.JTextFielBD;
-import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.controlador.MySqlOrdenCompraDAO;
+import com.logistica.entidad.OrdenCompra;
 import com.logistica.entidad.Pecosa;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
@@ -33,15 +34,17 @@ import java.awt.Button;
 
 import javax.swing.JButton;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 
 public class frmOrdenCompra extends JFrame implements ActionListener, KeyListener{
-	MySqlPecosaDAO pecosaDao = new MySqlPecosaDAO();
+	MySqlOrdenCompraDAO ordenCompraDao = new MySqlOrdenCompraDAO();
 	
 	private JPanel contentPane;
-	private JTextField txtNumPecosa;
+	private JTextField txtNumOc;
 	private JTextField txtFecha;
 	public static JTextField txtRuc;
 	public static JTextField txtRazonSocial;
@@ -61,10 +64,6 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	private TextAutoCompleter cn;
 	private JLabel lblOrdenDeCompra;
 	private JTextField txtFuentesFto;
-	private JLabel lblPuestoEn;
-	private JComboBox cboPuestosEn;
-	private JLabel lblNewLabel_1;
-	private JTextField txtPlazoEntrega;
 
 
 	/**
@@ -110,12 +109,12 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		lblNPecosa.setBounds(10, 29, 97, 23);
 		panel.add(lblNPecosa);
 		
-		txtNumPecosa = new JTextField();
-		txtNumPecosa.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtNumPecosa.setEditable(false);
-		txtNumPecosa.setBounds(80, 26, 119, 28);
-		panel.add(txtNumPecosa);
-		txtNumPecosa.setColumns(10);
+		txtNumOc = new JTextField(codigoCorrelativo());
+		txtNumOc.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtNumOc.setEditable(false);
+		txtNumOc.setBounds(80, 26, 119, 28);
+		panel.add(txtNumOc);
+		txtNumOc.setColumns(10);
 		
 		txtFecha = new JTextField(lib.Fecha.fechaActual());
 		txtFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -190,7 +189,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		panel_2.setForeground(Color.BLACK);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(211, 211, 211));
-		panel_2.setBounds(229, 184, 774, 118);
+		panel_2.setBounds(229, 184, 774, 88);
 		contentPane.add(panel_2);
 		
 		JLabel lblReferencia = new JLabel("Doc. Refe  :");
@@ -201,39 +200,20 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		txtDocRefe = new JTextField();
 		txtDocRefe.setEditable(false);
 		txtDocRefe.setColumns(10);
-		txtDocRefe.setBounds(100, 7, 652, 27);
+		txtDocRefe.setBounds(110, 10, 652, 27);
 		panel_2.add(txtDocRefe);
 		
 		JLabel lblFuentesFto = new JLabel("Fuentes Fto. :");
 		lblFuentesFto.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblFuentesFto.setBounds(10, 45, 105, 23);
+		lblFuentesFto.setBounds(10, 51, 105, 23);
 		panel_2.add(lblFuentesFto);
 		
 		txtFuentesFto = new JTextFielBD("concat_ws(' - ',codFin,nombre)","tb_ftfinanciamiento");
 		txtFuentesFto.addKeyListener(this);
 		txtFuentesFto.setEditable(false);
 		txtFuentesFto.setColumns(10);
-		txtFuentesFto.setBounds(100, 41, 652, 27);
+		txtFuentesFto.setBounds(110, 50, 652, 27);
 		panel_2.add(txtFuentesFto);
-		
-		lblPuestoEn = new JLabel("Puesto en :");
-		lblPuestoEn.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPuestoEn.setBounds(10, 83, 105, 23);
-		panel_2.add(lblPuestoEn);
-		
-		cboPuestosEn = new JComboBox();
-		cboPuestosEn.setBounds(100, 79, 426, 27);
-		panel_2.add(cboPuestosEn);
-		
-		lblNewLabel_1 = new JLabel("Plazo de Entrega  :");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(554, 82, 130, 23);
-		panel_2.add(lblNewLabel_1);
-		
-		txtPlazoEntrega = new JTextField();
-		txtPlazoEntrega.setBounds(682, 79, 60, 27);
-		panel_2.add(txtPlazoEntrega);
-		txtPlazoEntrega.setColumns(10);
 		
 		JLabel lblEstado = new JLabel("Estado  :");
 		lblEstado.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -247,7 +227,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		contentPane.add(txtEstado);
 		
 		tblDetallePecosa = new JScrollPane();
-		tblDetallePecosa.setBounds(10, 314, 993, 226);
+		tblDetallePecosa.setBounds(10, 295, 993, 245);
 		contentPane.add(tblDetallePecosa);
 		
 		tblOrdenCompra = new JTable();
@@ -263,7 +243,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		
 		JLabel lblPrecioTotal = new JLabel("Precio Total  S/.  :");
 		lblPrecioTotal.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblPrecioTotal.setBounds(768, 553, 121, 23);
+		lblPrecioTotal.setBounds(757, 552, 121, 23);
 		contentPane.add(lblPrecioTotal);
 		
 		txtPrecioTotal = new JTextField();
@@ -316,27 +296,13 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 			actionPerformedBtnGuardar(e);
 		}
 	}
-	public void keyReleased(KeyEvent e) {
-		if (e.getSource() == txtDireccion) {
-			keyReleasedTxtEntrDni(e);
-		}
-		if (e.getSource() == txtRuc) {
-			keyReleasedTxtSoliDni(e);
-		}
-	}
-	public void keyTyped(KeyEvent e) {
-		if (e.getSource() == txtRuc) {
-			keyTypedTxtSoliDni(e);
-		}
-		if(e.getSource() == txtDireccion) {
-			keyTypedTxtEntrDni(e);
-		}
-	}
+	
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
 		if(txtRuc.isEditable()==false) {
 			componentes(true);
 			btnGuardar.setText("Guardar");
 			btnBuscarProveedor.setEnabled(true);
+			txtEstado.setText("PROCESADO");
 		}
 		/*String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
 		fecPec = txtFecha.getText();
@@ -366,46 +332,33 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		}*/
 	}
 
-	public void keyPressed(KeyEvent e) {
-	}
+	/*protected void keyReleasedTxtdniEntr(KeyEvent e) {
+		String dni = txtdniEntr.getText();
+		String[] data = pecosaDAO.buscarTrabajador(dni);
+		txtNombreEntr.setText(data[0]);
+		txtParaUnidadOrg.setText(data[1]);
+	}*/
 	
-	public void keyTypedTxtSoliDni(KeyEvent e) {
-		char c = e.getKeyChar();
-		String solidni = txtRuc.getText();
-		if(!Character.isDigit(c)) {
-			e.consume();
-		} else if(solidni.length()==8) {
-			e.consume();
-			
-		}	
-	}
-	public void keyTypedTxtEntrDni(KeyEvent e) {
-		char c = e.getKeyChar();
-		String dni = txtDireccion.getText();
-		if(!Character.isDigit(c)) {
-			e.consume();
-		} else if(dni.length()==8) {
-			e.consume();
-		}	
-	}
-	protected void keyReleasedTxtSoliDni(KeyEvent e) {
-		String solidni = txtRuc.getText();
-		String[] data = pecosaDao.buscarTrabajador(solidni); 
-		txtRazonSocial.setText(data[0]);
-	}
-	protected void keyReleasedTxtEntrDni(KeyEvent e) {
-		String dni = txtDireccion.getText();
-		String[] data = pecosaDao.buscarTrabajador(dni);
-		txtTelefono.setText(data[0]);
-	}
 	void componentes(boolean op) {
 		txtRuc.setEditable(op);
-		txtDireccion.setEditable(op);
-		txtEstado.setEditable(op);
 		txtDocRefe.setEditable(op);
 		txtFuentesFto.setEditable(op);
 	}
-	void codigoCorrelativo() {
-		
+	
+	public String codigoCorrelativo() {
+		ArrayList<OrdenCompra> data = ordenCompraDao.ListarTodo();
+		String codigoSerial;
+		if(data.size()==0) {
+			codigoSerial = "000001";
+		}else {
+			int num = data.get(data.size()-1).getNroOC() + 1;
+			codigoSerial = String.format("%06d", num);
+		}
+		return codigoSerial;			
+	}
+	
+	public void keyReleasedTxtRuc(KeyEvent e) {
+		String ruc = txtRuc.getText();
+		string[] data = ordenCompraDAO.buscarProveedor(ruc);
 	}
 }
