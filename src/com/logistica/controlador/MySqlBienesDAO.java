@@ -21,7 +21,7 @@ public class MySqlBienesDAO implements BienesDAO {
 		int salida = -1;
 		Connection cn = null;
 		PreparedStatement pstm = null;
-		String sql = "insert into tb_bienes values (?,?,?,?,?,?,CURDATE())";
+		String sql = "insert into tb_bienes values (?,?,?,?,?,?,CURDATE(),?)";
 		ArrayList<Bienes> listaBien = this.ListarTodo();
 		for(int i=0; i < listaBien.size();i++) {
 			if(bean.getCodBien().equals(listaBien.get(i).getCodBien())) {
@@ -38,6 +38,7 @@ public class MySqlBienesDAO implements BienesDAO {
 				pstm.setDouble(4, bean.getPrecUni());
 				pstm.setString(5, bean.getCategoria());
 				pstm.setInt(6, bean.getStockDisponible());
+				pstm.setInt(7, bean.getStockAlmacen());
 				salida = pstm.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -136,6 +137,7 @@ public class MySqlBienesDAO implements BienesDAO {
 				bie.setCategoria(rs.getString(5));
 				bie.setStockDisponible(rs.getInt(6));
 				bie.setFecIngreso(rs.getString(7));
+				bie.setStockAlmacen(rs.getInt(8));
 				
 				lista.add(bie);	
 				
@@ -206,7 +208,8 @@ public class MySqlBienesDAO implements BienesDAO {
 				Bienes bien = new Bienes();
 				bien.setCodBien(rs.getString(1));
 				bien.setDescBien(rs.getString(2));
-				bien.setCategoria(rs.getString(3));
+				bien.setStockAlmacen(rs.getInt(3));
+				bien.setCategoria(rs.getString(4));
 				lista.add(bien);
 			}
 		} catch (SQLException e) {

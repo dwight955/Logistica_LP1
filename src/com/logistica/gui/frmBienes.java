@@ -85,7 +85,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 	public frmBienes() {
 		setTitle("Bienes");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 792, 515);
+		setBounds(100, 100, 841, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -93,7 +93,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 48, 755, 191);
+		scrollPane.setBounds(10, 48, 805, 191);
 		contentPane.add(scrollPane);
 		
 		tblBienes = new JTable();
@@ -101,9 +101,10 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		tblBienes.setFillsViewportHeight(true);
 		tblBienes.setModel(new DefaultTableModel(
 			new Object[][] {
+				{null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Codigo", "Descripcion", "Unidad de Medida", "Precio U.", "Categoria", "Stock ", "Fecha de Ingreso"
+				"Codigo", "Descripcion", "Unidad de Medida", "Precio U.", "Categoria", "Stock A.", "Stock D.", "Fecha de Ingreso"
 			}
 		));
 		tblBienes.getColumnModel().getColumn(0).setPreferredWidth(42);
@@ -112,8 +113,9 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		tblBienes.getColumnModel().getColumn(2).setPreferredWidth(88);
 		tblBienes.getColumnModel().getColumn(3).setPreferredWidth(57);
 		tblBienes.getColumnModel().getColumn(4).setPreferredWidth(111);
-		tblBienes.getColumnModel().getColumn(5).setPreferredWidth(22);
-		tblBienes.getColumnModel().getColumn(6).setPreferredWidth(93);
+		tblBienes.getColumnModel().getColumn(5).setPreferredWidth(47);
+		tblBienes.getColumnModel().getColumn(6).setPreferredWidth(48);
+		tblBienes.getColumnModel().getColumn(7).setPreferredWidth(93);
 		scrollPane.setViewportView(tblBienes);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -171,13 +173,13 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		
 		btnGuardar = new JButton("Nuevo");
 		btnGuardar.addActionListener(this);
-		btnGuardar.setBounds(633, 250, 106, 35);
+		btnGuardar.setBounds(685, 263, 106, 35);
 		contentPane.add(btnGuardar);
 		
 		btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(this);
 		btnActualizar.setEnabled(false);
-		btnActualizar.setBounds(633, 299, 106, 35);
+		btnActualizar.setBounds(685, 313, 106, 35);
 		contentPane.add(btnActualizar);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -223,7 +225,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
-		btnCancelar.setBounds(633, 352, 106, 35);
+		btnCancelar.setBounds(685, 358, 106, 35);
 		contentPane.add(btnCancelar);
 		
 		listar();
@@ -278,6 +280,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 				Mensajes.dialogo("El precio unitario es invalido || Min:10.00 Max: 999.99 ");
 			}else {
 				Bienes bien = new Bienes();
+				bien.setStockAlmacen(Integer.parseInt(stock));
 				bien.setCodBien(cod);
 				bien.setDescBien(desc);
 				bien.setStockDisponible(Integer.parseInt(stock));
@@ -350,7 +353,14 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		modelo.setRowCount(0);
 		ArrayList<Bienes> data = bienesDAO.ListarTodo();
 		for(Bienes bien:data) {
-			Object[] filas = {bien.getCodBien(),bien.getDescBien(),bien.getUniMed(),bien.getPrecUni(),bien.getCategoria(),bien.getStockDisponible(),bien.getFecIngreso()};
+			Object[] filas = {	bien.getCodBien(),
+								bien.getDescBien(),
+								bien.getUniMed(),
+								bien.getPrecUni(),
+								bien.getCategoria(),
+								bien.getStockAlmacen(),
+								bien.getStockDisponible(),
+								bien.getFecIngreso()};
 			modelo.addRow(filas);
 		}
 	}

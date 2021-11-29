@@ -12,7 +12,7 @@ public class MySqlConexion {
 			String url,user,pass;
 			url="jdbc:mysql://localhost/logistica?serverTimezone=UTC";
 			user="root";
-			pass="mysql";
+			pass="12345";
 			cn=DriverManager.getConnection(url,user,pass);	
 		} catch (SQLException e) {
 			System.out.println("Fallo en la conexion");
