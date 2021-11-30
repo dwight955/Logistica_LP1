@@ -187,7 +187,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(SystemColor.activeCaption, 2, true));
-		panel.setBounds(281, 323, 183, 85);
+		panel.setBounds(281, 323, 209, 85);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -210,7 +210,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		
 		txtCargo = new JTextField();
 		txtCargo.setEditable(false);
-		txtCargo.setBounds(281, 281, 183, 25);
+		txtCargo.setBounds(281, 281, 209, 25);
 		contentPane.add(txtCargo);
 		txtCargo.setColumns(10);
 		
@@ -392,6 +392,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 				//mostrar variables en las cajas
 				txtDni.setText(dni);
 				txtApeNom.setText(nomape);
+				txtCargo.setText(cargo);
 				//dtFecNac.setDate(fecnac);;
 		}
 	}

@@ -12,4 +12,5 @@ public interface PecosaDAO {
 	public String[] buscarTrabajador(String str);
 	public ArrayList<DetalleRequerimientos> listarDetalleReqPorNum(String numreq);
 	public int ActualizarFechaYDni(Pecosa bean);
+	public ArrayList<DetallePecosa>ListarDetallePecosa(int op,String estado);
 }

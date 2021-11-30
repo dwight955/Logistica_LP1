@@ -359,6 +359,24 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	
 	public void keyReleasedTxtRuc(KeyEvent e) {
 		String ruc = txtRuc.getText();
-		string[] data = ordenCompraDAO.buscarProveedor(ruc);
+		String[] data = ordenCompraDao.buscarProveedor(ruc);
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

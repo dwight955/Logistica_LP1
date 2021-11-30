@@ -49,6 +49,8 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 	public JLabel lblNomDirec;
 	private JMenuItem mntmRequerimientos;
 	private JMenuItem mntmSalir;
+	private JMenuItem mntmProveedores;
+	private JMenuItem mntmTrabajadores;
 	public frmMenuDirecEjecLogistica() {
 		setTitle("Director Ejecutivo de Logistica");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,10 +79,12 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
-		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+		mntmProveedores = new JMenuItem("Proveedores");
+		mntmProveedores.addActionListener(this);
 		mnMantenimiento.add(mntmProveedores);
 		
-		JMenuItem mntmTrabajadores = new JMenuItem("Trabajadores");
+		mntmTrabajadores = new JMenuItem("Trabajadores");
+		mntmTrabajadores.addActionListener(this);
 		mnMantenimiento.add(mntmTrabajadores);
 		getContentPane().setLayout(null);
 		
@@ -119,6 +123,12 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 		}
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmTrabajadores) {
+			actionPerformedMntmTrabajadores(e);
+		}
+		if (e.getSource() == mntmProveedores) {
+			actionPerformedMntmProveedores(e);
+		}
 		if (e.getSource() == mntmSalir) {
 			actionPerformedMntmSalir(e);
 		}
@@ -133,5 +143,13 @@ public class frmMenuDirecEjecLogistica extends JFrame implements ActionListener 
 	}
 	protected void actionPerformedMntmSalir(ActionEvent e) {
 		this.dispose();
+	}
+	protected void actionPerformedMntmProveedores(ActionEvent e) {
+		frmProveedores frm = new frmProveedores();
+		frm.setVisible(true);
+	}
+	protected void actionPerformedMntmTrabajadores(ActionEvent e) {
+		frmTrabajadores frm = new frmTrabajadores();
+		frm.setVisible(true);
 	}
 }

@@ -135,12 +135,9 @@ public class MySqlBienesDAO implements BienesDAO {
 				bie.setUniMed(rs.getString(3));
 				bie.setPrecUni(rs.getDouble(4));
 				bie.setCategoria(rs.getString(5));
-				bie.setStockDisponible(rs.getInt(6));
+				bie.setStockAlmacen(rs.getInt(6));
 				bie.setFecIngreso(rs.getString(7));
-				bie.setStockAlmacen(rs.getInt(8));
-				
 				lista.add(bie);	
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -214,7 +211,7 @@ public class MySqlBienesDAO implements BienesDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Hay un problema en MySqlPecosaDAO");
+			System.out.println("Hay un problema en MySqlBienes");
 		} finally {
 			try {
 				if(cn !=null) cn.close();

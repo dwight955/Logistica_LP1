@@ -212,4 +212,40 @@ public class MySqlPecosaDAO implements PecosaDAO {
 		}
 		return salida;
 	}
+
+	@Override
+	public ArrayList<DetallePecosa> ListarDetallePecosa(int op, String estado) {
+		ArrayList<DetallePecosa> lista = new ArrayList<DetallePecosa>();
+		Connection cn = null;
+		CallableStatement cstm = null;
+		String sql = "call sp_listarPecosa(?,?)";
+		ResultSet rs = null;
+		try {
+			cn = MySqlConexion.getConexion();
+			cstm = cn.prepareCall(sql);
+			cstm.setInt(1, op);
+			cstm.setString(2, estado);
+			rs = cstm.executeQuery();
+			while(rs.next()) {
+				DetallePecosa dp = new DetallePecosa();
+				dp.setDesc(rs.getString(1));
+				dp.setUniMed(rs.getString(2));
+				dp.setCant(rs.getInt(3));
+				dp.setPrecUnit(rs.getDouble(4));
+				lista.add(dp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(">> Error al listar detalle Proveedores");
+		} finally {
+			try {
+				if(cn != null)cn.close();
+				if(cstm != null)cstm.close();
+				if(rs != null)rs.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return lista;
+	}
 }

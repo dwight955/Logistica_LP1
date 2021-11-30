@@ -101,10 +101,9 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		tblBienes.setFillsViewportHeight(true);
 		tblBienes.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Codigo", "Descripcion", "Unidad de Medida", "Precio U.", "Categoria", "Stock A.", "Stock D.", "Fecha de Ingreso"
+				"Codigo", "Descripcion", "Unidad de Medida", "Precio U.", "Categoria", "Stock D.", "Fecha de Ingreso"
 			}
 		));
 		tblBienes.getColumnModel().getColumn(0).setPreferredWidth(42);
@@ -113,9 +112,8 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 		tblBienes.getColumnModel().getColumn(2).setPreferredWidth(88);
 		tblBienes.getColumnModel().getColumn(3).setPreferredWidth(57);
 		tblBienes.getColumnModel().getColumn(4).setPreferredWidth(111);
-		tblBienes.getColumnModel().getColumn(5).setPreferredWidth(47);
-		tblBienes.getColumnModel().getColumn(6).setPreferredWidth(48);
-		tblBienes.getColumnModel().getColumn(7).setPreferredWidth(93);
+		tblBienes.getColumnModel().getColumn(5).setPreferredWidth(48);
+		tblBienes.getColumnModel().getColumn(6).setPreferredWidth(93);
 		scrollPane.setViewportView(tblBienes);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -359,7 +357,7 @@ public class frmBienes extends JFrame implements ActionListener, KeyListener, Mo
 								bien.getPrecUni(),
 								bien.getCategoria(),
 								bien.getStockAlmacen(),
-								bien.getStockDisponible(),
+								
 								bien.getFecIngreso()};
 			modelo.addRow(filas);
 		}

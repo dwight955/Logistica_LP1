@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 
-public class frmJefeDeUnidFuncAlmacen extends JFrame {
+public class frmJefeDeUnidFuncAlmacen extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	public static JLabel lblNomJufa;
@@ -45,6 +45,7 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 	 * Create the frame.
 	 */
 	FondoPanel imagen = new FondoPanel();
+	private JMenuItem mntmBienes;
 
 	public frmJefeDeUnidFuncAlmacen() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +72,7 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		JMenu mnBandejaDeEntrada = new JMenu("Bandeja de Entrada");
 		menuBar.add(mnBandejaDeEntrada);
 		
-		JMenuItem mntmVerPecosas = new JMenuItem("Ver PECOSAS");
+		JMenuItem mntmVerPecosas = new JMenuItem("Verificar PECOSAs");
 		mntmVerPecosas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actionPerformedMntmVerPecosas(e);
@@ -82,7 +83,8 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
-		JMenuItem mntmBienes = new JMenuItem("Bienes o Servicios");
+		mntmBienes = new JMenuItem("Bienes o Servicios");
+		mntmBienes.addActionListener(this);
 		mnMantenimiento.add(mntmBienes);
 		getContentPane().setLayout(null);
 		
@@ -135,5 +137,14 @@ public class frmJefeDeUnidFuncAlmacen extends JFrame {
 	protected void actionPerformedMntmVerPecosas(ActionEvent e) {
 		dlgBandejaEntradaJefe dlg = new dlgBandejaEntradaJefe();
 		dlg.setVisible(true);
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == mntmBienes) {
+			actionPerformedMntmBienes(e);
+		}
+	}
+	protected void actionPerformedMntmBienes(ActionEvent e) {
+		frmBienes frm = new frmBienes();
+		frm.setVisible(true);
 	}
 }

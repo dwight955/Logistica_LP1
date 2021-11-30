@@ -112,4 +112,42 @@ public class MySqlCuadroRequerimientosDAO implements CuadroRequerimientosDAO{
 		}
 		return lista;
 	}
+
+	@Override
+	public ArrayList<CuadroRequerimientos> consultarCuadro(int op, String num, String estado) {
+		ArrayList<CuadroRequerimientos> lista = new ArrayList<CuadroRequerimientos>();
+		Connection cn = null;
+		CallableStatement cstm = null;
+		ResultSet rs = null;
+		String sql = "call sp_listarCuadroReqPorNum2(?,?,?)";
+		try {
+			cn = MySqlConexion.getConexion();
+			cstm = cn.prepareCall(sql);
+			cstm.setInt(1, op);
+			cstm.setString(2, num);
+			cstm.setString(3, estado);
+			rs = cstm.executeQuery();
+			while(rs.next()) {
+				CuadroRequerimientos cua = new CuadroRequerimientos();
+				cua.setNumreq(rs.getString(1));
+				cua.setApenomSoli(rs.getString(2));
+				cua.setNomUniEntr(rs.getString(3));
+				cua.setEstado(rs.getString(4));
+				cua.setFechaEmi(rs.getString(5));
+				lista.add(cua);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(">> error en ListarTodo() de MySqlCuadrReq");
+		} finally {
+			try {
+				if(cn != null) cn.close();
+				if(cstm != null)cstm.close();
+				if(rs != null)rs.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return lista;
+	}
 }

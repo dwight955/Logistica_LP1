@@ -36,7 +36,7 @@ import java.awt.event.ItemEvent;
 
 public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, ActionListener, MouseListener{
 	MySqlProveedorDAO proveedorDAO = new MySqlProveedorDAO();
-
+	MySqlTrabajadorDAO trabajadorDAO = new MySqlTrabajadorDAO();
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtBuscarProveedor;
 	private JTable tblTrabajadores;
@@ -169,7 +169,7 @@ public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, Ac
 		modelo.setRowCount(0);
 		ArrayList<Trabajador> lista = trabajadorDAO.ListarBusqueda(apenomTra, comodin, unidad);
 		for(Trabajador tra:lista) {
-			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getUnidadOrga()};
+			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getCodUnidadOrga()};
 			modelo.addRow(filas);
 		}
 	}

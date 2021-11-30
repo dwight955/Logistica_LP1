@@ -134,7 +134,8 @@ public class frmMenuSubAlmacenero extends JFrame implements ActionListener {
 		dlg.setLocationRelativeTo(null);
 	}
 	protected void actionPerformedMntmFormulacionDeUna(ActionEvent e) {
-		
+		dlgConsultarPECOSA dlg = new dlgConsultarPECOSA();
+		dlg.setVisible(true);
 	}
 }
 

@@ -15,6 +15,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.logistica.controlador.MySqlPecosaDAO;
+import com.logistica.entidad.DetallePecosa;
+import com.logistica.entidad.DetalleRequerimientos;
 import com.logistica.entidad.Pecosa;
 import com.logistica.utils.Libreria;
 
@@ -37,8 +39,9 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 	private JTextField txtNomJefe;
 	private JTextField txtDniJefe;
 	private JButton btnAutorizar;
-	private String numPec;
+	private String numPec, numReq;
 	private JButton btnRevision;
+	private JTable tblDetallePecosa;
 	/**
 	 * Launch the application.
 	 */
@@ -57,7 +60,7 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 	 */
 	public dlgBandejaEntradaJefe() {
 		setTitle("Bandeja de entrada PECOSAS");
-		setBounds(100, 100, 616, 483);
+		setBounds(100, 100, 616, 519);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -82,7 +85,7 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 		txtReferencia.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 95, 580, 292);
+		scrollPane.setBounds(10, 95, 580, 148);
 		contentPanel.add(scrollPane);
 		
 		tblPecosas = new JTable();
@@ -99,12 +102,12 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 		
 		btnAutorizar = new JButton("AUTORIZAR");
 		btnAutorizar.addActionListener(this);
-		btnAutorizar.setBounds(481, 398, 109, 35);
+		btnAutorizar.setBounds(481, 434, 109, 35);
 		contentPanel.add(btnAutorizar);
 		
-		btnRevision = new JButton("REVISION");
+		btnRevision = new JButton("RECHAZAR");
 		btnRevision.addActionListener(this);
-		btnRevision.setBounds(356, 398, 115, 35);
+		btnRevision.setBounds(356, 434, 115, 35);
 		contentPanel.add(btnRevision);
 		
 		JLabel lblFechaActual = new JLabel("Fecha Actual:");
@@ -142,6 +145,21 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 		txtDniJefe.setBounds(493, 16, 86, 20);
 		contentPanel.add(txtDniJefe);
 		txtDniJefe.setColumns(10);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 254, 580, 169);
+		contentPanel.add(scrollPane_1);
+		
+		tblDetallePecosa = new JTable();
+		tblDetallePecosa.setFillsViewportHeight(true);
+		tblDetallePecosa.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Descripcion", "Unidad Medida", "Cantidad Saliente", "Precio Unitario"
+			}
+		));
+		scrollPane_1.setViewportView(tblDetallePecosa);
 		listar();
 	}
 	void listar() {
@@ -168,9 +186,24 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 	}
 	protected void mouseClickedTblPecosas(MouseEvent e) {
 		int posFila = tblPecosas.getSelectedRow();
-		numPec = tblPecosas.getValueAt(posFila, 0).toString();
-		ArrayList<Pecosa> data = pecosaDAO.ListarTodo(2,"EN REVISION");
-		txtReferencia.setText(data.get(posFila).getReferencia()); 
+		if(posFila<0) {
+			posFila = 0;
+		}else {
+			numPec = tblPecosas.getValueAt(posFila, 0).toString();
+			ArrayList<Pecosa> data = pecosaDAO.ListarTodo(2,"EN REVISION");
+			txtReferencia.setText(data.get(posFila).getReferencia()); 
+			numReq = data.get(posFila).getNumReq();
+			
+			DefaultTableModel modelo = (DefaultTableModel) tblDetallePecosa.getModel();
+			modelo.setRowCount(0);
+			
+			ArrayList<DetallePecosa> data2 = pecosaDAO.ListarDetallePecosa(4, numPec);
+			
+			for(DetallePecosa dp:data2) {
+				Object[] filas = {dp.getDesc(),dp.getUniMed(),dp.getCant(),dp.getPrecUnit()};
+				modelo.addRow(filas);
+			}
+		}
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnRevision) {
@@ -193,6 +226,7 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 		int res = pecosaDAO.ActualizarFechaYDni(p);
 		if(res > 0) {
 			lib.Estado.ActualizarEstado("tb_pecosa", "AUTORIZADO", "nroPecosa", numPec);
+			lib.Estado.ActualizarEstado("tb_cabecreq", "EN CAMINO", "numreq", numReq);
 			Mensajes.dialogo("Se acaba de autorizar la PECOSA numero "+numPec);
 			listar();
 		}else {
@@ -203,6 +237,7 @@ public class dlgBandejaEntradaJefe extends JDialog implements MouseListener, Act
 		int i = Mensajes.confirmarRechazo();
 		if(i==0) {
 			lib.Estado.ActualizarEstado("tb_pecosa", "RECHAZADO", "nroPecosa", numPec);
+			lib.Estado.ActualizarEstado("tb_cabecreq", "APROBADO", "numreq", numReq);
 			Mensajes.dialogo("Se acaba de rechazar la PECOSA numero "+numPec);
 			listar();
 		}
