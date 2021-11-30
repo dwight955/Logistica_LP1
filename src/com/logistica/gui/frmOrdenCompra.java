@@ -39,9 +39,12 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import javax.swing.JMenuItem;
 
 public class frmOrdenCompra extends JFrame implements ActionListener, KeyListener{
-	MySqlOrdenCompraDAO ordenCompraDao = new MySqlOrdenCompraDAO();
+	MySqlOrdenCompraDAO ordenCompraDAO = new MySqlOrdenCompraDAO();
 	
 	private JPanel contentPane;
 	private JTextField txtNumOc;
@@ -64,6 +67,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	private TextAutoCompleter cn;
 	private JLabel lblOrdenDeCompra;
 	private JTextField txtFuentesFto;
+	private JPopupMenu popupMenu;
 
 
 	/**
@@ -141,7 +145,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		lblNewLabel.setBounds(8, 13, 67, 19);
 		panel_1.add(lblNewLabel);
 		
-		txtRuc = new JTextFielBD("dniTrabajador","TB_Trabajadores");
+		txtRuc = new JTextField();
 		txtRuc.addKeyListener(this);
 		txtRuc.setEditable(false);
 		txtRuc.setBounds(99, 10, 167, 27);
@@ -239,6 +243,15 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 			}
 		));
 		tblOrdenCompra.getColumnModel().getColumn(3).setPreferredWidth(104);
+		
+		popupMenu = new JPopupMenu();
+		addPopup(tblDetallePecosa, popupMenu);
+		
+		JMenuItem mntmAñadirBienes = new JMenuItem("A\u00F1adir Bien");
+		popupMenu.add(mntmAñadirBienes);
+		
+		JMenuItem mntmEliminarBien = new JMenuItem("Eliminar Bien");
+		popupMenu.add(mntmEliminarBien);
 		tblDetallePecosa.setViewportView(tblOrdenCompra);
 		
 		JLabel lblPrecioTotal = new JLabel("Precio Total  S/.  :");
@@ -295,6 +308,18 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		if (e.getSource() == btnGuardar) {
 			actionPerformedBtnGuardar(e);
 		}
+		if (e.getSource() == btnBuscarProveedor) {
+			actionPerformedBtnBuscarProveedor(e);
+		}
+		if(e.getSource() == mntmAñadirBienes) {
+			actionPerformedMntmAadirBienes(e);
+		}
+	}
+	
+	protected void actionPerformedBtnBuscarProveedor(ActionEvent e) {
+		dlgBuscarEntrProveedores frm = new dlgBuscarEntrProveedores();
+		frm.setVisible(true);
+		frm.setLocationRelativeTo(null);
 	}
 	
 	protected void actionPerformedBtnGuardar(ActionEvent e) {
@@ -304,7 +329,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 			btnBuscarProveedor.setEnabled(true);
 			txtEstado.setText("PROCESADO");
 		}
-		/*String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
+		String numPec,fecPec,soliDni,entrDni,estad,refe,meta,uniOrg;
 		fecPec = txtFecha.getText();
 		soliDni = txtSoliDni.getText();
 		entrDni = txtEntrDni.getText();
@@ -315,7 +340,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		if(soliDni.equals("")) {
 			Mensajes.dialogo("Es obligatorio el campo DNI SOLICITANTE");
 		}
-		/*
+		
 		Pecosa pec = new Pecosa();
 		pec.setFecPec(fecPec);
 		pec.setDniSoliPec(Integer.parseInt(soliDni));
@@ -329,7 +354,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 			mensaje("El registro de la PECOSA fue un exito");
 		}else {
 			mensaje("Fallo en el Ingreso");
-		}*/
+		}
 	}
 
 	/*protected void keyReleasedTxtdniEntr(KeyEvent e) {
@@ -339,6 +364,12 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 		txtParaUnidadOrg.setText(data[1]);
 	}*/
 	
+	protected void actionPerformedMntmAadirBienes(ActionEvent e) {
+		dlgAgregarBienesPecosa dlg = new dlgAgregarBienesPecosa();
+		dlg.setVisible(true);
+		dlg.setLocationRelativeTo(null);
+	}
+	
 	void componentes(boolean op) {
 		txtRuc.setEditable(op);
 		txtDocRefe.setEditable(op);
@@ -346,7 +377,7 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	}
 	
 	public String codigoCorrelativo() {
-		ArrayList<OrdenCompra> data = ordenCompraDao.ListarTodo();
+		ArrayList<OrdenCompra> data = ordenCompraDAO.ListarTodo();
 		String codigoSerial;
 		if(data.size()==0) {
 			codigoSerial = "000001";
@@ -359,6 +390,41 @@ public class frmOrdenCompra extends JFrame implements ActionListener, KeyListene
 	
 	public void keyReleasedTxtRuc(KeyEvent e) {
 		String ruc = txtRuc.getText();
-		string[] data = ordenCompraDAO.buscarProveedor(ruc);
+		String[] data = ordenCompraDAO.buscarProveedor(ruc);
+	}	
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

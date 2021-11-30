@@ -294,11 +294,11 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 				pro.setEstado(estado);
 				pro.setCondic(condi);
 				pro.setDirec(dire);
-				pro.setTelf(Integer.parseInt(tele));
+				pro.setTelf(tele);
 				String[] part = codDis.split("/");
 				pro.setCodDis(part[0]);
-				int salida = proveedorDAO.Ingresar(pro);
-				if(salida > 0) {
+				//int salida = proveedorDAO.Ingresar(pro);
+				/*if(salida > 0) {
 					Mensajes.dialogo("El registro fue un exito");
 					listar();
 					limpiar();
@@ -306,7 +306,7 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 					btnGuardar.setText("Nuevo");
 				}else {
 					Mensajes.error("No se hizo el registro correctamente");
-				}
+				}*/
 			}
 		}
 	}
@@ -328,7 +328,7 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		pro.setEstado(estado);
 		pro.setCondic(condi);
 		pro.setDirec(dire);
-		pro.setTelf(Integer.parseInt(tele));
+		pro.setTelf(tele);
 		String[] part = codDis.split("/");
 		pro.setCodDis(part[0]);
 		int salida = proveedorDAO.Actualizar(pro);
@@ -352,7 +352,7 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		int m = Mensajes.confirmarELiminar();
 		if( m == 0) {
 			Mensajes.dialogo("Se elimino el registro");
-			proveedorDAO.Eliminar(pro);
+			//proveedorDAO.Eliminar(pro);
 			listar();
 			limpiar();
 		}
@@ -378,11 +378,11 @@ public class frmProveedores extends JFrame implements ActionListener, MouseListe
 		DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
 		modelo.setRowCount(0);
 		
-		ArrayList<Proveedor> data = new MySqlProveedorDAO().ListarTodo();
-		for(Proveedor pro:data) {
+		//ArrayList<Proveedor> data = new MySqlProveedorDAO().ListarTodo();
+		/*for(Proveedor pro:data) {
 			Object[] filas = {pro.getNroRuc(), pro.getRzSoc(),pro.getEstado(),pro.getCondic(),pro.getDirec(),pro.getTelf(),pro.getCodDis()};
 			modelo.addRow(filas);
-		}
+		}*/
 	}
 
 	

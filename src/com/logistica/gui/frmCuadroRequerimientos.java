@@ -522,6 +522,8 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 
 			limpiarBien();
 		}	
+		
+		
 	
 	}
 	

@@ -17,8 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.logistica.componentes.JComboBoxBD;
 import com.logistica.controlador.MySqlProveedorDAO;
-import com.logistica.controlador.MySqlTrabajadorDAO;
-import com.logistica.entidad.Trabajador;
+import com.logistica.entidad.Proveedor;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -39,7 +38,7 @@ public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, Ac
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtBuscarProveedor;
-	private JTable tblTrabajadores;
+	private JTable tblProveedores;
 	private JComboBox cboDistrito;
 	private JButton btnAñadir;
 
@@ -61,63 +60,63 @@ public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, Ac
 	 */
 	public dlgBuscarEntrProveedores() {
 		setTitle("Proveedores");
-		setBounds(100, 100, 667, 475);
+		setBounds(100, 100, 765, 441);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 58, 424, 334);
+		scrollPane.setBounds(10, 58, 509, 334);
 		contentPanel.add(scrollPane);
 		
-		tblTrabajadores = new JTable();
-		tblTrabajadores.setModel(new DefaultTableModel(
+		tblProveedores = new JTable();
+		tblProveedores.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null},
 			},
 			new String[] {
-				"RUC", "RAZON SOCIAL", "TELEFONO", "DISTRITO"
+				"RUC", "RAZON SOCIAL", "TELEFONO", "DISTRITO", "DIRECCION"
 			}
 		));
-		tblTrabajadores.getColumnModel().getColumn(0).setPreferredWidth(16);
-		tblTrabajadores.getColumnModel().getColumn(2).setPreferredWidth(51);
-		scrollPane.setViewportView(tblTrabajadores);
+		tblProveedores.getColumnModel().getColumn(0).setPreferredWidth(16);
+		tblProveedores.getColumnModel().getColumn(1).setPreferredWidth(98);
+		tblProveedores.getColumnModel().getColumn(2).setPreferredWidth(49);
+		tblProveedores.getColumnModel().getColumn(3).setPreferredWidth(53);
+		scrollPane.setViewportView(tblProveedores);
 		
 		txtBuscarProveedor = new JTextField();
-		txtBuscarProveedor.setToolTipText("Apellidos o Nombres");
 		txtBuscarProveedor.addKeyListener(this);
-		txtBuscarProveedor.setBounds(444, 85, 197, 26);
+		txtBuscarProveedor.setBounds(542, 83, 197, 26);
 		contentPanel.add(txtBuscarProveedor);
 		txtBuscarProveedor.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Razon Social:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel.setBounds(445, 60, 136, 14);
+		lblNewLabel.setBounds(543, 58, 136, 14);
 		contentPanel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("BUSQUEDA DE TRABAJADORES");
+		JLabel lblNewLabel_1 = new JLabel("BUSQUEDA DE PROVEEDORES");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Swis721 Blk BT", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(165, 11, 340, 36);
+		lblNewLabel_1.setBounds(196, 11, 340, 36);
 		contentPanel.add(lblNewLabel_1);
 		
 		cboDistrito = new JComboBox();
 		cboDistrito.addActionListener(this);
-		cboDistrito.setModel(new DefaultComboBoxModel(new String[] {"[TODOS]"}));
-		cboDistrito.setBounds(444, 157, 197, 22);
+		cboDistrito.setModel(new DefaultComboBoxModel(new String[] {"[TODOS]", "ANCON", "COMAS", "SANTA ROSA", "VILLA ESTELA"}));
+		cboDistrito.setBounds(542, 155, 197, 22);
 		contentPanel.add(cboDistrito);
 		
 		JLabel lblCargo = new JLabel("Distrito :");
 		lblCargo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCargo.setBounds(444, 126, 136, 22);
+		lblCargo.setBounds(542, 124, 136, 22);
 		contentPanel.add(lblCargo);
 		{
 			btnAñadir = new JButton("");
 			btnAñadir.addActionListener(this);
 			btnAñadir.addMouseListener(this);
 			btnAñadir.setIcon(new ImageIcon(dlgBuscarEntrProveedores.class.getResource("/iconos/add.png")));
-			btnAñadir.setBounds(444, 214, 197, 36);
+			btnAñadir.setBounds(542, 212, 197, 36);
 			contentPanel.add(btnAñadir);
 			btnAñadir.setActionCommand("OK");
 			getRootPane().setDefaultButton(btnAñadir);
@@ -128,15 +127,15 @@ public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, Ac
 	}
 	public void keyReleased(KeyEvent e) {
 		if (e.getSource() == txtBuscarProveedor) {
-			keyReleasedTxtBuscarTrabajadores(e);
+			keyReleasedTxtBuscarProveedor(e);
 		}
 	}
 	public void keyTyped(KeyEvent e) {
 		char c = e.getKeyChar();
-		String apeNom = txtBuscarProveedor.getText();
+		String razSoc = txtBuscarProveedor.getText();
 		if(!Character.isAlphabetic(c) && c != ' ') {
 			e.consume();
-		} else if(apeNom.length()==30) {
+		} else if(razSoc.length()==30) {
 			e.consume();
 		}
 	}
@@ -147,48 +146,58 @@ public class dlgBuscarEntrProveedores extends JDialog implements KeyListener, Ac
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == cboDistrito) {
-			actionPerformedCboCargo(e);
+			actionPerformedCboDistrito(e);
 		}
 	}
-	protected void keyReleasedTxtBuscarTrabajadores(KeyEvent e) {
-		String apenomTra = txtBuscarProveedor.getText();
+	protected void keyReleasedTxtBuscarProveedor(KeyEvent e) {
+		String razonSoc = txtBuscarProveedor.getText();
 		String comodin = "%";
-		String unidad = cboDistrito.getSelectedItem().toString();
-		listar(apenomTra, comodin, unidad);
+		String distrito = cboDistrito.getSelectedItem().toString();
+		listar(razonSoc, comodin, distrito);
 	}
 	
-	protected void actionPerformedCboCargo(ActionEvent e) {
-		String apenomTra = "";
+	protected void actionPerformedCboDistrito(ActionEvent e) {
+		String razonSoc = "";
 		String comodin = "";
-		String unidad = cboDistrito.getSelectedItem().toString();
-		listar(apenomTra, comodin, unidad);
+		String distrito = cboDistrito.getSelectedItem().toString();
+		listar(razonSoc, comodin, distrito);
 	}
-	void listar(String apenomTra,String comodin, String unidad) {
-		if(apenomTra.equals("") && unidad.equals("[TODOS]")) comodin = "%";
-		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
+	void listar(String razonSoc,String comodin, String distrito) {
+		if(razonSoc.equals("") && distrito.equals("[TODOS]")) comodin = "%";
+		
+		DefaultTableModel modelo = (DefaultTableModel) tblProveedores.getModel();
 		modelo.setRowCount(0);
-		ArrayList<Trabajador> lista = trabajadorDAO.ListarBusqueda(apenomTra, comodin, unidad);
-		for(Trabajador tra:lista) {
-			Object[] filas = {tra.getDni(),tra.getNomApe(),tra.getUnidadOrga()};
+		
+		ArrayList<Proveedor> lista = proveedorDAO.ListarBusqueda(razonSoc, comodin, distrito);
+		
+		for(Proveedor tra:lista) {
+			Object[] filas = {	tra.getNroRuc(),
+								tra.getRzSoc(),
+								tra.getTelf(),
+								tra.getNomDis(),
+								tra.getDirec()};
 			modelo.addRow(filas);
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
 				try {
 					//varaible
-					String dni,apenom,unidad;
+					String razSoc,ruc,distrito, telf, direc;
 					//Obtener posicion de la fila seleccionada
 					int posFila;
-					posFila = tblTrabajadores.getSelectedRow();
+					posFila = tblProveedores.getSelectedRow();
 					//Obtener datos de la fila seleccionada
-					dni = tblTrabajadores.getValueAt(posFila, 0).toString();
-					apenom = tblTrabajadores.getValueAt(posFila, 1).toString();
-					unidad = tblTrabajadores.getValueAt(posFila, 2).toString();
+					ruc = tblProveedores.getValueAt(posFila, 0).toString();
+					razSoc = tblProveedores.getValueAt(posFila, 1).toString();
+					telf = tblProveedores.getValueAt(posFila, 2).toString();
+					distrito = tblProveedores.getValueAt(posFila, 3).toString();
+					direc = tblProveedores.getValueAt(posFila, 4).toString();
 					
 						//Enviar valores a las cajas de formulario frmBoleta
-						frmCuadroRequerimientos.txtdniEntr.setText(dni);
-						frmCuadroRequerimientos.txtNombreEntr.setText(apenom);
-						frmCuadroRequerimientos.txtParaUnidadOrg.setText(unidad);
+						frmOrdenCompra.txtRuc.setText(ruc);
+						frmOrdenCompra.txtRazonSocial.setText(razSoc);
+						frmOrdenCompra.txtTelefono.setText(telf);
+						frmOrdenCompra.txtDireccion.setText(direc);
 						//cerrar ventana actual
 						dispose();
 					

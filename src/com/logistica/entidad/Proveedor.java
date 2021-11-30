@@ -1,19 +1,24 @@
 package com.logistica.entidad;
 
 public class Proveedor {
-	private int telf;
-	private String rzSoc, estado, condic, direc, codDis,nroRuc;
+	private String telf, rzSoc, estado, condic, direc, codDis, nomDis,nroRuc;
 	
+	public String getNomDis() {
+		return nomDis;
+	}
+	public void setNomDis(String nomDis) {
+		this.nomDis = nomDis;
+	}
 	public String getNroRuc() {
 		return nroRuc;
 	}
 	public void setNroRuc(String nroRuc) {
 		this.nroRuc = nroRuc;
 	}
-	public int getTelf() {
+	public String getTelf() {
 		return telf;
 	}
-	public void setTelf(int telf) {
+	public void setTelf(String telf) {
 		this.telf = telf;
 	}
 	public String getRzSoc() {
