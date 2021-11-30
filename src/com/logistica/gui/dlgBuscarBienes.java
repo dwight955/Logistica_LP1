@@ -24,6 +24,7 @@ import com.logistica.entidad.Trabajador;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+import java.io.Console;
 import java.util.ArrayList;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyListener;
@@ -73,6 +74,7 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		contentPanel.add(scrollPane);
 		
 		tblBienes = new JTable();
+		tblBienes.addMouseListener(this);
 		tblBienes.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -149,6 +151,9 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		}
 	}
 	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == tblBienes) {
+			mouseClickedTblBienes(e);
+		}
 		if (e.getSource() == btnAñadir) {
 			mouseClickedBtnAñadir(e);
 		}
@@ -186,29 +191,34 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
-				try {
+				/*try {*/
 					//varaible
+					
 					String codigo,descr,unidadMed,stockAl;
 					//Obtener posicion de la fila seleccionada
 					int posFila;
 					posFila = tblBienes.getSelectedRow();
+					System.out.println(posFila);
 					//Obtener datos de la fila seleccionada
 					codigo = tblBienes.getValueAt(posFila, 0).toString();
+					System.out.println(codigo);
 					descr = tblBienes.getValueAt(posFila, 1).toString();
+					System.out.println(descr);
 					stockAl = tblBienes.getValueAt(posFila, 2).toString();
+					System.out.println(stockAl);
 					unidadMed = tblBienes.getValueAt(posFila, 3).toString();
-					
+					System.out.println(unidadMed);
 						//Enviar valores a las cajas de formulario 
 						frmCuadroRequerimientos.txtCodBien.setText(codigo);
 						frmCuadroRequerimientos.txtDescPro.setText(descr);
-						frmCuadroRequerimientos.txtStockTotSeparado.setText(stockAl);
+						frmCuadroRequerimientos.txtStockTotSeparado_1.setText(stockAl);
 						frmCuadroRequerimientos.txtUnidaMed.setText(unidadMed);
 						//cerrar ventana actual
 						dispose();
 					
-				} catch (Exception e2) {
+				/*} catch (Exception e2) {
 					mensaje("Seleccione uno ");
-				}
+				}*/
 	}
 	public void mouseEntered(MouseEvent e) {
 	}
@@ -221,5 +231,17 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 	
 	void mensaje(String m){
 		JOptionPane.showMessageDialog(null, m);
+	}
+	protected void mouseClickedTblBienes(MouseEvent e) {
+		String codigo,descr,unidadMed,stockAl;
+		//Obtener posicion de la fila seleccionada
+		int posFila;
+		posFila = tblBienes.getSelectedRow();
+		System.out.println(posFila);
+		//Obtener datos de la fila seleccionada
+		codigo = tblBienes.getValueAt(posFila, 0).toString();
+		descr = tblBienes.getValueAt(posFila, 1).toString();
+		stockAl = tblBienes.getValueAt(posFila, 2).toString();
+		unidadMed = tblBienes.getValueAt(posFila, 3).toString();
 	}
 }

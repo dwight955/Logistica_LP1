@@ -80,6 +80,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	private JButton btnAgregarBien;
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmEliminar;
+	public static JTextField txtStockTotSeparado_1;
 
 	/**
 	 * Launch the application.
@@ -253,11 +254,11 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		lblDescripcion_1.setBounds(10, 83, 97, 14);
 		panel_1.add(lblDescripcion_1);
 		
-		JTextField txtStockTotSeparado = new JTextField();
-		txtStockTotSeparado.setEnabled(false);
-		txtStockTotSeparado.setBounds(492, 41, 63, 20);
-		panel_1.add(txtStockTotSeparado);
-		txtStockTotSeparado.setColumns(10);
+		txtStockTotSeparado_1 = new JTextField();
+		txtStockTotSeparado_1.setEditable(false);
+		txtStockTotSeparado_1.setBounds(492, 41, 63, 20);
+		panel_1.add(txtStockTotSeparado_1);
+		txtStockTotSeparado_1.setColumns(10);
 		
 		JLabel lblStockDisponible = new JLabel("Stock Disponible");
 		lblStockDisponible.setBounds(384, 39, 114, 25);
@@ -509,14 +510,12 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		else {
 			String codigo,descr, unidadMed;
 			int cant;
-			
 			codigo = txtCodBien.getText();
 			descr = txtDescPro.getText();
 			unidadMed = txtUnidaMed.getText();
 			cant = Integer.parseInt(txtCant.getText());
 			txtCodBien.requestFocus();
 			DefaultTableModel modelo = (DefaultTableModel) tblRequerimientos.getModel();
-			
 			Object[] filas = {codigo,descr,unidadMed,cant};
 			modelo.addRow(filas);
 
@@ -567,6 +566,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		txtDescPro.setText("");
 		txtUnidaMed.setText("");
 		txtCant.setText("");
+		txtStockTotSeparado_1.setText("");
 		txtCodBien.requestFocus();
 	}
 	
