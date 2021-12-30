@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.logistica.gui.frmPrincipal;
-
 public class MostraHora extends Thread {
 
 	@Override
@@ -25,10 +23,10 @@ public class MostraHora extends Thread {
 			hora=calendar.get(Calendar.HOUR_OF_DAY);
 			minuto=calendar.get(Calendar.MINUTE);
 			segundo=calendar.get(Calendar.SECOND);
-			*/
+			
 			frmPrincipal.lblHora.setText(sdf2.format(date));
 			frmPrincipal.lblFecha2.setText(sdf.format(date));
-			
+			*/
 		} while (true);
 		
 		

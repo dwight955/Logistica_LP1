@@ -18,7 +18,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.logistica.controlador.MySqlCuadroRequerimientosDAO;
+import com.logistica.controlador.MySqlPecosaDAO;
 import com.logistica.entidad.CuadroRequerimientos;
+import com.logistica.entidad.DetalleRequerimientos;
 import com.logistica.entidad.Pecosa;
 
 import javax.swing.DefaultComboBoxModel;
@@ -29,11 +31,13 @@ import java.awt.event.MouseEvent;
 
 public class dlgConsultaCuadroRequerimientos extends JDialog implements ActionListener, MouseListener {
 	MySqlCuadroRequerimientosDAO cuadroReqDAO = new MySqlCuadroRequerimientosDAO();
+	MySqlPecosaDAO pecosaDAO = new MySqlPecosaDAO();
 	private final JPanel contentPanel = new JPanel();
 	private String estado;
 	private JTextField txtNroReq;
 	private JTable tblCuadrosReq;
 	private JComboBox cboEstado;
+	private JTable tblDetalleCuadroReq;
 
 	/**
 	 * Launch the application.
@@ -54,7 +58,7 @@ public class dlgConsultaCuadroRequerimientos extends JDialog implements ActionLi
 	 */
 	public dlgConsultaCuadroRequerimientos() {
 		setTitle("Consultar Cuadros de Requerimientos");
-		setBounds(100, 100, 660, 396);
+		setBounds(100, 100, 660, 510);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -71,12 +75,13 @@ public class dlgConsultaCuadroRequerimientos extends JDialog implements ActionLi
 		txtNroReq.setColumns(10);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 79, 624, 267);
+		scrollPane.setBounds(10, 79, 624, 169);
 		contentPanel.add(scrollPane);
 		
 		tblCuadrosReq = new JTable();
 		tblCuadrosReq.addMouseListener(this);
 		tblCuadrosReq.setFillsViewportHeight(true);
+		
 		tblCuadrosReq.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -93,9 +98,28 @@ public class dlgConsultaCuadroRequerimientos extends JDialog implements ActionLi
 		
 		cboEstado = new JComboBox();
 		cboEstado.addActionListener(this);
-		cboEstado.setModel(new DefaultComboBoxModel(new String[] {"EN REVISION", "APROBADO", "FORMULADO"}));
+		cboEstado.setModel(new DefaultComboBoxModel(new String[] {"EN REVISION", "APROBADO", "FORMULADO", "EN CAMINO"}));
 		cboEstado.setBounds(152, 46, 118, 22);
 		contentPanel.add(cboEstado);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 282, 624, 178);
+		contentPanel.add(scrollPane_1);
+		
+		tblDetalleCuadroReq = new JTable();
+		tblDetalleCuadroReq.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Cod Bien", "Descripcion", "Unidad Medida", "Cantidad", "Precio Unitario"
+			}
+		));
+		tblDetalleCuadroReq.setFillsViewportHeight(true);
+		scrollPane_1.setViewportView(tblDetalleCuadroReq);
+		
+		JLabel lblNewLabel = new JLabel("DETALLE DEL CUADRO DE REQUERIMIENTOS");
+		lblNewLabel.setBounds(10, 259, 260, 14);
+		contentPanel.add(lblNewLabel);
 		listar(2,"","FORMULADO");
 	}
 	void listar(int op,String num,String estado) {
@@ -131,8 +155,21 @@ public class dlgConsultaCuadroRequerimientos extends JDialog implements ActionLi
 	public void mouseReleased(MouseEvent e) {
 	}
 	protected void mouseClickedTblCuadrosReq(MouseEvent e) {
+		//Capturar la posicion de la fila
 		int posFila = tblCuadrosReq.getSelectedRow();
-		String numPec = tblCuadrosReq.getValueAt(posFila, 0).toString();
-		txtNroReq.setText(numPec);
+		//Guardar el dato "numero del Cuadro de Requerimientos"
+		String numCuadroReq = tblCuadrosReq.getValueAt(posFila, 0).toString();
+		txtNroReq.setText(numCuadroReq);
+		if(posFila < 0) {posFila = 0;}else {
+			DefaultTableModel modelo = (DefaultTableModel) tblDetalleCuadroReq.getModel();
+			modelo.setRowCount(0);
+			
+			ArrayList<DetalleRequerimientos> data = pecosaDAO.listarDetalleReqPorNum(numCuadroReq);
+			
+			for(DetalleRequerimientos dr:data) {
+				Object[] filas = {dr.getCodBien(),dr.getDescripcion(),dr.getUniMed(),dr.getCant(),dr.getPreUni()};
+				modelo.addRow(filas);
+			}
+		}
 	}
 }

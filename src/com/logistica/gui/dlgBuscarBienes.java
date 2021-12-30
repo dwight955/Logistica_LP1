@@ -191,7 +191,7 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 		}
 	}
 	protected void mouseClickedBtnAñadir(MouseEvent e) {
-				/*try {*/
+				try {
 					//varaible
 					
 					String codigo,descr,unidadMed,stockAl;
@@ -216,9 +216,9 @@ public class dlgBuscarBienes extends JDialog implements KeyListener, ActionListe
 						//cerrar ventana actual
 						dispose();
 					
-				/*} catch (Exception e2) {
+				} catch (Exception e2) {
 					mensaje("Seleccione uno ");
-				}*/
+				}
 	}
 	public void mouseEntered(MouseEvent e) {
 	}

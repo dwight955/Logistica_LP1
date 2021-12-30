@@ -51,7 +51,6 @@ public class MySqlCuadroRequerimientosDAO implements CuadroRequerimientosDAO{
 				cstmDet.setInt(3, d.getCant());
 				
 				salida = cstmDet.executeUpdate();
-				 
 			}
 			
 			cn.commit();

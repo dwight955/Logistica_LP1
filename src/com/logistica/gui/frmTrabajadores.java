@@ -182,7 +182,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 		cboSexo = new JComboBox();
 		cboSexo.setEnabled(false);
 		cboSexo.setBounds(10, 383, 183, 25);
-		cboSexo.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
+		cboSexo.setModel(new DefaultComboBoxModel(new String[] {"MASCULINO", "FEMENINO"}));
 		contentPane.add(cboSexo);
 		
 		JPanel panel = new JPanel();
@@ -277,6 +277,7 @@ public class frmTrabajadores extends JFrame implements ActionListener, MouseList
 						Mensajes.dialogo("El registro fue un exito");
 						listar();
 						Elementos(false);
+						dlgBuscarEntrTrabajador.listar("", "%", "");
 						limpiar();
 					}else {
 						Mensajes.error("No se hizo el registro correctamente");

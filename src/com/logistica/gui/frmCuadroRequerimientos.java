@@ -177,6 +177,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		panel.add(txtNombreEntr);
 		
 		btnBuscarEntrDni = new JButton("");
+		btnBuscarEntrDni.setEnabled(false);
 		btnBuscarEntrDni.addActionListener(this);
 		btnBuscarEntrDni.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/search.png")));
 		btnBuscarEntrDni.setBounds(553, 21, 33, 27);
@@ -245,7 +246,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		btnAgregarBien = new JButton("");
 		btnAgregarBien.addActionListener(this);
 		btnAgregarBien.setEnabled(false);
-		btnAgregarBien.setBounds(679, 25, 82, 41);
+		btnAgregarBien.setBounds(573, 25, 82, 41);
 		panel_1.add(btnAgregarBien);
 		btnAgregarBien.setIcon(new ImageIcon(frmCuadroRequerimientos.class.getResource("/iconos/add.png")));
 		
@@ -261,15 +262,9 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		txtStockTotSeparado_1.setColumns(10);
 		
 		JLabel lblStockDisponible = new JLabel("Stock Disponible");
+		lblStockDisponible.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblStockDisponible.setBounds(384, 39, 114, 25);
 		panel_1.add(lblStockDisponible);
-		
-		JTextField txtStockSepaResto = new JTextField();
-		txtStockSepaResto.setEnabled(false);
-		txtStockSepaResto.setBackground(new Color(238, 232, 170));
-		txtStockSepaResto.setBounds(581, 41, 63, 20);
-		panel_1.add(txtStockSepaResto);
-		txtStockSepaResto.setColumns(10);
 		
 		lblCuadroDeRequerimientos = new JLabel("Cuadro de Requerimientos");
 		lblCuadroDeRequerimientos.setFont(new Font("Swis721 LtEx BT", Font.BOLD, 18));
@@ -376,7 +371,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 	protected void actionPerformedBtnNuevo(ActionEvent e) {
 		
 		frmLogin frm= new frmLogin();
-		
+		int filas = tblRequerimientos.getRowCount();
 		if(txtdniEntr.isEnabled()==false) {
 			btnNuevo.setText("Enviar");
 			componentes(true);
@@ -388,40 +383,38 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		}else {
 			try {
 				//cabecera
-				CuadroRequerimientos cure = new CuadroRequerimientos();
+				CuadroRequerimientos cuReq = new CuadroRequerimientos();
 				
-				cure.setNumreq(txtNumReq.getText());
-				cure.setFechaEmi(txtFechaEmi.getText());
-				cure.setEstado(txtEstado.getText());
-				cure.setDniSoli(Libreria.codigoTrabajadorSesion);
-				cure.setDniEntr(Integer.parseInt(txtdniEntr.getText()));
+				cuReq.setNumreq(txtNumReq.getText());
+				cuReq.setFechaEmi(txtFechaEmi.getText());
+				cuReq.setEstado(txtEstado.getText());
+				cuReq.setDniSoli(Libreria.codigoTrabajadorSesion);
+				cuReq.setDniEntr(Integer.parseInt(txtdniEntr.getText()));
 				
 				//detalle
 				ArrayList<DetalleRequerimientos> data = new ArrayList<DetalleRequerimientos>();
-				
-				for(int i = 0; i<tblRequerimientos.getRowCount(); i++) {
-					DetalleRequerimientos dr = new DetalleRequerimientos();
+				if (filas > 0) {
+					for(int i = 0; i<filas; i++) {
+						DetalleRequerimientos dr = new DetalleRequerimientos();
+						
+						String codBien, cant;
+						
+						codBien = tblRequerimientos.getValueAt(i, 0).toString();
+						cant = tblRequerimientos.getValueAt(i, 3).toString();
+						
+						dr.setCodBien(codBien);
+						dr.setCant(Integer.parseInt(cant));
+						
+						data.add(dr);
+					}
+					reqDAO.registrar(cuReq, data);				
+					Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");				
+					btnNuevo.setText("Nuevo");
 					
-					String codBien, cant;
-					
-					codBien = tblRequerimientos.getValueAt(i, 0).toString();
-					cant = tblRequerimientos.getValueAt(i, 3).toString();
-					
-					dr.setCodBien(codBien);
-					dr.setCant(Integer.parseInt(cant));
-					
-					data.add(dr);							
-				}
-
-				reqDAO.registrar(cure, data);				
-				Mensajes.dialogo("Su Cuadro de Requerimiento a sido enviado");				
-				btnNuevo.setText("Nuevo");
-				
-				borrar();
-				
+					borrar();
+				}else Mensajes.error("Debe insertar al menos un Bien o Servicio");
 			} catch (Exception e2) {
-				Mensajes.error("No se logro registrar \n");
-				
+				Mensajes.error("No se logro registrar el Cuadro de Requerimientos \n");
 			}
 			
 		}
@@ -457,6 +450,7 @@ public class frmCuadroRequerimientos extends JFrame implements ActionListener, K
 		txtCant.setEnabled(op);
 		txtUnidaMed.setEnabled(op);
 		btnBuscarBien.setEnabled(op);
+		btnBuscarEntrDni.setEnabled(op);
 		btnAgregarBien.setEnabled(op);
 	}
 	public void keyPressed(KeyEvent e) {

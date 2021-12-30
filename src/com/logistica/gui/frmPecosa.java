@@ -64,7 +64,6 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	public static JTextField txtMeta;
 	public static JTextField txtNumReq;
 	public static JTextField txtUnidadOrgaSoli;
-	public static JTextField txtAprobadoPor;
 	public static JTextField txtUnidadBeneficiara;
 	public static JTextField txtReferencia;
 	private JTextField txtEstado;
@@ -80,13 +79,6 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	private TextAutoCompleter auto;
 	private JLabel lblPecosa;
 	private JLabel lblUnidadBeneficiaria;
-	private JLabel lblAprobadoPor;
-	private JPanel panel_4;
-	private JTextField txtFechaApro;
-	private JLabel lblFechaApro;
-	private JPanel panel_5;
-	private JTextField txtFechaEntr;
-	private JLabel lblFechaEntr;
 	private JLabel lblNewLabel;
 	private JLabel lblFormuladoPor;
 	private JPopupMenu popupMenu;
@@ -118,7 +110,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 	public frmPecosa() {
 		setTitle("Generar Pedido Comprobante de Salida");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1069, 678);
+		setBounds(100, 100, 1083, 678);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -175,7 +167,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_1.setForeground(Color.BLACK);
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBackground(new Color(135, 206, 235));
-		panel_1.setBounds(266, 62, 777, 131);
+		panel_1.setBounds(266, 62, 791, 131);
 		contentPane.add(panel_1);
 		
 
@@ -188,7 +180,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtEntrDni.addKeyListener(this);
 		txtEntrDni.setEditable(false);
 		txtEntrDni.setColumns(10);
-		txtEntrDni.setBounds(380, 49, 86, 27);
+		txtEntrDni.setBounds(380, 49, 93, 27);
 		panel_1.add(txtEntrDni);
 		
 		JLabel lblConNumeroDni = new JLabel("con numero DNI");
@@ -204,7 +196,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		
 		JLabel lblYConCargo = new JLabel("y con cargo de");
 		lblYConCargo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblYConCargo.setBounds(471, 50, 112, 22);
+		lblYConCargo.setBounds(483, 49, 112, 22);
 		panel_1.add(lblYConCargo);
 		
 		JLabel lblMeta = new JLabel("Meta  :");
@@ -215,19 +207,19 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtMeta = new JTextField();
 		txtMeta.setEditable(false);
 		txtMeta.setColumns(10);
-		txtMeta.setBounds(384, 87, 383, 27);
+		txtMeta.setBounds(398, 87, 383, 27);
 		panel_1.add(txtMeta);
 		
 		txtCargoEntr = new JTextField();
 		txtCargoEntr.setEditable(false);
 		txtCargoEntr.setColumns(10);
-		txtCargoEntr.setBounds(579, 49, 188, 27);
+		txtCargoEntr.setBounds(593, 49, 188, 27);
 		panel_1.add(txtCargoEntr);
 		
 		txtUnidadOrgaSoli = new JTextField();
 		txtUnidadOrgaSoli.setEditable(false);
 		txtUnidadOrgaSoli.setColumns(10);
-		txtUnidadOrgaSoli.setBounds(221, 10, 263, 27);
+		txtUnidadOrgaSoli.setBounds(221, 10, 275, 27);
 		panel_1.add(txtUnidadOrgaSoli);
 		
 		JLabel lblUnidadOrganicaSolicitante = new JLabel("Unidad Organica Solicitante :");
@@ -247,13 +239,13 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		txtUnidadBeneficiara.setColumns(10);
 		
 		lblFormuladoPor = new JLabel("Formu. por :");
-		lblFormuladoPor.setBounds(494, 11, 105, 23);
+		lblFormuladoPor.setBounds(506, 10, 105, 23);
 		panel_1.add(lblFormuladoPor);
 		lblFormuladoPor.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
 		txtapeNomFormPor = new JTextField();
 		txtapeNomFormPor.setBackground(SystemColor.info);
-		txtapeNomFormPor.setBounds(579, 12, 188, 27);
+		txtapeNomFormPor.setBounds(593, 12, 188, 27);
 		panel_1.add(txtapeNomFormPor);
 		txtapeNomFormPor.setEditable(false);
 		txtapeNomFormPor.setColumns(10);
@@ -262,7 +254,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		panel_2.setForeground(Color.BLACK);
 		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBackground(new Color(211, 211, 211));
-		panel_2.setBounds(266, 255, 777, 41);
+		panel_2.setBounds(266, 204, 791, 41);
 		contentPane.add(panel_2);
 		
 		JLabel lblReferencia = new JLabel("Referencia  :");
@@ -288,7 +280,7 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(txtEstado);
 		
 		scrollPecosa = new JScrollPane();
-		scrollPecosa.setBounds(10, 310, 1033, 226);
+		scrollPecosa.setBounds(10, 310, 1047, 226);
 		contentPane.add(scrollPecosa);
 		
 		tblDetallePecosa = new JTable();
@@ -356,60 +348,6 @@ public class frmPecosa extends JFrame implements ActionListener, KeyListener{
 		lblPecosa.setFont(new Font("Square721 BT", Font.BOLD, 30));
 		lblPecosa.setBounds(407, 4, 386, 53);
 		contentPane.add(lblPecosa);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(UIManager.getColor("Button.shadow"));
-		panel_3.setBounds(266, 204, 355, 41);
-		contentPane.add(panel_3);
-		panel_3.setLayout(null);
-		
-		txtAprobadoPor = new JTextField();
-		txtAprobadoPor.setBounds(116, 6, 229, 27);
-		panel_3.add(txtAprobadoPor);
-		txtAprobadoPor.setEditable(false);
-		txtAprobadoPor.setColumns(10);
-		
-		lblAprobadoPor = new JLabel("Aprobado por:");
-		lblAprobadoPor.setForeground(UIManager.getColor("CheckBox.foreground"));
-		lblAprobadoPor.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblAprobadoPor.setBounds(10, 12, 130, 14);
-		panel_3.add(lblAprobadoPor);
-		
-		panel_4 = new JPanel();
-		panel_4.setLayout(null);
-		panel_4.setBackground(SystemColor.controlShadow);
-		panel_4.setBounds(631, 203, 201, 41);
-		contentPane.add(panel_4);
-		
-		txtFechaApro = new JTextField();
-		txtFechaApro.setEditable(false);
-		txtFechaApro.setColumns(10);
-		txtFechaApro.setBounds(98, 6, 86, 27);
-		panel_4.add(txtFechaApro);
-		
-		lblFechaApro = new JLabel("Fecha Apro.");
-		lblFechaApro.setForeground(Color.BLACK);
-		lblFechaApro.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFechaApro.setBounds(10, 12, 96, 14);
-		panel_4.add(lblFechaApro);
-		
-		panel_5 = new JPanel();
-		panel_5.setLayout(null);
-		panel_5.setBackground(SystemColor.controlShadow);
-		panel_5.setBounds(842, 203, 201, 41);
-		contentPane.add(panel_5);
-		
-		txtFechaEntr = new JTextField();
-		txtFechaEntr.setEditable(false);
-		txtFechaEntr.setColumns(10);
-		txtFechaEntr.setBounds(98, 6, 93, 27);
-		panel_5.add(txtFechaEntr);
-		
-		lblFechaEntr = new JLabel("Fecha Entr.");
-		lblFechaEntr.setForeground(Color.BLACK);
-		lblFechaEntr.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFechaEntr.setBounds(10, 12, 96, 14);
-		panel_5.add(lblFechaEntr);
 		
 		ImageIcon icon = new ImageIcon(new ImageIcon(frmPecosa.class.getResource("/iconos/Sub Almacenero.png")).getImage().getScaledInstance(135, 125, Image.SCALE_SMOOTH));
 		

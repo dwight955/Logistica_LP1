@@ -34,11 +34,11 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, ActionListener, MouseListener{
-	MySqlTrabajadorDAO trabajadorDAO = new MySqlTrabajadorDAO();
+	static MySqlTrabajadorDAO trabajadorDAO = new MySqlTrabajadorDAO();
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtBuscarTrabajadores;
-	private JTable tblTrabajadores;
+	private static JTable tblTrabajadores;
 	private JComboBox cboUnidadOrg;
 	private JButton btnAñadir;
 	private JButton btnAñadirTrabajador;
@@ -171,7 +171,7 @@ public class dlgBuscarEntrTrabajador extends JDialog implements KeyListener, Act
 		String unidad = cboUnidadOrg.getSelectedItem().toString();
 		listar(apenomTra, comodin, unidad);
 	}
-	public void listar(String apenomTra,String comodin, String unidad) {
+	public static void listar(String apenomTra,String comodin, String unidad) {
 		if(apenomTra.equals("") && unidad.equals("[TODOS]")) comodin = "%";
 		DefaultTableModel modelo = (DefaultTableModel) tblTrabajadores.getModel();
 		modelo.setRowCount(0);
